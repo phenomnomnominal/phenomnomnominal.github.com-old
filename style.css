@@ -1,0 +1,164 @@
+/*------------------------------- Fonts --------------------------------------*/
+@font-face {
+    font-family: 'Lekton';
+    src: url('fonts/lekton-bold-webfont.eot');
+    src: url('fonts/lekton-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lekton-bold-webfont.woff') format('woff'),
+         url('fonts/lekton-bold-webfont.ttf') format('truetype'),
+         url('fonts/lekton-bold-webfont.svg#LektonBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lekton';
+    src: url('fonts/lekton-italic-webfont.eot');
+    src: url('fonts/lekton-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lekton-italic-webfont.woff') format('woff'),
+         url('fonts/lekton-italic-webfont.ttf') format('truetype'),
+         url('fonts/lekton-italic-webfont.svg#LektonItalic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Lekton';
+    src: url('fonts/lekton-regular-webfont.eot');
+    src: url('fonts/lekton-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lekton-regular-webfont.woff') format('woff'),
+         url('fonts/lekton-regular-webfont.ttf') format('truetype'),
+         url('fonts/lekton-regular-webfont.svg#LektonRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ostrich';
+    src: url('fonts/ostrich-rounded-webfont.eot');
+    src: url('fonts/ostrich-rounded-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/ostrich-rounded-webfont.woff') format('woff'),
+         url('fonts/ostrich-rounded-webfont.ttf') format('truetype'),
+         url('fonts/ostrich-rounded-webfont.svg#OstrichSansRoundedMedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Glasgow';
+    src: url('fonts/glasgow-regular-webfont.eot');
+    src: url('fonts/glasgow-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/glasgow-regular-webfont.woff') format('woff'),
+         url('fonts/glasgow-regular-webfont.ttf') format('truetype'),
+         url('fonts/glasgow-regular-webfont.svg#Glasgow-RegularRegular') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Glasgow';
+    src: url('fonts/glasgow-light-webfont.eot');
+    src: url('fonts/glasgow-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/glasgow-light-webfont.woff') format('woff'),
+         url('fonts/glasgow-light-webfont.ttf') format('truetype'),
+         url('fonts/glasgow-light-webfont.svg#Glasgow-LightRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Glasgow';
+    src: url('fonts/glasgow-lightita-webfont.eot');
+    src: url('fonts/glasgow-lightita-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/glasgow-lightita-webfont.woff') format('woff'),
+         url('fonts/glasgow-lightita-webfont.ttf') format('truetype'),
+         url('fonts/glasgow-lightita-webfont.svg#Glasgow-LightItaRegular') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}
+
+/** * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) * http://cssreset.com */html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video {	margin: 0;	padding: 0;	border: 0;	font-size: 100%;	font: inherit;	vertical-align: baseline;}/* HTML5 display-role reset for older browsers */article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {	display: block;}body {	line-height: 1;}ol, ul {	list-style: none;}blockquote, q {	quotes: none;}blockquote:before, blockquote:after,q:before, q:after {	content: '';	content: none;}table {	border-collapse: collapse;	border-spacing: 0;}
+
+body {background: #111}
+
+canvas { cursor: move }
+
+.container {
+  position: fixed;
+  left: 0px;
+}
+
+.container.top {
+  height: 22px;
+  top: 0px;
+  width: 100%;
+}
+
+.container.left {
+  height: 100%;
+  top: 0px;
+  width: 22px;
+}
+
+.container.bottom {
+  bottom: 0px;
+  height: 22px;
+  width: 100%;
+}
+
+[unselectable=on] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.button:hover, .switch:hover {
+  background: #FFF;
+}
+
+.button.click, .switch.click {
+  background: #0FF;
+}
+
+.button.top, .switch.top {
+  float: left;
+  line-height: 20px;
+  margin: 0px 22px;
+  padding: 0px 10px;
+  position: relative;
+}
+
+.ui {
+  background: #2C2;
+  color: #111;
+  cursor: pointer;
+  font-family: 'Lekton';
+  position: absolute;
+  text-align: center;
+  transition:background 1s;
+  -moz-transition:background 1s; /* Firefox */
+  -webkit-transition:background 1s; /* Safari and Chrome */
+  -o-transition:background 1s; /* Opera */
+}
+
+.slide:hover {
+  background: #FFF;
+}
+
+.slide.left {
+  height: 120px;
+  line-height: 15px;
+  margin: 22px 0px;
+  padding: 10px 0px;
+  width: 100%;
+}
+
+.slide.bottom {
+  height: 100%;
+  line-height: 20px;
+  margin: 0px 22px;
+  padding: 0px 10px;
+  width: 120px;
+}
