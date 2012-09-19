@@ -562,7 +562,7 @@
       var analyser, canvas, context, count, data, noise, src;
       src = audioContext.createMediaStreamSource(stream);
       analyser = audioContext.createAnalyser();
-      analyser.fftSize = 16384;
+      analyser.smoothingTimeConstant = 0;
       src.connect(analyser);
       canvas = $('<canvas>');
       canvas[0].height = $(window).height() - 100;
