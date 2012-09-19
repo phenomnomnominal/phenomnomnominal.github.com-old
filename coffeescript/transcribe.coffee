@@ -402,14 +402,25 @@ tuner = ->
     audio: true
     video: false
     toString: toString
+    
   success = (stream) ->
-    console.log stream
     src = audioContext.createMediaStreamSource stream
-    console.log src
     analyser = audioContext.createAnalyser()
-    console.log analyser
     src.connect analyser
-    analyser.connect audioContext.destination
+    
+    PCM = src.buffer.getChannelData 0
+    
+    count = 0
+    data = ->
+      BUFFER_LENGTH = 1024
+      begin = BUFFER_LENGTH * count
+      end = begin + BUFFER_LENGTH
+      sub = PCM.subarray begin, end
+      fft = new FFT(BUFFER_LENGTH, src.buffer.sampleRate)
+      fft.forward sub
+      
+    setInterval data, 20
+    
   error = (e) ->
     console.log e
   navigator.getUserMedia options, success, error

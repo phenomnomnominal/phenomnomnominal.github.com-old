@@ -568,14 +568,22 @@
       toString: toString
     };
     success = function(stream) {
-      var analyser, src;
-      console.log(stream);
+      var PCM, analyser, count, data, src;
       src = audioContext.createMediaStreamSource(stream);
-      console.log(src);
       analyser = audioContext.createAnalyser();
-      console.log(analyser);
       src.connect(analyser);
-      return analyser.connect(audioContext.destination);
+      PCM = src.buffer.getChannelData(0);
+      count = 0;
+      data = function() {
+        var BUFFER_LENGTH, begin, end, fft, sub;
+        BUFFER_LENGTH = 1024;
+        begin = BUFFER_LENGTH * count;
+        end = begin + BUFFER_LENGTH;
+        sub = PCM.subarray(begin, end);
+        fft = new FFT(BUFFER_LENGTH, src.buffer.sampleRate);
+        return fft.forward(sub);
+      };
+      return setInterval(data, 20);
     };
     error = function(e) {
       return console.log(e);
