@@ -559,7 +559,7 @@
       toString: toString
     };
     success = function(stream) {
-      var analyser, canvas, context, count, data, src;
+      var analyser, canvas, context, count, data, noise, src;
       src = audioContext.createMediaStreamSource(stream);
       analyser = audioContext.createAnalyser();
       src.connect(analyser);
@@ -568,15 +568,24 @@
       canvas[0].width = $(window).width() - 100;
       $('body').append(canvas);
       context = canvas[0].getContext('2d');
+      noise = new Uint8Array(analyser.fftSize);
       count = 0;
       data = function() {
-        var arr, i, _i, _ref, _results;
+        var arr, i, newNoise, _i, _j, _ref, _ref1, _results;
+        count++;
+        if (count < 10) {
+          newNoise = new Uint8Array(analyser.fftSize);
+          analyser.getByteFrequencyData(newNoise);
+          for (i = _i = 0, _ref = analyser.fftSize; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+            noise[i] = (noise[i] + newNoise[i]) / 2;
+          }
+        }
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteFrequencyData(arr);
         context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         _results = [];
-        for (i = _i = 0, _ref = arr.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-          _results.push(context.fillRect(i, canvas[0].height - 10, 1, -arr[i]));
+        for (i = _j = 0, _ref1 = arr.length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
+          _results.push(context.fillRect(i, canvas[0].height - 10, 1, -(arr[i] - noise[i])));
         }
         return _results;
       };

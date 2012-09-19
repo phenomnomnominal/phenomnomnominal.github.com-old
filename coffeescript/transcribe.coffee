@@ -414,14 +414,22 @@ tuner = ->
     $('body').append canvas
     context = canvas[0].getContext '2d'
     
+    noise = new Uint8Array(analyser.fftSize)
+    
     count = 0
     data = ->
+      count++
+      if count < 10
+        newNoise = new Uint8Array(analyser.fftSize)
+        analyser.getByteFrequencyData newNoise
+        for i in [0...analyser.fftSize]
+          noise[i] = (noise[i] + newNoise[i]) / 2
       arr = new Uint8Array(analyser.fftSize)
       analyser.getByteFrequencyData arr
       context.clearRect 0 , 0 , canvas[0].width , canvas[0].height
       
       for i in [0...arr.length]
-        context.fillRect i, canvas[0].height - 10, 1, -arr[i]
+        context.fillRect i, canvas[0].height - 10, 1, -(arr[i] - noise[i])
       
     setInterval data, 20
     
