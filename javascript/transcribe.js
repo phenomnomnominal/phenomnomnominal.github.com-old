@@ -575,7 +575,7 @@
       count = 0;
       data = function() {
         var arr;
-        arr = new Float32Array(analyser.fftsize);
+        arr = new Float32Array(analyser.fftSize);
         return analyser.getFloatFrequencyData(arr);
       };
       return setInterval(data, 20);

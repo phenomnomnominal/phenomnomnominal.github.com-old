@@ -410,7 +410,7 @@ tuner = ->
     
     count = 0
     data = ->
-      arr = new Float32Array(analyser.fftsize)
+      arr = new Float32Array(analyser.fftSize)
       analyser.getFloatFrequencyData arr
       
     setInterval data, 20
