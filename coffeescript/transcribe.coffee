@@ -8,6 +8,8 @@ noteon = false
 noteoff = false
 tune = false
 
+audioContext = null
+
 threshold =
   on: null
   off: null
@@ -402,7 +404,7 @@ tuner = ->
     toString: toString
   success = (stream) ->
     console.log stream
-    context.createMediaStreamSource stream
+    audioContext.createMediaStreamSource stream
   error = (e) ->
     console.log e
   navigator.getUserMedia options, success, error
@@ -430,10 +432,10 @@ $ ->
     if file
       reader = new FileReader()
       reader.onload = (event) ->
-        context = new AudioContext()
+        audioContext = new AudioContext()
 
         success = (event) ->
-          audioFile = context.createBufferSource()
+          audioFile = audioContext.createBufferSource()
           audioFile.buffer = event
 
           for c in [0...audioFile.buffer.numberOfChannels]
@@ -454,30 +456,6 @@ $ ->
             maxHor: audioFile.buffer.length / 250
 
           draw()
-
-        freq = (src) ->
-          analyser = context.createAnalyser()
-
-          src.connect analyser
-          analyser.connect context.destination
-
-          PCML = src.buffer.getChannelData 0
-          PCMR = src.buffer.getChannelData 1
-
-          count = 0
-          data = ->
-            BUFFER_LENGTH = 1024
-            begin = BUFFER_LENGTH * count
-            end = begin + BUFFER_LENGTH
-            subL = PCML.subarray begin, end
-            subR = PCMR.subarray begin, end
-            fft = new FFT(BUFFER_LENGTH, src.buffer.sampleRate)
-            fft.forward subL
-
-            
-
-          #window.setInterval data, 20
-          src.noteOn 0
 
         error = (event) ->
           console.log event
