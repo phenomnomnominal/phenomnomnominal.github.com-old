@@ -409,10 +409,10 @@ tuner = ->
     src.connect analyser
     
     canvas = $ '<canvas>'
-    canvas.height = $(window).height() - 100
-    canvas.width = $(window).width() - 100
+    canvas[0].height = $(window).height() - 100
+    canvas[0].width = $(window).width() - 100
     $('body').append canvas
-    context = canvas.getContext '2d'
+    context = canvas[0].getContext '2d'
     
     count = 0
     data = ->
