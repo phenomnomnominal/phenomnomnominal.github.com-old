@@ -566,7 +566,8 @@
       toString: toString
     };
     success = function(stream) {
-      return console.log(stream);
+      console.log(stream);
+      return context.createMediaStreamSource(stream);
     };
     error = function(e) {
       return console.log(e);
