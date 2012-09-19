@@ -414,17 +414,7 @@ tuner = ->
     canvas[0].width = $(window).width() - 100
     $('body').append canvas
     context = canvas[0].getContext '2d'
-    noise = new Uint8Array(analyser.fftSize / 2)
-    
-    count = 0
     data = ->
-      count++
-      if count < 10
-        newNoise = new Uint8Array(analyser.fftSize / 2)
-        analyser.getByteFrequencyData newNoise
-        for i in [0...analyser.fftSize] by 2
-          noise[i / 2] = (noise[i] + newNoise[i]) / 2
-
       arr = new Uint8Array(analyser.fftSize)
       analyser.getByteTimeDomainData arr
       
@@ -436,6 +426,7 @@ tuner = ->
 
       context.clearRect 0 , 0 , canvas[0].width , canvas[0].height
       context.fillStyle = '#EEE'
+      
       for i in [10...fft.spectrum.length]
         context.fillRect i*2, canvas[0].height - 10, 1.5, -Math.pow(6 * Math.abs(fft.spectrum[i]), 2)
       

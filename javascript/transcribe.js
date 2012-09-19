@@ -559,7 +559,7 @@
       toString: toString
     };
     success = function(stream) {
-      var analyser, canvas, context, count, data, noise, src;
+      var analyser, canvas, context, data, src;
       src = audioContext.createMediaStreamSource(stream);
       analyser = audioContext.createAnalyser();
       analyser.smoothingTimeConstant = 0;
@@ -569,22 +569,12 @@
       canvas[0].width = $(window).width() - 100;
       $('body').append(canvas);
       context = canvas[0].getContext('2d');
-      noise = new Uint8Array(analyser.fftSize / 2);
-      count = 0;
       data = function() {
-        var arr, fft, i, newNoise, s, time, _i, _j, _k, _ref, _ref1, _ref2, _results;
-        count++;
-        if (count < 10) {
-          newNoise = new Uint8Array(analyser.fftSize / 2);
-          analyser.getByteFrequencyData(newNoise);
-          for (i = _i = 0, _ref = analyser.fftSize; _i < _ref; i = _i += 2) {
-            noise[i / 2] = (noise[i] + newNoise[i]) / 2;
-          }
-        }
+        var arr, fft, i, s, time, _i, _j, _ref, _ref1, _results;
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(arr);
         time = [];
-        for (s = _j = 0, _ref1 = arr.length; _j < _ref1; s = _j += 2) {
+        for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 2) {
           time[s / 2] = arr[s];
         }
         fft = new FFT(analyser.fftSize / 2, context.sampleRate / 2);
@@ -592,7 +582,7 @@
         context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         context.fillStyle = '#EEE';
         _results = [];
-        for (i = _k = 10, _ref2 = fft.spectrum.length; 10 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 10 <= _ref2 ? ++_k : --_k) {
+        for (i = _j = 10, _ref1 = fft.spectrum.length; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 10 <= _ref1 ? ++_j : --_j) {
           _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, -Math.pow(6 * Math.abs(fft.spectrum[i]), 2)));
         }
         return _results;
