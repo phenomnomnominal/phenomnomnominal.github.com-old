@@ -562,6 +562,7 @@
       var analyser, canvas, context, count, data, noise, src;
       src = audioContext.createMediaStreamSource(stream);
       analyser = audioContext.createAnalyser();
+      analyser.fftSize = 16384;
       src.connect(analyser);
       canvas = $('<canvas>');
       canvas[0].height = $(window).height() - 100;
@@ -585,7 +586,7 @@
         context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         _results = [];
         for (i = _j = 0, _ref1 = arr.length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
-          _results.push(context.fillRect(i, canvas[0].height - 10, 1, -(arr[i] - noise[i])));
+          _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, -(arr[i] - noise[i])));
         }
         return _results;
       };
