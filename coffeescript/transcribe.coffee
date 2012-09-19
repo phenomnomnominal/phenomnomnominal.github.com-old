@@ -421,7 +421,7 @@ tuner = ->
       context.clearRect 0 , 0 , canvas[0].width , canvas[0].height
       
       for i in [0...arr.length]
-        context.fillRect i, canvas[0].height - 100, 1, arr[i]
+        context.fillRect i, canvas[0].height - 10, 1, -arr[i]
       
     setInterval data, 20
     
