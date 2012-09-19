@@ -643,7 +643,7 @@
           error = function(event) {
             return console.log(event);
           };
-          return context.decodeAudioData(event.target.result, success, error);
+          return audioContext.decodeAudioData(event.target.result, success, error);
         };
         reader.onerror = function(event) {
           throw Error;

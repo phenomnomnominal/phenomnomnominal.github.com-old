@@ -460,7 +460,7 @@ $ ->
         error = (event) ->
           console.log event
 
-        context.decodeAudioData event.target.result, success, error
+        audioContext.decodeAudioData event.target.result, success, error
 
       reader.onerror = (event) ->
         throw Error
