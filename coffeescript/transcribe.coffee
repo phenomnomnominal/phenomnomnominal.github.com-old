@@ -426,15 +426,17 @@ tuner = ->
         analyser.getByteFrequencyData newNoise
         for i in [0...analyser.fftSize] by 2
           noise[i / 2] = (noise[i] + newNoise[i]) / 2
+
       arr = new Uint8Array(analyser.fftSize)
       analyser.getByteTimeDomainData arr
-      context.clearRect 0 , 0 , canvas[0].width , canvas[0].height
       
       time = []
-      for s in [0...arr.length / 2] by 2
+      for s in [0...arr.length] by 2
         time[s / 2] = arr[s]
-      fft = new FFT(analyser.fftSize, context.sampleRate / 2)
+      fft = new FFT(analyser.fftSize / 4, context.sampleRate / 2)
       fft.forward time
+
+      context.clearRect 0 , 0 , canvas[0].width , canvas[0].height
       for i in [0...fft.spectrum.length]
         context.fillRect i*2, canvas[0].height - 10, 1.5, -(fft.spectrum[i] - noise[i])
       

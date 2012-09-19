@@ -584,13 +584,13 @@
         }
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(arr);
-        context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         time = [];
-        for (s = _j = 0, _ref1 = arr.length / 2; _j < _ref1; s = _j += 2) {
+        for (s = _j = 0, _ref1 = arr.length; _j < _ref1; s = _j += 2) {
           time[s / 2] = arr[s];
         }
-        fft = new FFT(analyser.fftSize, context.sampleRate / 2);
+        fft = new FFT(analyser.fftSize / 4, context.sampleRate / 2);
         fft.forward(time);
+        context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         _results = [];
         for (i = _k = 0, _ref2 = fft.spectrum.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
           _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, -(fft.spectrum[i] - noise[i])));
