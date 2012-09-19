@@ -593,7 +593,7 @@
         context.fillStyle = '#EEE';
         _results = [];
         for (i = _k = 0, _ref2 = fft.spectrum.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
-          _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, -fft.spectrum[i]));
+          _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, -Math.pow(Math.abs(fft.spectrum[i]), 2)));
         }
         return _results;
       };
