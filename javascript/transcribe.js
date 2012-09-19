@@ -569,7 +569,6 @@
       canvas[0].width = $(window).width() - 100;
       $('body').append(canvas);
       context = canvas[0].getContext('2d');
-      context.fillStyle = '#EEE';
       noise = new Uint8Array(analyser.fftSize / 2);
       count = 0;
       data = function() {
@@ -593,7 +592,8 @@
         context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         _results = [];
         for (i = _k = 0, _ref2 = fft.spectrum.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
-          _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, -(fft.spectrum[i] - noise[i])));
+          context.fillStyle = '#EEE';
+          _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, fft.spectrum[i] - noise[i]));
         }
         return _results;
       };

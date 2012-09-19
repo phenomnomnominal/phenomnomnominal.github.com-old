@@ -414,8 +414,6 @@ tuner = ->
     canvas[0].width = $(window).width() - 100
     $('body').append canvas
     context = canvas[0].getContext '2d'
-    context.fillStyle = '#EEE'
-    
     noise = new Uint8Array(analyser.fftSize / 2)
     
     count = 0
@@ -438,7 +436,8 @@ tuner = ->
 
       context.clearRect 0 , 0 , canvas[0].width , canvas[0].height
       for i in [0...fft.spectrum.length]
-        context.fillRect i*2, canvas[0].height - 10, 1.5, -(fft.spectrum[i] - noise[i])
+        context.fillStyle = '#EEE'
+        context.fillRect i*2, canvas[0].height - 10, 1.5, fft.spectrum[i] - noise[i]
       
     setInterval data, 20
     
