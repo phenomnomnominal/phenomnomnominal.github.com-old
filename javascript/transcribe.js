@@ -573,10 +573,10 @@
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(arr);
         time = [];
-        for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 2) {
-          time[s / 2] = arr[s];
+        for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 10) {
+          time[s / 10] = arr[s];
         }
-        fft = new FFT(analyser.fftSize / 2, context.sampleRate / 2);
+        fft = new FFT(analyser.fftSize / 10, context.sampleRate / 10);
         fft.forward(time);
         context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         context.fillStyle = '#EEE';

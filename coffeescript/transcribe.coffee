@@ -418,9 +418,9 @@ tuner = ->
       analyser.getByteTimeDomainData arr
       
       time = []
-      for s in [0...arr.length] by 2
-        time[s / 2] = arr[s]
-      fft = new FFT(analyser.fftSize / 2, context.sampleRate / 2)
+      for s in [0...arr.length] by 10
+        time[s / 10] = arr[s]
+      fft = new FFT(analyser.fftSize / 10, context.sampleRate / 10)
       fft.forward time
 
       context.clearRect 0 , 0 , canvas[0].width , canvas[0].height
