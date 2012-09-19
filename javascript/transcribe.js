@@ -580,9 +580,10 @@
         fft.forward(time);
         context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         context.fillStyle = '#EEE';
+        console.log(fft.spectrum.length);
         _results = [];
         for (i = _j = 10, _ref1 = fft.spectrum.length; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 10 <= _ref1 ? ++_j : --_j) {
-          _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, -Math.pow(6 * Math.abs(fft.spectrum[i]), 2)));
+          _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, -Math.pow(Math.abs(fft.spectrum[i]), 2)));
         }
         return _results;
       };
