@@ -568,20 +568,15 @@
       toString: toString
     };
     success = function(stream) {
-      var PCM, analyser, count, data, src;
+      var analyser, count, data, src;
       src = audioContext.createMediaStreamSource(stream);
       analyser = audioContext.createAnalyser();
       src.connect(analyser);
-      PCM = src.buffer.getChannelData(0);
       count = 0;
       data = function() {
-        var BUFFER_LENGTH, begin, end, fft, sub;
-        BUFFER_LENGTH = 1024;
-        begin = BUFFER_LENGTH * count;
-        end = begin + BUFFER_LENGTH;
-        sub = PCM.subarray(begin, end);
-        fft = new FFT(BUFFER_LENGTH, src.buffer.sampleRate);
-        return fft.forward(sub);
+        var arr;
+        arr = new Float32Array(analyser.fftsize);
+        return analyser.getFloatFrequencyData(arr);
       };
       return setInterval(data, 20);
     };
