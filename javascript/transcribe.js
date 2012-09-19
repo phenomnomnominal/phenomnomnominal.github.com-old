@@ -588,7 +588,7 @@
         for (s = _j = 0, _ref1 = arr.length; _j < _ref1; s = _j += 2) {
           time[s / 2] = arr[s];
         }
-        fft = new FFT(analyser.fftSize / 4, context.sampleRate / 2);
+        fft = new FFT(analyser.fftSize / 2, context.sampleRate / 2);
         fft.forward(time);
         context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         _results = [];
