@@ -571,8 +571,8 @@
       count = 0;
       data = function() {
         var arr, i, _i, _ref, _results;
-        arr = new Float32Array(analyser.fftSize);
-        analyser.getFloatFrequencyData(arr);
+        arr = new Uint8Array(analyser.fftSize);
+        analyser.getByteFrequencyData(arr);
         context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         _results = [];
         for (i = _i = 0, _ref = arr.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {

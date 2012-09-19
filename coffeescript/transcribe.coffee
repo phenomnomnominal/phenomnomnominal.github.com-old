@@ -416,9 +416,10 @@ tuner = ->
     
     count = 0
     data = ->
-      arr = new Float32Array(analyser.fftSize)
-      analyser.getFloatFrequencyData arr
+      arr = new Uint8Array(analyser.fftSize)
+      analyser.getByteFrequencyData arr
       context.clearRect 0 , 0 , canvas[0].width , canvas[0].height
+      
       for i in [0...arr.length]
         context.fillRect i, canvas[0].height - 100, 1, arr[i]
       
