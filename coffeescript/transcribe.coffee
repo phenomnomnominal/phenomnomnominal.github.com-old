@@ -402,6 +402,7 @@ tuner = ->
     toString: toString
   success = (stream) ->
     console.log stream
+    context.createMediaStreamSource stream
   error = (e) ->
     console.log e
   navigator.getUserMedia options, success, error
