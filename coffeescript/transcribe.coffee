@@ -404,7 +404,12 @@ tuner = ->
     toString: toString
   success = (stream) ->
     console.log stream
-    audioContext.createMediaStreamSource stream
+    src = audioContext.createMediaStreamSource stream
+    console.log src
+    analyser = audioContext.createAnalyser()
+    console.log analyser
+    src.connect analyser
+    analyser.connect audioContext.destination
   error = (e) ->
     console.log e
   navigator.getUserMedia options, success, error

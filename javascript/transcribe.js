@@ -568,8 +568,14 @@
       toString: toString
     };
     success = function(stream) {
+      var analyser, src;
       console.log(stream);
-      return audioContext.createMediaStreamSource(stream);
+      src = audioContext.createMediaStreamSource(stream);
+      console.log(src);
+      analyser = audioContext.createAnalyser();
+      console.log(analyser);
+      src.connect(analyser);
+      return analyser.connect(audioContext.destination);
     };
     error = function(e) {
       return console.log(e);
