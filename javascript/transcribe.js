@@ -590,10 +590,10 @@
         fft = new FFT(analyser.fftSize / 2, context.sampleRate / 2);
         fft.forward(time);
         context.clearRect(0, 0, canvas[0].width, canvas[0].height);
+        context.fillStyle = '#EEE';
         _results = [];
         for (i = _k = 0, _ref2 = fft.spectrum.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
-          context.fillStyle = '#EEE';
-          _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, fft.spectrum[i] - noise[i]));
+          _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, fft.spectrum[i]));
         }
         return _results;
       };
