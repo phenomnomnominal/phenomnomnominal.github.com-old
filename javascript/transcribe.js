@@ -573,10 +573,10 @@
         var arr, i, _i, _ref, _results;
         arr = new Float32Array(analyser.fftSize);
         analyser.getFloatFrequencyData(arr);
-        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         _results = [];
         for (i = _i = 0, _ref = arr.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-          _results.push(context.fillRect(i, canvas.height - 100, 1, arr[i]));
+          _results.push(context.fillRect(i, canvas[0].height - 100, 1, arr[i]));
         }
         return _results;
       };
