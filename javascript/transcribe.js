@@ -592,8 +592,8 @@
         context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         context.fillStyle = '#EEE';
         _results = [];
-        for (i = _k = 0, _ref2 = fft.spectrum.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
-          _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, -Math.pow(3 * Math.abs(fft.spectrum[i]), 2)));
+        for (i = _k = 10, _ref2 = fft.spectrum.length; 10 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 10 <= _ref2 ? ++_k : --_k) {
+          _results.push(context.fillRect(i * 2, canvas[0].height - 10, 1.5, -Math.pow(6 * Math.abs(fft.spectrum[i]), 2)));
         }
         return _results;
       };

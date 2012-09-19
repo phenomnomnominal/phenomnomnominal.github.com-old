@@ -436,8 +436,8 @@ tuner = ->
 
       context.clearRect 0 , 0 , canvas[0].width , canvas[0].height
       context.fillStyle = '#EEE'
-      for i in [0...fft.spectrum.length]
-        context.fillRect i*2, canvas[0].height - 10, 1.5, -Math.pow(3 * Math.abs(fft.spectrum[i]), 2)
+      for i in [10...fft.spectrum.length]
+        context.fillRect i*2, canvas[0].height - 10, 1.5, -Math.pow(6 * Math.abs(fft.spectrum[i]), 2)
       
     setInterval data, 20
     
