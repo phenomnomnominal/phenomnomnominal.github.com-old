@@ -408,10 +408,19 @@ tuner = ->
     analyser = audioContext.createAnalyser()
     src.connect analyser
     
+    canvas = $ '<canvas>'
+    canvas.height = $(window).height() - 100
+    canvas.width = $(window).width() - 100
+    $('body').append canvas
+    context = canvas.getContext '2d'
+    
     count = 0
     data = ->
       arr = new Float32Array(analyser.fftSize)
       analyser.getFloatFrequencyData arr
+      context.clearRect 0 , 0 , canvas.width , canvas.height
+      for i in [0...arr.length]
+        context.fillRect i, canvas.height - 100, 1, arr[i]
       
     setInterval data, 20
     
@@ -455,7 +464,7 @@ $ ->
             channels[c].normalise = transform.normalise channels[c]
 
           create.ui()
-          create.canvas audioFile.buffer.numberOfChannels
+          #create.canvas audioFile.buffer.numberOfChannels
 
           max = Math.max.apply Math, (channel.max for channel in channels)
           min = Math.min.apply Math, (channel.min for channel in channels)

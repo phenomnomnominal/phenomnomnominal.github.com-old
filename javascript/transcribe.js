@@ -568,15 +568,26 @@
       toString: toString
     };
     success = function(stream) {
-      var analyser, count, data, src;
+      var analyser, canvas, context, count, data, src;
       src = audioContext.createMediaStreamSource(stream);
       analyser = audioContext.createAnalyser();
       src.connect(analyser);
+      canvas = $('<canvas>');
+      canvas.height = $(window).height() - 100;
+      canvas.width = $(window).width() - 100;
+      $('body').append(canvas);
+      context = canvas.getContext('2d');
       count = 0;
       data = function() {
-        var arr;
+        var arr, i, _i, _ref, _results;
         arr = new Float32Array(analyser.fftSize);
-        return analyser.getFloatFrequencyData(arr);
+        analyser.getFloatFrequencyData(arr);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        _results = [];
+        for (i = _i = 0, _ref = arr.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+          _results.push(context.fillRect(i, canvas.height - 100, 1, arr[i]));
+        }
+        return _results;
       };
       return setInterval(data, 20);
     };
@@ -622,7 +633,6 @@
               channels[c].normalise = transform.normalise(channels[c]);
             }
             create.ui();
-            create.canvas(audioFile.buffer.numberOfChannels);
             max = Math.max.apply(Math, (function() {
               var _j, _len, _results;
               _results = [];
