@@ -77,8 +77,7 @@
             $('canvas').unbind('click');
             noteon = false;
             noteoff = false;
-            threshold.drawY = null;
-            return draw();
+            return threshold.drawY = null;
           };
           if (noteon) {
             $(this).unbind('click');
@@ -94,7 +93,7 @@
           }
           if (noteoff) {
             $(this).unbind('click');
-            $(this).click(function() {
+            return $(this).click(function() {
               threshold.off = val;
               threshold.yOff = threshold.drawY;
               threshold.drawYOff = threshold.yOff;
@@ -104,7 +103,6 @@
               }
             });
           }
-          return draw();
         }
       };
       $('canvas').mousemove(getThreshold);
@@ -142,8 +140,7 @@
           }
           prev.x = moveE.pageX;
           prev.y = moveE.pageY;
-          update.threshold.scroll();
-          return draw();
+          return update.threshold.scroll();
         });
       });
       return $('canvas').mouseup(function() {
@@ -172,8 +169,7 @@
         drag: function() {
           update.zoom($(this), 'VERT');
           update.scroll();
-          update.threshold.zoom();
-          return draw();
+          return update.threshold.zoom();
         },
         stop: function() {
           return $(this).css({
@@ -200,8 +196,7 @@
         containment: '.container.bottom',
         drag: function() {
           update.zoom($(this), 'HOR');
-          update.scroll();
-          return draw();
+          return update.scroll();
         },
         stop: function() {
           return $(this).css({
@@ -222,8 +217,7 @@
           $('.switch').not(this).removeClass('click');
           $(this).toggleClass('click');
           drawAbsolute = !drawAbsolute;
-          drawEnvelope = false;
-          return draw();
+          return drawEnvelope = false;
         }
       });
       envelope = $('<li>', {
@@ -235,8 +229,7 @@
           $('.switch').not(this).removeClass('click');
           $(this).toggleClass('click');
           drawEnvelope = !drawEnvelope;
-          drawAbsolute = false;
-          return draw();
+          return drawAbsolute = false;
         }
       });
       noteonThres = $('<li>', {
@@ -250,8 +243,7 @@
           threshold.drawY = null;
           noteon = !noteon;
           noteoff = false;
-          tune = false;
-          return draw();
+          return tune = false;
         }
       });
       noteoffThres = $('<li>', {
@@ -265,8 +257,7 @@
           threshold.drawY = null;
           noteon = false;
           noteoff = !noteoff;
-          tune = false;
-          return draw();
+          return tune = false;
         }
       });
       chromatic = $('<li>', {
@@ -651,13 +642,12 @@
               }
               return _results;
             })());
-            zoom = {
+            return zoom = {
               vert: 1,
               hor: 1,
               maxVert: max / min / 50,
               maxHor: audioFile.buffer.length / 250
             };
-            return draw();
           };
           error = function(event) {
             return console.log(event);
@@ -686,8 +676,7 @@
         update.zoom($('.slide.left'), 'VERT');
         update.zoom($('.slide.bottom'), 'HOR');
         update.scroll();
-        update.threshold.zoom();
-        return draw();
+        return update.threshold.zoom();
       }
     });
   };

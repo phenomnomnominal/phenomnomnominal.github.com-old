@@ -59,7 +59,7 @@ create =
           noteon = false
           noteoff = false
           threshold.drawY = null
-          draw()
+          #draw()
         if noteon
           $(this).unbind 'click'
           $(this).click ->
@@ -79,7 +79,7 @@ create =
             resetThresholdButtons()
             if threshold.on and threshold.off
               getPitches selectNotes()
-        draw()
+        #draw()
 
     $('canvas').mousemove getThreshold
     $('canvas').mousedown (downE) ->
@@ -110,7 +110,7 @@ create =
         prev.x = moveE.pageX
         prev.y = moveE.pageY
         update.threshold.scroll()
-        draw()
+        #draw()
     $('canvas').mouseup ->
       $('canvas').unbind 'mousemove'
       $('canvas').mousemove getThreshold
@@ -131,7 +131,7 @@ create =
         update.zoom $(this), 'VERT'
         update.scroll()
         update.threshold.zoom()
-        draw()
+        #draw()
       stop: ->
         $(this).css
           top: "auto"
@@ -150,7 +150,7 @@ create =
       drag: ->
         update.zoom $(this), 'HOR'
         update.scroll()
-        draw()
+        #draw()
       stop: ->
         $(this).css
           left: "auto"
@@ -167,7 +167,7 @@ create =
         $(this).toggleClass 'click'
         drawAbsolute = not drawAbsolute
         drawEnvelope = false
-        draw()
+        #draw()
     envelope = $ '<li>',
       class: 'ui switch top'
       unselectable: 'on'
@@ -178,7 +178,7 @@ create =
         $(this).toggleClass 'click'
         drawEnvelope = not drawEnvelope
         drawAbsolute = false
-        draw()
+        #draw()
     noteonThres = $ '<li>',
       class: 'ui button top'
       unselectable: 'on'
@@ -191,7 +191,7 @@ create =
         noteon = not noteon
         noteoff = false
         tune = false
-        draw()
+        #draw()
     noteoffThres = $ '<li>',
       class: 'ui button top'
       unselectable: 'on'
@@ -204,7 +204,7 @@ create =
         noteon = false
         noteoff = not noteoff
         tune = false
-        draw()
+        #draw()
     chromatic = $ '<li>',
       class: 'ui button top'
       unselectable: 'on'
@@ -474,7 +474,7 @@ $ ->
             maxVert: max / min / 50
             maxHor: audioFile.buffer.length / 250
 
-          draw()
+          #draw()
 
         error = (event) ->
           console.log event
@@ -498,4 +498,4 @@ addEventListeners = ->
       update.zoom $('.slide.bottom'), 'HOR'
       update.scroll()
       update.threshold.zoom()
-      draw()
+      #draw()
