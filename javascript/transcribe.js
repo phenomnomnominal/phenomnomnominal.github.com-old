@@ -576,7 +576,7 @@
         for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 10) {
           time[s / 10] = arr[s];
         }
-        fft = new FFT(analyser.fftSize / 10, context.sampleRate / 10);
+        fft = new FFT(analyser.fftSize / 8, context.sampleRate / 10);
         fft.forward(time);
         context.clearRect(0, 0, canvas[0].width, canvas[0].height);
         context.fillStyle = '#EEE';
