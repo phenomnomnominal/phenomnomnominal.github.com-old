@@ -562,7 +562,6 @@
       var analyser, canvas, context, data, src;
       src = audioContext.createMediaStreamSource(stream);
       analyser = audioContext.createAnalyser();
-      analyser.smoothingTimeConstant = 0;
       src.connect(analyser);
       canvas = $('<canvas>');
       canvas[0].height = $(window).height() - 100;

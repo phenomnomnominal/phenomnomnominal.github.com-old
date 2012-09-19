@@ -406,7 +406,6 @@ tuner = ->
   success = (stream) ->
     src = audioContext.createMediaStreamSource stream
     analyser = audioContext.createAnalyser()
-    analyser.smoothingTimeConstant = 0
     src.connect analyser
     
     canvas = $ '<canvas>'
