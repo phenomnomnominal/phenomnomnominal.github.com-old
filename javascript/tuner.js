@@ -21,10 +21,11 @@
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
       data = function() {
-        var arr, fft, i, s, time, _i, _j, _ref, _ref1, _results;
+        var arr, fft, hamming, i, s, time, _i, _j, _ref, _ref1, _results;
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(arr);
-        DSP.Hamming.process(arr);
+        hamming = new WindowFunction(DSP.HAMMING);
+        hamming.process(arr);
         time = [];
         for (s = _i = 0, _ref = arr.length; 0 <= _ref ? _i < _ref : _i > _ref; s = 0 <= _ref ? ++_i : --_i) {
           time.push = arr[s];
