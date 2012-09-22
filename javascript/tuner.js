@@ -26,7 +26,7 @@
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
       data = function() {
-        var downSampled, i, s, time, width, zeroPad, _i, _j, _ref, _ref1, _results;
+        var i, resampled, s, time, width, zeroPad, _i, _j, _ref, _ref1, _results;
         time = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(time);
         hamming.process(time);
@@ -40,18 +40,18 @@
           }
           return _results;
         };
-        downSampled = [];
+        resampled = [];
         for (s = _i = 0, _ref = time.length; 0 <= _ref ? _i < _ref : _i > _ref; s = 0 <= _ref ? ++_i : --_i) {
-          downSampled.push(time[s]);
-          zeroPad(downSampled, 3);
+          resampled.push(time[s]);
+          zeroPad(resampled, 1);
         }
-        fft.forward(downSampled);
+        fft.forward(resampled);
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = '#EEE';
         width = (canvas.width - 100) / (fft.spectrum.length - 20);
         _results = [];
         for (i = _j = 10, _ref1 = fft.spectrum.length - 10; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 10 <= _ref1 ? ++_j : --_j) {
-          _results.push(context.fillRect(width * i + 1, canvas.height - 10, width, -100 * Math.log(fft.spectrum[i])));
+          _results.push(context.fillRect(width * i + 1, canvas.height - 10, width, -Math.pow(5 * Math.abs(fft.spectrum[i]), 2)));
         }
         return _results;
       };
