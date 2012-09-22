@@ -7,7 +7,7 @@
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
     hamming = new WindowFunction(DSP.HAMMING);
-    filter = new IIRFilter(DSP.HIGHPASS, 25, 0, 44100);
+    filter = new IIRFilter2(DSP.HIGHPASS, 25, 0, 44100);
     fft = new FFT(2048, audioContext.sampleRate / 8);
     options = {
       audio: true,
