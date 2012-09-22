@@ -26,18 +26,24 @@
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
       data = function() {
-        var arr, i, s, time, width, _i, _j, _ref, _ref1, _results;
+        var arr, i, s, time, width, zeroPad, _i, _j, _ref, _ref1, _results;
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(arr);
         hamming.process(arr);
         lp.process(arr);
         hp.process(arr);
+        zeroPad = function(arr, n) {
+          var i, _i, _results;
+          _results = [];
+          for (i = _i = 0; 0 <= n ? _i < n : _i > n; i = 0 <= n ? ++_i : --_i) {
+            _results.push(arr.push(0));
+          }
+          return _results;
+        };
         time = [];
         for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 8) {
           time.push(arr[s]);
-          time.push(0);
-          time.push(0);
-          time.push(0);
+          zeroPad(arr, 11);
         }
         fft.forward(time);
         context.clearRect(0, 0, canvas.width, canvas.height);
