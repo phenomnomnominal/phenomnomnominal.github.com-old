@@ -19,7 +19,7 @@
       video: false
     };
     success = function(stream) {
-      var analyser, canvas, context, data, src;
+      var analyser, canvas, context, data, noise, noiseCount, src;
       src = audioContext.createMediaStreamSource(stream);
       analyser = audioContext.createAnalyser();
       src.connect(analyser);
@@ -28,8 +28,10 @@
       canvas.height = $('.tuner').height();
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
+      noise = [];
+      noiseCount = 0;
       data = function() {
-        var downsampled, i, mag2db, s, time, width, _i, _j, _ref, _ref1, _results;
+        var average, downsampled, f, i, mag2db, s, time, width, _i, _j, _k, _l, _ref, _ref1, _ref2, _ref3, _ref4, _results;
         time = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(time);
         hamming.process(time);
@@ -38,17 +40,38 @@
           downsampled.push(time[s]);
         }
         fft.forward(downsampled);
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.fillStyle = '#EEE';
-        width = (canvas.width - 100) / (fft.spectrum.length - 20);
-        mag2db = function(n) {
-          return 20 * (Math.log(n) / Math.log(10));
-        };
-        _results = [];
-        for (i = _j = 10, _ref1 = fft.spectrum.length - 10; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 10 <= _ref1 ? ++_j : --_j) {
-          _results.push(context.fillRect(width * i + 1, canvas.height - 10, width, -mag2db(fft.spectrum[i])));
+        if (noiseCount < 10) {
+          for (f = _j = 0, _ref1 = fft.spectrum.length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; f = 0 <= _ref1 ? ++_j : --_j) {
+            if ((_ref2 = noise[f]) == null) {
+              noise[f] = [];
+            }
+            noise[f].push(fft.spectrum[f]);
+          }
+          noiseCount++;
         }
-        return _results;
+        if (noiseCount === 10) {
+          average = function(arr) {
+            return (_.reduce(arr, (function(sum, next) {
+              return sum + next;
+            }), 0)) / arr.length;
+          };
+          for (f = _k = 0, _ref3 = fft.spectrum.length; 0 <= _ref3 ? _k < _ref3 : _k > _ref3; f = 0 <= _ref3 ? ++_k : --_k) {
+            noise = average(noise[f]);
+          }
+          return noiseCount = null;
+        } else {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          context.fillStyle = '#EEE';
+          width = (canvas.width - 100) / (fft.spectrum.length - 20);
+          mag2db = function(n) {
+            return 20 * (Math.log(n) / Math.log(10));
+          };
+          _results = [];
+          for (i = _l = 10, _ref4 = fft.spectrum.length - 10; 10 <= _ref4 ? _l < _ref4 : _l > _ref4; i = 10 <= _ref4 ? ++_l : --_l) {
+            _results.push(context.fillRect(width * i + 1, canvas.height - 10, width, -mag2db(fft.spectrum[i] - noise[i])));
+          }
+          return _results;
+        }
       };
       return setInterval(data, 25);
     };
