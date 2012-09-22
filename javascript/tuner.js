@@ -3,13 +3,16 @@
   var Tuner, root;
 
   Tuner = function() {
-    var audioContext, buffer, error, fft, hamming, hp, lp, options, success;
+    var audioContext, buffer, downsampleRate, downsamplingFactor, error, fft, hamming, hp, lp, options, sampleRate, success;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
+    sampleRate = audioContext.sampleRate;
+    downsamplingFactor = 8;
+    downsampleRate = fs / downsamplingFactor;
     hamming = new WindowFunction(DSP.HAMMING);
-    hp = new IIRFilter2(DSP.HIGHPASS, 20, 0.1, 44100 / 8);
-    lp = new IIRFilter2(DSP.LOWPASS, 8000, 0.1, 44100 / 8);
-    fft = new FFT(16386, audioContext.sampleRate * 8);
+    hp = new IIRFilter2(DSP.HIGHPASS, 20, 0.1, sampleRate);
+    lp = new IIRFilter2(DSP.LOWPASS, 8000, 0.1, sampleRate);
+    fft = new FFT(16384, downsampleRate);
     buffer = [];
     options = {
       audio: true,
@@ -26,26 +29,15 @@
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
       data = function() {
-        var i, mag2db, resampled, s, time, width, zeroPad, _i, _j, _ref, _ref1, _results;
+        var downsampled, i, mag2db, s, time, width, _i, _j, _ref, _ref1, _results;
         time = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(time);
         hamming.process(time);
-        lp.process(time);
-        hp.process(time);
-        zeroPad = function(a, n) {
-          var i, _i, _results;
-          _results = [];
-          for (i = _i = 0; 0 <= n ? _i < n : _i > n; i = 0 <= n ? ++_i : --_i) {
-            _results.push(a.push(0));
-          }
-          return _results;
-        };
-        resampled = [];
-        for (s = _i = 0, _ref = time.length; 0 <= _ref ? _i < _ref : _i > _ref; s = 0 <= _ref ? ++_i : --_i) {
-          resampled.push(time[s]);
-          zeroPad(resampled, 7);
+        downsampled = [];
+        for (s = _i = 0, _ref = time.length; 0 <= _ref ? _i < _ref : _i > _ref; s = _i += downsamplingFactor) {
+          downsampled.push(time[s]);
         }
-        fft.forward(resampled);
+        fft.forward(downsampled);
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = '#EEE';
         width = (canvas.width - 100) / (fft.spectrum.length - 20);
