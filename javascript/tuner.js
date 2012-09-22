@@ -8,7 +8,7 @@
     audioContext = new AudioContext();
     sampleRate = audioContext.sampleRate;
     downsamplingFactor = 8;
-    downsampleRate = fs / downsamplingFactor;
+    downsampleRate = sampleRate / downsamplingFactor;
     hamming = new WindowFunction(DSP.HAMMING);
     hp = new IIRFilter2(DSP.HIGHPASS, 20, 0.1, sampleRate);
     lp = new IIRFilter2(DSP.LOWPASS, 8000, 0.1, sampleRate);
