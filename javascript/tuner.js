@@ -22,11 +22,14 @@
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
       data = function() {
-        var arr, hamming, i, s, time, width, _i, _j, _ref, _ref1, _results;
+        var arr, filter, hamming, i, s, time, width, _i, _j, _ref, _ref1, _results;
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(arr);
+        console.log(arr.length);
         hamming = new WindowFunction(DSP.HAMMING);
         hamming.process(arr);
+        filter = new IIRFilter(HIGHPASS, 25, 44100);
+        filter.process(arr);
         time = [];
         for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 2) {
           time.push(arr[s]);
@@ -42,7 +45,7 @@
         }
         return _results;
       };
-      return setInterval(data, 50);
+      return setInterval(data, 100);
     };
     error = function(e) {
       return console.log(e);
