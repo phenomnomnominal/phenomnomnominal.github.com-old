@@ -21,7 +21,7 @@
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
       data = function() {
-        var arr, fft, hamming, i, s, time, _i, _j, _ref, _ref1, _results;
+        var arr, fft, hamming, i, s, time, width, _i, _j, _ref, _ref1, _results;
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(arr);
         hamming = new WindowFunction(DSP.HAMMING);
@@ -35,9 +35,10 @@
         fft.forward(time);
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = '#EEE';
+        width = canvas.width / fft.spectrum.length;
         _results = [];
         for (i = _j = 10, _ref1 = fft.spectrum.length; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 10 <= _ref1 ? ++_j : --_j) {
-          _results.push(context.fillRect(i * 2, canvas.height - 10, 1.5, -Math.pow(Math.abs(fft.spectrum[i]), 2)));
+          _results.push(context.fillRect(i * 2, canvas.height - 10, width, -Math.pow(5 * Math.abs(fft.spectrum[i]), 2)));
         }
         return _results;
       };
