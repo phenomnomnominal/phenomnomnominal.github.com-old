@@ -42,7 +42,7 @@
         }
         return _results;
       };
-      return setInterval(data, 20);
+      return setInterval(data, 50);
     };
     error = function(e) {
       return console.log(e);
