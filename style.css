@@ -154,7 +154,7 @@
   width: 280px;
 }
 
-.offscreen {
+.offLeft {
   left: -2000px;
   position: fixed;
   -webkit-transform: rotate(80deg);
@@ -264,6 +264,20 @@
        -o-transition-delay: 0.5s;
           transition-delay: 0.5s;
 }
+
+.display {
+  height: 95%;
+  left: 5%;
+  position: fixed;
+  top: 5%;
+  width: 95%;
+}
+
+.display.hidden {
+  left: auto;
+  right: -2000px;
+}
+
 
 canvas { cursor: move }
 

@@ -3,10 +3,12 @@
 <head>
 <meta charset='utf-8'>
 <link rel='stylesheet' type='text/css' href='style.css'/>
+<script type='text/javascript' src='libraries/dsp.js'></script>
 <script type='text/javascript' src='libraries/jquery.js'></script>
 <script type='text/javascript' src='libraries/jquery-ui.js'></script>
 <script type='text/javascript' src='libraries/underscore.js'></script>
 <script type='text/javascript' src='javascript/index.js'></script>
+<script type='text/javascript' src='javascript/tuner.js'></script>
 </head>
 <body>
 	<div class='background'></div>
@@ -18,21 +20,21 @@
 			<hr/>
 		</div>
 		<div class='content projects'>
-			<div class='project offscreen' title='tuner'>
+			<div class='project offLeft' title='tuner'>
 				<img src='tuner.png'/>
 				<div class='mask green'>
 		    		<h2>PURE JAVASCRIPT GUITAR TUNER</h2>
 	    			<p>Experimental JS Chromatic Tuner, using the Web Audio API</p>
 				</div>
 			</div>
-			<div class='project offscreen' title='transcribe'>
+			<div class='project offLeft' title='transcribe'>
 				<img src='transcribe.png'/>
 				<div class='mask red'>
 		    		<h2>AUTOMATIC BASS MUSIC TRANSCRIBER</h2>
 	    			<p>Automatic Transcription of Bass Guitar audio files to Tablature using the Web Audio API.</p>
 				</div>
 			</div>
-			<div class='project offscreen' title='quantum'>
+			<div class='project offLeft' title='quantum'>
 				<img src='quantum.png'/>
 				<div class='mask blue'>
 		    		<h2>QUANTUM COMPUTER SIMULATOR</h2>
@@ -40,7 +42,8 @@
 				</div>
 			</div>
 		</div>
-		<div class='tuner'>
+		<div class='display hidden tuner'>
+			<canvas id='tuner_canvas'></canvas>
 		</div>
 	</div>
 </body>
