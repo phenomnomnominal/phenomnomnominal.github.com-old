@@ -45,7 +45,7 @@
         }
         return _results;
       };
-      return setInterval(data, 100);
+      return setInterval(data, 25);
     };
     error = function(e) {
       return console.log(e);
