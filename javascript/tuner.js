@@ -15,7 +15,7 @@
       src = audioContext.createMediaStreamSource(stream);
       analyser = audioContext.createAnalyser();
       src.connect(analyser);
-      $('tuner').removeClass('offRight');
+      $('tuner').removeClass('hidden');
       canvas = $('tuner_canvas')[0];
       canvas.height = $('.tuner').height();
       canvas.width = $('.tuner').width();
