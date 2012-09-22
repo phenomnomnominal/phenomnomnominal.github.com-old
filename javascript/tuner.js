@@ -28,7 +28,7 @@
         console.log(arr.length);
         hamming = new WindowFunction(DSP.HAMMING);
         hamming.process(arr);
-        filter = new IIRFilter(HIGHPASS, 25, 44100);
+        filter = new IIRFilter(DSP.HIGHPASS, 25, 44100);
         filter.process(arr);
         time = [];
         for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 2) {
