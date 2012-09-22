@@ -3,11 +3,12 @@
   var Tuner, root;
 
   Tuner = function() {
-    var audioContext, error, fft, filter, hamming, options, success;
+    var audioContext, error, fft, hamming, hp, lp, options, success;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
     hamming = new WindowFunction(DSP.HAMMING);
-    filter = new IIRFilter2(DSP.HIGHPASS, 20, 5, 44100 / 8);
+    hp = new IIRFilter2(DSP.HIGHPASS, 20, 0.1, 44100 / 8);
+    lp = new IIRFilter2(DSP.LOWPASS, 8000, 0.1, 44100 / 8);
     fft = new FFT(2048, audioContext.sampleRate / 8);
     options = {
       audio: true,
@@ -28,7 +29,8 @@
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(arr);
         hamming.process(arr);
-        filter.process(arr);
+        lp.process(arr);
+        hp.process(arr);
         time = [];
         for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 2) {
           time.push(arr[s]);
