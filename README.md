@@ -1,4 +1,4 @@
-bass-transcribe
-===============
+Craig Spence
+============
 
-Basic automatic monophonic transcription for bass guitar music.
+Projects & Things
