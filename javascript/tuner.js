@@ -26,26 +26,26 @@
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
       data = function() {
-        var arr, i, s, time, width, zeroPad, _i, _j, _ref, _ref1, _results;
-        arr = new Uint8Array(analyser.fftSize);
-        analyser.getByteTimeDomainData(arr);
-        hamming.process(arr);
-        lp.process(arr);
-        hp.process(arr);
-        zeroPad = function(arr, n) {
+        var downSampled, i, s, time, width, zeroPad, _i, _j, _ref, _ref1, _results;
+        time = new Uint8Array(analyser.fftSize);
+        analyser.getByteTimeDomainData(time);
+        hamming.process(time);
+        lp.process(time);
+        hp.process(time);
+        zeroPad = function(a, n) {
           var i, _i, _results;
           _results = [];
           for (i = _i = 0; 0 <= n ? _i < n : _i > n; i = 0 <= n ? ++_i : --_i) {
-            _results.push(arr.push(0));
+            _results.push(a.push(0));
           }
           return _results;
         };
-        time = [];
-        for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 8) {
-          time.push(arr[s]);
-          zeroPad(arr, 11);
+        downSampled = [];
+        for (s = _i = 0, _ref = time.length; _i < _ref; s = _i += 8) {
+          downSampled.push(time[s]);
+          zeroPad(downSampled, 11);
         }
-        fft.forward(time);
+        fft.forward(downSampled);
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = '#EEE';
         width = (canvas.width - 100) / (fft.spectrum.length - 20);
