@@ -43,7 +43,7 @@
         downSampled = [];
         for (s = _i = 0, _ref = time.length; _i < _ref; s = _i += 8) {
           downSampled.push(time[s]);
-          zeroPad(downSampled, 11);
+          zeroPad(downSampled, 23);
         }
         fft.forward(downSampled);
         context.clearRect(0, 0, canvas.width, canvas.height);
