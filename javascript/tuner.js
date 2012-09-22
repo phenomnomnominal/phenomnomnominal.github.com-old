@@ -27,7 +27,7 @@
         hamming = new WindowFunction(DSP.HAMMING);
         hamming.process(arr);
         time = [];
-        for (s = _i = 0, _ref = arr.length; 0 <= _ref ? _i < _ref : _i > _ref; s = 0 <= _ref ? ++_i : --_i) {
+        for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 4) {
           time.push(arr[s]);
           time.push(0);
         }
