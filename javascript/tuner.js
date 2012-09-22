@@ -38,7 +38,7 @@
         fft.forward(time);
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = '#EEE';
-        width = canvas.width / (fft.spectrum.length - 20);
+        width = (canvas.width - 100) / (fft.spectrum.length - 20);
         _results = [];
         for (i = _j = 10, _ref1 = fft.spectrum.length - 10; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 10 <= _ref1 ? ++_j : --_j) {
           _results.push(context.fillRect(width * i + 1, canvas.height - 10, width, -Math.pow(Math.abs(fft.spectrum[i]), 2)));
