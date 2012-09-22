@@ -6,7 +6,7 @@
     var audioContext, error, fft, options, success;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
-    fft = new FFT(1024, audioContext.sampleRate);
+    fft = new FFT(1024, audioContext.sampleRate / 8);
     options = {
       audio: true,
       video: false
@@ -28,7 +28,7 @@
         hamming = new WindowFunction(DSP.HAMMING);
         hamming.process(arr);
         time = [];
-        for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 4) {
+        for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 8) {
           time.push(arr[s]);
           time.push(0);
         }
