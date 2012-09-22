@@ -28,8 +28,8 @@
         hamming.process(arr);
         time = [];
         for (s = _i = 0, _ref = arr.length; 0 <= _ref ? _i < _ref : _i > _ref; s = 0 <= _ref ? ++_i : --_i) {
-          time.push = arr[s];
-          time.push = 0;
+          time.push(arr[s]);
+          time.push(0);
         }
         fft = new FFT(time.length, context.sampleRate);
         fft.forward(time);
