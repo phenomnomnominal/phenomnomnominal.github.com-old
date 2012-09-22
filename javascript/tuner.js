@@ -38,7 +38,7 @@
         width = canvas.width / (fft.spectrum.length / 2);
         _results = [];
         for (i = _j = 10, _ref1 = fft.spectrum.length / 2; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 10 <= _ref1 ? ++_j : --_j) {
-          _results.push(context.fillRect(i * 2, canvas.height - 10, width, -Math.pow(5 * Math.abs(fft.spectrum[i]), 2)));
+          _results.push(context.fillRect(width * i + 1, canvas.height - 10, width, -Math.pow(5 * Math.abs(fft.spectrum[i]), 2)));
         }
         return _results;
       };
