@@ -41,9 +41,9 @@
           return _results;
         };
         resampled = [];
-        for (s = _i = 0, _ref = time.length; 0 <= _ref ? _i < _ref : _i > _ref; s = 0 <= _ref ? ++_i : --_i) {
+        for (s = _i = 0, _ref = time.length; _i < _ref; s = _i += 2) {
           resampled.push(time[s]);
-          zeroPad(resampled, 1);
+          zeroPad(resampled, 7);
         }
         fft.forward(resampled);
         context.clearRect(0, 0, canvas.width, canvas.height);
