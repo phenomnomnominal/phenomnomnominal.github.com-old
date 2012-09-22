@@ -40,7 +40,7 @@
         width = (canvas.width - 100) / (fft.spectrum.length - 20);
         _results = [];
         for (i = _j = 10, _ref1 = fft.spectrum.length - 10; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 10 <= _ref1 ? ++_j : --_j) {
-          _results.push(context.fillRect(width * i + 1, canvas.height - 10, width, -Math.log(fft.spectrum[i])));
+          _results.push(context.fillRect(width * i + 1, canvas.height - 10, width, -100 * Math.log(fft.spectrum[i])));
         }
         return _results;
       };
