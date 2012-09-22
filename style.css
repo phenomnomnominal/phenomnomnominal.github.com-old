@@ -90,14 +90,18 @@
 
 .wrapper {
   height:100%;
+  min-width: 755px;
   position: absolute;
   width: 100%;
 }
 
-.wrapper div {
-  left: 100px;
-  min-width: 555px;
+.fixed {
   position: fixed;
+}
+
+.content {
+  left: 5%;
+  min-width: 555px;
   text-align: justify;
 }
 
@@ -111,11 +115,155 @@
 
 .subtitle {
   color: #CBF;
-  font-family: lekton;
+  font-family: Lekton;
   top: 195px;
 }
 
 .italic { font-style: italic; }
+
+.projects {
+  height: 50%;
+  position: absolute;
+  top: 250px;
+  width: 95%;
+}
+
+.project {
+  border: 2px solid #FFB;
+  border-radius: 0px 0px 0px 10px;
+  color: #EEE;
+  cursor: pointer;
+  float: left;
+  font-family: Ostrich;
+  font-size: 200%;
+  font-weight: lighter;
+  height: 180px;
+  margin-left: 40px;
+  margin-bottom: 40px;
+  overflow: hidden;
+  position: relative;
+  -webkit-transition: 0.5s;
+     -moz-transition: 0.5s;
+       -o-transition: 0.5s;
+          transition: 0.5s;
+  -webkit-transition-delay: 0.5s;
+     -moz-transition-delay: 0.5s;
+      -ms-transition-delay: 0.5s;
+       -o-transition-delay: 0.5s;
+          transition-delay: 0.5s;          
+  width: 280px;
+}
+
+.offscreen {
+  left: -2000px;
+  position: fixed;
+  -webkit-transform: rotate(80deg);
+     -moz-transform: rotate(80deg);
+      -ms-transform: rotate(80deg);
+       -o-transform: rotate(80deg);
+          transform: rotate(80deg);
+}
+
+.project .mask {
+  height: 180px;
+  left: 0;
+  padding: 0px 20px 20px 20px;
+  position: absolute;
+  opacity: 0px;
+  overflow: hidden;
+  top: 0;
+  -webkit-transform: translate(225px, 140px) rotate(45deg);
+     -moz-transform: translate(225px, 140px) rotate(45deg);
+      -ms-transform: translate(225px, 140px) rotate(45deg);
+       -o-transform: translate(225px, 140px) rotate(45deg);
+          transform: translate(225px, 140px) rotate(45deg);
+  -webkit-transition: all 0.2s ease-in-out;
+     -moz-transition: all 0.2s ease-in-out;
+       -o-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out;
+  width: 280px;
+}
+
+.green { background-color: rgba(201, 255, 187, 0.5); }
+.red { background-color: rgba(255, 187, 201, 0.5); }
+.blue { background-color: rgba(201, 187, 255, 0.5); }
+
+.project img {
+  display: block;
+  position: relative;
+  -webkit-transition: all 0.2s ease-in;
+     -moz-transition: all 0.2s ease-in;
+       -o-transition: all 0.2s ease-in;
+          transition: all 0.2s ease-in;
+}
+
+.project h2 {
+  background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  color: #FF7;
+  margin: 20px 20px 0 20px;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  -webkit-transform: translate(200px, -200px);
+     -moz-transform: translate(200px, -200px);
+      -ms-transform: translate(200px, -200px);
+       -o-transform: translate(200px, -200px);
+          transform: translate(200px, -200px);
+  -webkit-transition: all 0.2s ease-in-out;
+     -moz-transition: all 0.2s ease-in-out;
+       -o-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out;
+}
+
+.project p {
+  font-family: Lekton;
+  font-size: 12px;
+  font-style: italic;
+  position: relative;
+  padding: 10px 10px 20px;
+  text-align: center;
+  -webkit-transform: translate(200px, -200px);
+     -moz-transform: translate(200px, -200px);
+      -ms-transform: translate(200px, -200px);
+       -o-transform: translate(200px, -200px);
+          transform: translate(200px, -200px);
+  -webkit-transition: all 0.2s ease-in-out;
+     -moz-transition: all 0.2s ease-in-out;
+       -o-transition: all 0.2s ease-in-out;
+          transition: all 0.2s ease-in-out;
+}
+
+.project:hover .mask {
+  opacity: 1;
+  -webkit-transform: translate(-20px, -20px) rotate(0deg);
+     -moz-transform: translate(-20px, -20px) rotate(0deg);
+      -ms-transform: translate(-20px, -20px) rotate(0deg);
+       -o-transform: translate(-20px, -20px) rotate(0deg);
+          transform: translate(-20px, -20px) rotate(0deg);
+}
+
+.project:hover h2 {
+  -webkit-transform: translate(0px, 0px);
+     -moz-transform: translate(0px, 0px);
+      -ms-transform: translate(0px, 0px);
+       -o-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+}
+
+.project:hover p {
+  -webkit-transform: translate(0px, 0px);
+     -moz-transform: translate(0px, 0px);
+      -ms-transform: translate(0px, 0px);
+       -o-transform: translate(0px, 0px);
+          transform: translate(0px, 0px);
+  -webkit-transition-delay: 0.5s;
+     -moz-transition-delay: 0.5s;
+      -ms-transition-delay: 0.5s;
+       -o-transition-delay: 0.5s;
+          transition-delay: 0.5s;
+}
 
 canvas { cursor: move }
 
