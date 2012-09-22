@@ -3,9 +3,11 @@
   var Tuner, root;
 
   Tuner = function() {
-    var audioContext, error, fft, options, success;
+    var audioContext, error, fft, filter, hamming, options, success;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
+    hamming = new WindowFunction(DSP.HAMMING);
+    filter = new IIRFilter(DSP.HIGHPASS, 25, 0, 44100);
     fft = new FFT(2048, audioContext.sampleRate / 8);
     options = {
       audio: true,
@@ -22,13 +24,11 @@
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
       data = function() {
-        var arr, filter, hamming, i, s, time, width, _i, _j, _ref, _ref1, _results;
+        var arr, i, s, time, width, _i, _j, _ref, _ref1, _results;
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(arr);
         console.log(arr.length);
-        hamming = new WindowFunction(DSP.HAMMING);
         hamming.process(arr);
-        filter = new IIRFilter(DSP.HIGHPASS, 25, 0, 44100);
         filter.process(arr);
         time = [];
         for (s = _i = 0, _ref = arr.length; _i < _ref; s = _i += 2) {
