@@ -3,40 +3,44 @@
   var Tuner, root;
 
   Tuner = function() {
-    var audioContext, bufferSize, error, options, sampleBuffer, success;
+    var audioContext, error, options, success;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
-    bufferSize = 2048;
-    sampleBuffer = new Uint8Array(8 * bufferSize);
     options = {
       audio: true,
       video: false
     };
     success = function(stream) {
-      var analyser, canvas, context, src;
+      var analyser, canvas, context, data, src;
       src = audioContext.createMediaStreamSource(stream);
-      analyser = audioContext.createJavaScriptNode(bufferSize, 1, 1);
+      analyser = audioContext.createAnalyser();
       src.connect(analyser);
       $('.tuner').removeClass('hidden');
       canvas = $('#tuner_canvas')[0];
       canvas.height = $('.tuner').height();
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
-      return analyser.onaudioprocess = function(e) {
-        var bufferPosition, input, s, _i, _j, _ref, _ref1, _results;
-        for (s = _i = bufferSize, _ref = 8 * bufferSize; bufferSize <= _ref ? _i < _ref : _i > _ref; s = bufferSize <= _ref ? ++_i : --_i) {
-          sampleBuffer[s - bufferSize] = sampleBuffer[s];
+      data = function() {
+        var arr, fft, i, s, time, _i, _j, _ref, _ref1, _results;
+        arr = new Uint8Array(analyser.fftSize);
+        analyser.getByteTimeDomainData(arr);
+        DSP.Hamming.process(arr);
+        time = [];
+        for (s = _i = 0, _ref = arr.length; 0 <= _ref ? _i < _ref : _i > _ref; s = 0 <= _ref ? ++_i : --_i) {
+          time.push = arr[s];
+          time.push = 0;
         }
-        input = e.inputBuffer[1];
-        DSP.HAMMING.process(input);
-        bufferPosition = 6 * bufferSize;
+        fft = new FFT(time.length, context.sampleRate);
+        fft.forward(time);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.fillStyle = '#EEE';
         _results = [];
-        for (s = _j = 0, _ref1 = 2 * input.length; _j < _ref1; s = _j += 2) {
-          sampleBuffer[bufferPosition + s] = input[s];
-          _results.push(sampleBuffer[bufferPosition + s + 1] = 0);
+        for (i = _j = 10, _ref1 = fft.spectrum.length; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 10 <= _ref1 ? ++_j : --_j) {
+          _results.push(context.fillRect(i * 2, canvas.height - 10, 1.5, -Math.pow(Math.abs(fft.spectrum[i]), 2)));
         }
         return _results;
       };
+      return setInterval(data, 20);
     };
     error = function(e) {
       return console.log(e);
