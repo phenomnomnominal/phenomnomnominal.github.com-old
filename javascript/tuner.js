@@ -3,9 +3,10 @@
   var Tuner, root;
 
   Tuner = function() {
-    var audioContext, error, options, success;
+    var audioContext, error, fft, options, success;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
+    fft = new FFT(1024, audioContext.sampleRate);
     options = {
       audio: true,
       video: false
@@ -21,7 +22,7 @@
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
       data = function() {
-        var arr, fft, hamming, i, s, time, width, _i, _j, _ref, _ref1, _results;
+        var arr, hamming, i, s, time, width, _i, _j, _ref, _ref1, _results;
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(arr);
         hamming = new WindowFunction(DSP.HAMMING);
@@ -31,13 +32,12 @@
           time.push(arr[s]);
           time.push(0);
         }
-        fft = new FFT(time.length, context.sampleRate);
         fft.forward(time);
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.fillStyle = '#EEE';
-        width = canvas.width / fft.spectrum.length;
+        width = canvas.width / fft.spectrum.length / 2;
         _results = [];
-        for (i = _j = 10, _ref1 = fft.spectrum.length; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 10 <= _ref1 ? ++_j : --_j) {
+        for (i = _j = 10, _ref1 = fft.spectrum.length / 2; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 10 <= _ref1 ? ++_j : --_j) {
           _results.push(context.fillRect(i * 2, canvas.height - 10, width, -Math.pow(5 * Math.abs(fft.spectrum[i]), 2)));
         }
         return _results;
