@@ -9,7 +9,7 @@
     hamming = new WindowFunction(DSP.HAMMING);
     hp = new IIRFilter2(DSP.HIGHPASS, 20, 0.1, 44100 / 8);
     lp = new IIRFilter2(DSP.LOWPASS, 8000, 0.1, 44100 / 8);
-    fft = new FFT(8192, audioContext.sampleRate);
+    fft = new FFT(16386, audioContext.sampleRate * 8);
     buffer = [];
     options = {
       audio: true,
@@ -41,7 +41,7 @@
           return _results;
         };
         resampled = [];
-        for (s = _i = 0, _ref = time.length; _i < _ref; s = _i += 2) {
+        for (s = _i = 0, _ref = time.length; 0 <= _ref ? _i < _ref : _i > _ref; s = 0 <= _ref ? ++_i : --_i) {
           resampled.push(time[s]);
           zeroPad(resampled, 7);
         }
