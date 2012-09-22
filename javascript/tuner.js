@@ -27,7 +27,6 @@
         var arr, i, s, time, width, _i, _j, _ref, _ref1, _results;
         arr = new Uint8Array(analyser.fftSize);
         analyser.getByteTimeDomainData(arr);
-        console.log(arr.length);
         hamming.process(arr);
         filter.process(arr);
         time = [];
