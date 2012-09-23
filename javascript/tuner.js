@@ -141,7 +141,7 @@
           for (p = _n = 0, _ref2 = peaks.length; 0 <= _ref2 ? _n < _ref2 : _n > _ref2; p = 0 <= _ref2 ? ++_n : --_n) {
             if (peaks[p] != null) {
               n = 1;
-              while (!(peaks[p + n] != null) || (p + n > peaks.length)) {
+              while (!(peaks[p + n] != null) && (p + n < peaks.length)) {
                 n++;
               }
               if ((peaks[p + n].x === peaks[p].x + 1) || (peaks[p + n].x === peaks[p].x - 1)) {
