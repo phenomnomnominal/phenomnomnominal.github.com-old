@@ -157,6 +157,9 @@
             y: fft.spectrum[peak.x + 1]
           };
           f = parabolicInterp(left, peak, right);
+          if ((320 < f && f < 340)) {
+            debugger;
+          }
           console.log('F: ', f);
         }
         context.fillStyle = '#F77';
