@@ -97,7 +97,6 @@
           }
           fft.forward(denoised);
           context.clearRect(0, 0, canvas.width, canvas.height);
-          context.fillStyle = '#EEE';
           mag2db = function(n) {
             return 20 * (Math.log(n) / Math.log(10));
           };
@@ -111,6 +110,9 @@
           width = (canvas.width - 100) / (fft.spectrum.length - 20);
           _results1 = [];
           for (i = _o = 10, _ref5 = fft.spectrum.length - 10; 10 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 10 <= _ref5 ? ++_o : --_o) {
+            context.fillStyle = '#F77';
+            context.fillRect(width * i + 1, canvas.height / 2, width, -Math.abs(mag2db(fft.spectrum[i] - noise[i])));
+            context.fillStyle = '#EEE';
             _results1.push(context.fillRect(width * i + 1, canvas.height / 2, width, -(canvas.height / 2) * (denoised[i] / max)));
           }
           return _results1;
