@@ -3,14 +3,14 @@
   var Tuner, root;
 
   Tuner = function() {
-    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, hamming, hp, i, lp, options, sampleRate, success, _i;
+    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, gauss, hp, i, lp, options, sampleRate, success, _i;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
     sampleRate = audioContext.sampleRate;
     downsampleRate = sampleRate / 4;
     fftSize = 8192;
     fft = new FFT(fftSize, downsampleRate);
-    hamming = new WindowFunction(DSP.HAMMING);
+    gauss = new WindowFunction(DSP.GAUSS);
     lp = audioContext.createBiquadFilter();
     lp.type = lp.LOWPASS;
     lp.frequency = 20;
@@ -60,7 +60,7 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var bufferCopy, count, downsampled, freqWidth, left, newMaxTime, parabolicInterp, peak, right, s, timeWidth, upsampled, x, y, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _ref3;
+        var bufferCopy, count, downsampled, f, freqWidth, left, newMaxTime, parabolicInterp, peak, right, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -70,7 +70,7 @@
           }
           return _results;
         })();
-        hamming.process(bufferCopy);
+        gauss.process(bufferCopy);
         downsampled = [];
         for (s = _j = 0, _ref = bufferCopy.length; _j < _ref; s = _j += 4) {
           downsampled.push(bufferCopy[s]);
@@ -104,7 +104,7 @@
         right = 0;
         maxFreq = _.reduce(fft.spectrum, (function(max, next) {
           count++;
-          if (next > max) {
+          if (Math.log(next) > max) {
             left = {
               x: count - 1,
               y: (count - 1) * (downsampleRate / fftSize)
@@ -117,24 +117,19 @@
               x: count + 1,
               y: (count + 1) * (downsampleRate / fftSize)
             };
-            return next;
+            return Math.log(next);
           } else {
             return max;
           }
         }), -Infinity);
-        parabolicInterp = function(x1, y1, x2, y2, x3, y3) {
-          var A, B, C, denom;
-          denom = (x1 - x2) * (x1 - x3) * (x2 - x3);
-          A = (x3 * (y2 - y1) + x2 * (y1 - y3) + x1 * (y3 - y2)) / denom;
-          B = ((x3 * x3 * (y1 - y2)) + (x2 * x2 * (y3 - y1)) + (x1 * x1 * (y2 - y3))) / denom;
-          C = (x2 * x3 * (x2 - x3) * y1 + x3 * x1 * (x3 - x1) * y2 + x1 * x2 * (x1 - x2) * y3) / denom;
-          return [-B / (2 * A), C - B * B / (4 * A)];
+        parabolicInterp = function(left, peak, right) {
+          return ((0.5 * ((left.y - right.y) / left.y - (2 * peak.y) + right.y)) + peak.x) * (downsampleRate / fftSize);
         };
-        _ref2 = parabolicInterp(left.x, left.y, peak.x, peak.y, right.x, right.y), x = _ref2[0], y = _ref2[1];
-        console.log('X: ', x, 'Y: ', y);
+        f = parabolicInterp(left, peak, right);
+        console.log('F: ', f);
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
-        for (i = _m = 10, _ref3 = (fft.spectrum.length / 2) - 10; 10 <= _ref3 ? _m < _ref3 : _m > _ref3; i = 10 <= _ref3 ? ++_m : --_m) {
+        for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
           context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.pow(5 * fft.spectrum[i], 2));
         }
         return peak;
