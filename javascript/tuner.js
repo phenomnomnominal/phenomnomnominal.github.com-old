@@ -3,7 +3,7 @@
   var Tuner, root;
 
   Tuner = function() {
-    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, gauss, hp, i, lp, options, sampleRate, success, _i;
+    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, gauss, getPitch, hp, i, lp, options, sampleRate, success, _i;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
     sampleRate = audioContext.sampleRate;
@@ -41,6 +41,9 @@
     options = {
       audio: true,
       video: false
+    };
+    getPitch = function(freq) {
+      return (Math.log(freq) / Math.log(440)) / Math.log(Math.pow(2, 1 / 12));
     };
     success = function(stream) {
       var canvas, context, data, maxFreq, maxTime, noiseCount, noiseThreshold, parabolicInterp, src;
@@ -187,10 +190,7 @@
               y: fft.spectrum[peak.x + 1]
             };
             freq = parabolicInterp(left, peak, right);
-            if ((320 < freq && freq < 340)) {
-              debugger;
-            }
-            console.log('F: ', freq);
+            console.log('Note: ', getPitch(freq));
           }
         }
         context.fillStyle = '#F77';
