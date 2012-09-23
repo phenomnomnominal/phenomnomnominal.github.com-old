@@ -62,7 +62,7 @@
         return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
       };
       data = function() {
-        var bufferCopy, downsampled, f, freqWidth, newMaxTime, p, peak, peaks, s, spectrumPoints, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _results;
+        var bufferCopy, downsampled, f, freqWidth, newMaxTime, p, peak, peaks, s, spectrumPoints, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _ref, _ref1, _ref2, _results;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -133,10 +133,10 @@
           }
         });
         peaks = [];
-        p = 0;
-        while (!(spectrumPoints[p] < noiseThreshold * 2)) {
-          peaks.push(spectrumPoints[p]);
-          p++;
+        for (p = _m = 0; _m < 10; p = ++_m) {
+          if (spectrumPoints[p] < noiseThreshold * 2) {
+            peaks.push(spectrumPoints[p]);
+          }
         }
         peaks.sort(function(a, b) {
           if (a.x < b.x) {
@@ -158,7 +158,7 @@
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         _results = [];
-        for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
+        for (i = _n = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _n < _ref2 : _n > _ref2; i = 10 <= _ref2 ? ++_n : --_n) {
           _results.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.pow(5 * fft.spectrum[i], 2)));
         }
         return _results;
