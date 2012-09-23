@@ -62,7 +62,7 @@
         return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
       };
       data = function() {
-        var b, bufferCopy, downsampled, f, firstFreq, freq, freqWidth, left, newMaxTime, p, peak, peaks, q, right, s, secondFreq, spectrumPoints, thirdFreq, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _results;
+        var b, bufferCopy, downsampled, f, firstFreq, freq, freqWidth, left, newMaxTime, p, peak, peaks, q, right, s, secondFreq, spectrumPoints, thirdFreq, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _results;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -166,15 +166,11 @@
             secondFreq = peaks[1].x * (sampleRate / fftSize);
             if ((1.4 < (_ref4 = firstFreq / secondFreq) && _ref4 < 1.6)) {
               peak = peaks[1];
-            } else if ((1.9 < (_ref5 = firstFreq / secondFreq) && _ref5 < 2.1)) {
-              peak = peaks[1];
             }
           }
           if (peaks.length > 2) {
             thirdFreq = peaks[2].x * (sampleRate / fftSize);
-            if ((1.4 < (_ref6 = firstFreq / thirdFreq) && _ref6 < 1.6)) {
-              peak = peaks[2];
-            } else if ((1.9 < (_ref7 = firstFreq / thirdFreq) && _ref7 < 2.1)) {
+            if ((1.4 < (_ref5 = firstFreq / thirdFreq) && _ref5 < 1.6)) {
               peak = peaks[2];
             }
           }
@@ -195,7 +191,7 @@
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         _results = [];
-        for (f = _p = 10, _ref8 = (fft.spectrum.length / 4) - 10; 10 <= _ref8 ? _p < _ref8 : _p > _ref8; f = 10 <= _ref8 ? ++_p : --_p) {
+        for (f = _p = 10, _ref6 = (fft.spectrum.length / 4) - 10; 10 <= _ref6 ? _p < _ref6 : _p > _ref6; f = 10 <= _ref6 ? ++_p : --_p) {
           _results.push(context.fillRect(freqWidth * f, canvas.height / 2, freqWidth, -Math.pow(5 * fft.spectrum[f], 2)));
         }
         return _results;
