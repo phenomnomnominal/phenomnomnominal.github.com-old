@@ -84,9 +84,13 @@
         } else if (noiseCount === 10) {
           noiseCount++;
           average = function(arr) {
-            return (_.reduce(arr, (function(sum, next) {
-              return sum + next;
-            }), 0)) / arr.length;
+            var sum, _l, _len;
+            sum = 0;
+            for (_l = 0, _len = arr.length; _l < _len; _l++) {
+              i = arr[_l];
+              sum += i;
+            }
+            return sum / arr.length;
           };
           _results = [];
           for (f = _l = 0, _ref4 = fft.spectrum.length; 0 <= _ref4 ? _l < _ref4 : _l > _ref4; f = 0 <= _ref4 ? ++_l : --_l) {
