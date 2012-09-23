@@ -300,12 +300,22 @@
 .tuner div {
   color: #EEE;
   font-family: Lekton;
+  font-size: 100px;
   height: 100px;
   left: 40%;
   line-height: 100px;
   position: absolute;
+  text-align: center;
   top: 200px;
   width: 20%;
+}
+
+.tuner.inTune {
+  color: #7F7;
+}
+
+.tuner.outTune {
+  color: #F77;
 }
 
 .container {
