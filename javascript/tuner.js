@@ -58,16 +58,12 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var average, f, mag2db, s, upsampled, width, _j, _k, _l, _m, _ref, _ref1, _ref2, _ref3, _ref4, _results, _results1;
+        var average, f, mag2db, width, _j, _k, _l, _ref, _ref1, _ref2, _ref3, _results, _results1;
         hamming.process(buffer);
-        upsampled = [];
-        for (s = _j = 0, _ref = buffer.length; 0 <= _ref ? _j < _ref : _j > _ref; s = 0 <= _ref ? ++_j : --_j) {
-          upsampled.push(buffer[s]);
-        }
-        fft.forward(upsampled);
+        fft.forward(buffer);
         if (noiseCount < 10) {
-          for (f = _k = 0, _ref1 = fft.spectrum.length; 0 <= _ref1 ? _k < _ref1 : _k > _ref1; f = 0 <= _ref1 ? ++_k : --_k) {
-            if ((_ref2 = noise[f]) == null) {
+          for (f = _j = 0, _ref = fft.spectrum.length; 0 <= _ref ? _j < _ref : _j > _ref; f = 0 <= _ref ? ++_j : --_j) {
+            if ((_ref1 = noise[f]) == null) {
               noise[f] = [];
             }
             noise[f].push(fft.spectrum[f]);
@@ -81,7 +77,7 @@
             }), 0)) / arr.length;
           };
           _results = [];
-          for (f = _l = 0, _ref3 = fft.spectrum.length; 0 <= _ref3 ? _l < _ref3 : _l > _ref3; f = 0 <= _ref3 ? ++_l : --_l) {
+          for (f = _k = 0, _ref2 = fft.spectrum.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; f = 0 <= _ref2 ? ++_k : --_k) {
             _results.push(noise[f] = average(noise[f]));
           }
           return _results;
@@ -93,8 +89,8 @@
           };
           width = (canvas.width - 100) / (fft.spectrum.length - 20);
           _results1 = [];
-          for (i = _m = 10, _ref4 = fft.spectrum.length - 10; 10 <= _ref4 ? _m < _ref4 : _m > _ref4; i = 10 <= _ref4 ? ++_m : --_m) {
-            _results1.push(context.fillRect(width * i + 1, canvas.height - 10, width, -Math.abs(mag2db(fft.spectrum[i] - noise[i]))));
+          for (i = _l = 10, _ref3 = fft.spectrum.length - 10; 10 <= _ref3 ? _l < _ref3 : _l > _ref3; i = 10 <= _ref3 ? ++_l : --_l) {
+            _results1.push(context.fillRect(width * i + 1, canvas.height - 10, width, -Math.pow(buffer[i], 2)));
           }
           return _results1;
         }
