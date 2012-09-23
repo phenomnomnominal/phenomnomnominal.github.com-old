@@ -58,7 +58,8 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var average, denoised, downsampled, f, freqWidth, mag2db, newMax, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _results, _results1;
+        var downsampled, freqWidth, newMax, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _results;
+        hamming.process(buffer);
         downsampled = [];
         for (s = _j = 0, _ref = buffer.length; _j < _ref; s = _j += 4) {
           downsampled.push(buffer[s]);
@@ -72,56 +73,27 @@
           upsampled.push(0);
         }
         fft.forward(upsampled);
-        if (noiseCount < 10) {
-          for (f = _l = 0, _ref1 = fft.spectrum.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; f = 0 <= _ref1 ? ++_l : --_l) {
-            if ((_ref2 = noise[f]) == null) {
-              noise[f] = [];
-            }
-            noise[f].push(fft.spectrum[f]);
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        newMax = _.reduce(upsampled, (function(max, next) {
+          if (Math.abs(next) > max) {
+            return Math.abs(next);
+          } else {
+            return max;
           }
-          return noiseCount++;
-        } else if (noiseCount === 10) {
-          noiseCount++;
-          average = function(arr) {
-            return (_.reduce(arr, (function(sum, next) {
-              return sum + next;
-            }), 0)) / arr.length;
-          };
-          _results = [];
-          for (f = _m = 0, _ref3 = fft.spectrum.length; 0 <= _ref3 ? _m < _ref3 : _m > _ref3; f = 0 <= _ref3 ? ++_m : --_m) {
-            _results.push(noise[f] = average(noise[f]));
-          }
-          return _results;
-        } else {
-          denoised = [];
-          for (s = _n = 0, _ref4 = fft.spectrum.length; 0 <= _ref4 ? _n < _ref4 : _n > _ref4; s = 0 <= _ref4 ? ++_n : --_n) {
-            denoised.push(fft.spectrum[s] - noise[s]);
-          }
-          context.clearRect(0, 0, canvas.width, canvas.height);
-          mag2db = function(n) {
-            return 20 * (Math.log(n) / Math.log(10));
-          };
-          newMax = _.reduce(upsampled, (function(max, next) {
-            if (Math.abs(next) > max) {
-              return Math.abs(next);
-            } else {
-              return max;
-            }
-          }), 0);
-          max = newMax > max ? newMax : max;
-          timeWidth = (canvas.width - 100) / upsampled.length;
-          context.fillStyle = '#EEE';
-          for (i = _o = 0, _ref5 = upsampled.length; 0 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 0 <= _ref5 ? ++_o : --_o) {
-            context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (upsampled[i] / max));
-          }
-          freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
-          context.fillStyle = '#F77';
-          _results1 = [];
-          for (i = _p = 10, _ref6 = (denoised.length / 2) - 10; 10 <= _ref6 ? _p < _ref6 : _p > _ref6; i = 10 <= _ref6 ? ++_p : --_p) {
-            _results1.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.abs(mag2db(denoised[i] - noise[i]))));
-          }
-          return _results1;
+        }), 0);
+        max = newMax > max ? newMax : max;
+        timeWidth = (canvas.width - 100) / upsampled.length;
+        context.fillStyle = '#EEE';
+        for (i = _l = 0, _ref1 = upsampled.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; i = 0 <= _ref1 ? ++_l : --_l) {
+          context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (upsampled[i] / max));
         }
+        freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
+        context.fillStyle = '#F77';
+        _results = [];
+        for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
+          _results.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -50000 * Math.abs(fft.spectrum[i])));
+        }
+        return _results;
       };
       return setInterval(data, 25);
     };
