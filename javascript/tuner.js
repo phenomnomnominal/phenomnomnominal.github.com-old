@@ -32,7 +32,7 @@
       }
       input = e.inputBuffer.getChannelData(0);
       for (i = _k = 0, _ref1 = input.length; 0 <= _ref1 ? _k < _ref1 : _k > _ref1; i = 0 <= _ref1 ? ++_k : --_k) {
-        buffer[buffer.length - (bufferFillSize + i)] = input[i];
+        buffer[buffer.length - bufferFillSize + i] = input[i];
       }
       return bufferFiller.onaudioprocess = null;
     };
