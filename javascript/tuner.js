@@ -3,7 +3,7 @@
   var Tuner, root;
 
   Tuner = function() {
-    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, hamming, hp, i, lp, options, sampleRate, success, _i, _ref;
+    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, hamming, hp, i, lp, options, sampleRate, success, _i;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
     sampleRate = audioContext.sampleRate;
@@ -20,19 +20,19 @@
     hp.frequency = 4000;
     hp.Q = 0.1;
     buffer = [];
-    for (i = _i = 0, _ref = fftSize / 2; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+    for (i = _i = 0; 0 <= fftSize ? _i < fftSize : _i > fftSize; i = 0 <= fftSize ? ++_i : --_i) {
       buffer[i] = 0;
     }
     bufferFillSize = 1024;
     bufferFiller = audioContext.createJavaScriptNode(bufferFillSize, 1, 1);
     bufferFiller.onaudioprocess = function(e) {
-      var input, _j, _k, _ref1, _ref2, _results;
-      for (i = _j = bufferFillSize, _ref1 = buffer.length; bufferFillSize <= _ref1 ? _j < _ref1 : _j > _ref1; i = bufferFillSize <= _ref1 ? ++_j : --_j) {
+      var input, _j, _k, _ref, _ref1, _results;
+      for (i = _j = bufferFillSize, _ref = buffer.length; bufferFillSize <= _ref ? _j < _ref : _j > _ref; i = bufferFillSize <= _ref ? ++_j : --_j) {
         buffer[i - bufferFillSize] = buffer[i];
       }
       input = e.inputBuffer.getChannelData(0);
       _results = [];
-      for (i = _k = 0, _ref2 = input.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
+      for (i = _k = 0, _ref1 = input.length; 0 <= _ref1 ? _k < _ref1 : _k > _ref1; i = 0 <= _ref1 ? ++_k : --_k) {
         _results.push(buffer[buffer.length - (bufferFillSize + i)] = input[i]);
       }
       return _results;
@@ -58,25 +58,16 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var average, f, mag2db, s, upsampled, width, zeroPad, _j, _k, _l, _m, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1;
+        var average, f, mag2db, s, upsampled, width, _j, _k, _l, _m, _ref, _ref1, _ref2, _ref3, _ref4, _results, _results1;
         hamming.process(buffer);
-        zeroPad = function(a, n) {
-          var _j, _results;
-          _results = [];
-          for (i = _j = 0; 0 <= n ? _j < n : _j > n; i = 0 <= n ? ++_j : --_j) {
-            _results.push(a.push(0));
-          }
-          return _results;
-        };
         upsampled = [];
-        for (s = _j = 0, _ref1 = buffer.length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; s = 0 <= _ref1 ? ++_j : --_j) {
+        for (s = _j = 0, _ref = buffer.length; 0 <= _ref ? _j < _ref : _j > _ref; s = 0 <= _ref ? ++_j : --_j) {
           upsampled.push(buffer[s]);
-          zeroPad(upsampled, 1);
         }
         fft.forward(upsampled);
         if (noiseCount < 10) {
-          for (f = _k = 0, _ref2 = fft.spectrum.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; f = 0 <= _ref2 ? ++_k : --_k) {
-            if ((_ref3 = noise[f]) == null) {
+          for (f = _k = 0, _ref1 = fft.spectrum.length; 0 <= _ref1 ? _k < _ref1 : _k > _ref1; f = 0 <= _ref1 ? ++_k : --_k) {
+            if ((_ref2 = noise[f]) == null) {
               noise[f] = [];
             }
             noise[f].push(fft.spectrum[f]);
@@ -90,7 +81,7 @@
             }), 0)) / arr.length;
           };
           _results = [];
-          for (f = _l = 0, _ref4 = fft.spectrum.length; 0 <= _ref4 ? _l < _ref4 : _l > _ref4; f = 0 <= _ref4 ? ++_l : --_l) {
+          for (f = _l = 0, _ref3 = fft.spectrum.length; 0 <= _ref3 ? _l < _ref3 : _l > _ref3; f = 0 <= _ref3 ? ++_l : --_l) {
             _results.push(noise[f] = average(noise[f]));
           }
           return _results;
@@ -102,8 +93,8 @@
             return 20 * (Math.log(n) / Math.log(10));
           };
           _results1 = [];
-          for (i = _m = 10, _ref5 = fft.spectrum.length - 10; 10 <= _ref5 ? _m < _ref5 : _m > _ref5; i = 10 <= _ref5 ? ++_m : --_m) {
-            _results1.push(context.fillRect(width * i + 1, canvas.height - 10, width, -(fft.spectrum[i] - noise[i])));
+          for (i = _m = 10, _ref4 = fft.spectrum.length - 10; 10 <= _ref4 ? _m < _ref4 : _m > _ref4; i = 10 <= _ref4 ? ++_m : --_m) {
+            _results1.push(context.fillRect(width * i + 1, canvas.height - 10, width, -Math.abs(mag2dg(fft.spectrum[i] - noise[i]))));
           }
           return _results1;
         }
