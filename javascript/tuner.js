@@ -134,18 +134,20 @@
       'C8': 4186.01
     };
     getPitch = function(freq) {
-      var key, minDiff, note, val;
+      var diff, key, minDiff, note, val;
       console.log(freq);
       minDiff = Infinity;
+      diff = Infinity;
       for (key in frequencies) {
         if (!__hasProp.call(frequencies, key)) continue;
         val = frequencies[key];
         if (Math.abs(freq - val) < minDiff) {
           minDiff = Math.abs(freq - val);
+          diff = freq - val;
           note = key;
         }
       }
-      return [note, freq - val];
+      return [note, diff];
     };
     success = function(stream) {
       var canvas, context, data, maxFreq, maxTime, noiseCount, noiseThreshold, parabolicInterp, src;
