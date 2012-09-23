@@ -100,8 +100,8 @@
         }
         if (noiseCount < 10) {
           noiseThreshold = _.reduce(fft.spectrum, (function(max, next) {
-            if (Math.log(next) > max) {
-              return Math.log(next);
+            if (next * (sampleRate / fftSize) > max) {
+              return next * (sampleRate / fftSize);
             } else {
               return max;
             }
