@@ -126,7 +126,7 @@
           var A, B, C, denom;
           denom = (x1 - x2) * (x1 - x3) * (x2 - x3);
           A = (x3 * (y2 - y1) + x2 * (y1 - y3) + x1 * (y3 - y2)) / denom;
-          B = (x3 * x3 * (y1 - y2) + x2 * x2 * (y3 - y1) + x1 * x1 * (y2 - y3)) / denom;
+          B = ((x3 * x3 * (y1 - y2)) + (x2 * x2 * (y3 - y1)) + (x1 * x1 * (y2 - y3))) / denom;
           C = (x2 * x3 * (x2 - x3) * y1 + x3 * x1 * (x3 - x1) * y2 + x1 * x2 * (x1 - x2) * y3) / denom;
           return [-B / (2 * A), C - B * B / (4 * A)];
         };
@@ -135,7 +135,7 @@
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         for (i = _m = 10, _ref3 = (fft.spectrum.length / 2) - 10; 10 <= _ref3 ? _m < _ref3 : _m > _ref3; i = 10 <= _ref3 ? ++_m : --_m) {
-          context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -(canvas.height / 2) * Math.pow(fft.spectrum[i], 2));
+          context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.pow(5 * fft.spectrum[i], 2));
         }
         return peak;
       };
