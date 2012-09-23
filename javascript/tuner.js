@@ -8,7 +8,7 @@
     audioContext = new AudioContext();
     sampleRate = audioContext.sampleRate;
     downsampleRate = sampleRate / 4;
-    fftSize = 8192;
+    fftSize = 16394;
     fft = new FFT(fftSize, downsampleRate);
     hamming = new WindowFunction(DSP.HAMMING);
     lp = audioContext.createBiquadFilter();
@@ -26,15 +26,16 @@
     bufferFillSize = 1024;
     bufferFiller = audioContext.createJavaScriptNode(bufferFillSize, 1, 1);
     bufferFiller.onaudioprocess = function(e) {
-      var input, output, _j, _k, _ref, _ref1;
+      var input, _j, _k, _ref, _ref1, _results;
       for (i = _j = bufferFillSize, _ref = buffer.length; bufferFillSize <= _ref ? _j < _ref : _j > _ref; i = bufferFillSize <= _ref ? ++_j : --_j) {
         buffer[i - bufferFillSize] = buffer[i];
       }
       input = e.inputBuffer.getChannelData(0);
+      _results = [];
       for (i = _k = 0, _ref1 = input.length; 0 <= _ref1 ? _k < _ref1 : _k > _ref1; i = 0 <= _ref1 ? ++_k : --_k) {
-        buffer[buffer.length - bufferFillSize + i] = input[i];
+        _results.push(buffer[buffer.length - bufferFillSize + i] = input[i]);
       }
-      return output = e.outputBuffer.getChannelData(0);
+      return _results;
     };
     analyser = audioContext.createAnalyser();
     options = {
@@ -59,7 +60,7 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var bufferCopy, count, downsampled, freqWidth, newMaxTime, peak, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2;
+        var bufferCopy, count, downsampled, freqWidth, left, newMaxTime, parabolicInterp, peak, right, s, timeWidth, upsampled, x, y, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _ref3;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -98,20 +99,42 @@
           context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (upsampled[i] / maxTime));
         }
         count = -1;
+        left = 0;
         peak = 0;
+        right = 0;
         maxFreq = _.reduce(fft.spectrum, (function(max, next) {
           count++;
           if (next > max) {
-            peak = count * ((downsampleRate / 2) / fftSize);
+            left = {
+              x: count,
+              y: (count - 1) * (downsampleRate / fftSize)
+            };
+            peak = {
+              x: count,
+              y: count * (downsampleRate / fftSize)
+            };
+            right = {
+              x: count,
+              y: (count + 1) * (downsampleRate / fftSize)
+            };
             return next;
           } else {
             return max;
           }
         }), -Infinity);
-        console.log(peak);
+        parabolicInterp = function(x1, y1, x2, y2, x3, y3) {
+          var A, B, C, denom;
+          denom = (x1 - x2) * (x1 - x3) * (x2 - x3);
+          A = (x3 * (y2 - y1) + x2 * (y1 - y3) + x1 * (y3 - y2)) / denom;
+          B = (x3 * x3 * (y1 - y2) + x2 * x2 * (y3 - y1) + x1 * x1 * (y2 - y3)) / denom;
+          C = (x2 * x3 * (x2 - x3) * y1 + x3 * x1 * (x3 - x1) * y2 + x1 * x2 * (x1 - x2) * y3) / denom;
+          return [-B / (2 * A), C - B * B / (4 * A)];
+        };
+        _ref2 = parabolicInterp(left.x, left.y, peak.x, peak.y, right.x, right.y), x = _ref2[0], y = _ref2[1];
+        console.log('X: ', x, 'Y: ', y);
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
-        for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
+        for (i = _m = 10, _ref3 = (fft.spectrum.length / 2) - 10; 10 <= _ref3 ? _m < _ref3 : _m > _ref3; i = 10 <= _ref3 ? ++_m : --_m) {
           context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -(canvas.height / 2) * Math.pow(fft.spectrum[i], 2));
         }
         return peak;
