@@ -59,7 +59,7 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var bufferCopy, count, downsampled, freqWidth, index, newMaxTime, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2;
+        var bufferCopy, count, downsampled, freqWidth, newMaxTime, peak, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -98,23 +98,23 @@
           context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (upsampled[i] / maxTime));
         }
         count = -1;
-        index = 0;
+        peak = 0;
         maxFreq = _.reduce(fft.spectrum, (function(max, next) {
           count++;
           if (next > max) {
-            index = count;
+            peak = count * ((downsampleRate / 2) / fftSize);
             return next;
           } else {
             return max;
           }
         }), -Infinity);
-        console.log(index);
+        console.log(peak);
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
           context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -(canvas.height / 2) * Math.pow(fft.spectrum[i], 2));
         }
-        return index;
+        return peak;
       };
       return setInterval(data, 25);
     };
