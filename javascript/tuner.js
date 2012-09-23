@@ -100,7 +100,7 @@
         count = -1;
         index = 0;
         maxFreq = _.reduce(fft.spectrum, (function(max, next) {
-          index++;
+          count++;
           if (next > max) {
             index = count;
             return next;
@@ -112,7 +112,7 @@
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
-          context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -(canvas.height / 2) * (fft.spectrum[i] / maxFreq));
+          context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -(canvas.height / 2) * Math.pow(fft.spectrum[i], 2));
         }
         return index;
       };
