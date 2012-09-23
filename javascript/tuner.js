@@ -100,8 +100,8 @@
         }
         if (noiseCount < 10) {
           noiseThreshold = _.reduce(fft.spectrum, (function(max, next) {
-            if (next * (sampleRate / fftSize) > max) {
-              return next * (sampleRate / fftSize);
+            if (Math.log(next) > max) {
+              return Math.log(next);
             } else {
               return max;
             }
@@ -117,15 +117,15 @@
           if (Math.log(next) > max) {
             left = {
               x: count - 1,
-              y: fft.spectrum[count - 1]
+              y: Math.log(fft.spectrum[count - 1])
             };
             peak = {
               x: count,
-              y: fft.spectrum[count]
+              y: Math.log(fft.spectrum[count])
             };
             right = {
               x: count + 1,
-              y: fft.spectrum[count + 1]
+              y: Math.log(fft.spectrum[count + 1])
             };
             return Math.log(next);
           } else {
