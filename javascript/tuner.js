@@ -150,7 +150,7 @@
       return [note, diff];
     };
     success = function(stream) {
-      var canvas, context, data, maxFreq, maxTime, noiseCount, noiseThreshold, parabolicInterp, src;
+      var canvas, context, data, maxFreq, maxPeaks, maxTime, noiseCount, noiseThreshold, parabolicInterp, src;
       src = audioContext.createMediaStreamSource(stream);
       src.connect(lp);
       lp.connect(hp);
@@ -165,6 +165,7 @@
       maxFreq = 0;
       noiseCount = 0;
       noiseThreshold = -Infinity;
+      maxPeaks = 0;
       parabolicInterp = function(left, peak, right) {
         return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
       };
@@ -245,6 +246,7 @@
           }
         }
         if (peaks.length > 0) {
+          maxPeaks = peaks.length;
           for (p = _n = 0, _ref2 = peaks.length; 0 <= _ref2 ? _n < _ref2 : _n > _ref2; p = 0 <= _ref2 ? ++_n : --_n) {
             if (peaks[p] != null) {
               for (q = _o = 0, _ref3 = peaks.length; 0 <= _ref3 ? _o < _ref3 : _o > _ref3; q = 0 <= _ref3 ? ++_o : --_o) {
@@ -281,7 +283,7 @@
               peak = peaks[2];
             }
           }
-          if (peaks.length > 2) {
+          if (peaks.length > 2 || maxPeaks === 1) {
             if (!(peak != null)) {
               peak = peaks[0];
             }
