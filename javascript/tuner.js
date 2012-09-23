@@ -26,14 +26,18 @@
     bufferFillSize = 1024;
     bufferFiller = audioContext.createJavaScriptNode(bufferFillSize, 1, 1);
     bufferFiller.onaudioprocess = function(e) {
-      var input, _j, _k, _ref, _ref1, _results;
+      var input, output, _j, _k, _l, _ref, _ref1, _ref2, _results;
       for (i = _j = bufferFillSize, _ref = buffer.length; bufferFillSize <= _ref ? _j < _ref : _j > _ref; i = bufferFillSize <= _ref ? ++_j : --_j) {
         buffer[i - bufferFillSize] = buffer[i];
       }
       input = e.inputBuffer.getChannelData(0);
-      _results = [];
       for (i = _k = 0, _ref1 = input.length; 0 <= _ref1 ? _k < _ref1 : _k > _ref1; i = 0 <= _ref1 ? ++_k : --_k) {
-        _results.push(buffer[buffer.length - (bufferFillSize + i)] = input[i]);
+        buffer[buffer.length - (bufferFillSize + i)] = input[i];
+      }
+      output = e.outputBuffer.getChannelData(0);
+      _results = [];
+      for (i = _l = 0, _ref2 = buffer.length; 0 <= _ref2 ? _l < _ref2 : _l > _ref2; i = 0 <= _ref2 ? ++_l : --_l) {
+        _results.push(output[i] = buffer);
       }
       return _results;
     };
@@ -89,7 +93,7 @@
           width = (canvas.width - 100) / (fft.spectrum.length - 20);
           _results1 = [];
           for (i = _l = 10, _ref3 = fft.spectrum.length - 10; 10 <= _ref3 ? _l < _ref3 : _l > _ref3; i = 10 <= _ref3 ? ++_l : --_l) {
-            _results1.push(context.fillRect(width * i + 1, canvas.height - 10, width, -Math.pow(buffer[i], 2)));
+            _results1.push(context.fillRect(width * i + 1, canvas.height / 2, width, 10000 * buffer[i]));
           }
           return _results1;
         }
