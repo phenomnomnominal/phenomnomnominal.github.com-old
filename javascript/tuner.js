@@ -160,16 +160,20 @@
             }
             return _results;
           })();
-          firstFreq = peaks[0].x * (sampleRate / fftSize);
-          secondFreq = peaks[1].x * (sampleRate / fftSize);
-          thirdFreq = peaks[2].x * (sampleRate / fftSize);
           peak = null;
-          if ((1.4 < (_ref4 = firstFreq / secondFreq) && _ref4 < 1.6)) {
-            peak = peaks[1];
-          } else if ((1.4 < (_ref5 = firstFreq / thirdFreq) && _ref5 < 1.6)) {
+          firstFreq = peaks[0].x * (sampleRate / fftSize);
+          if (peaks.length > 1) {
+            secondFreq = peaks[1].x * (sampleRate / fftSize);
+            if ((1.4 < (_ref4 = firstFreq / secondFreq) && _ref4 < 1.6)) {
+              peak = peaks[1];
+            } else if ((1.9 < (_ref5 = firstFreq / secondFreq) && _ref5 < 2.1)) {
+              peak = peaks[1];
+            }
+          }
+          if (peaks.length > 2) {
+            thirdFreq = peaks[2].x * (sampleRate / fftSize);
+          } else if ((1.4 < (_ref6 = firstFreq / thirdFreq) && _ref6 < 1.6)) {
             peak = peaks[2];
-          } else if ((1.9 < (_ref6 = firstFreq / secondFreq) && _ref6 < 2.1)) {
-            peak = peaks[1];
           } else if ((1.9 < (_ref7 = firstFreq / thirdFreq) && _ref7 < 2.1)) {
             peak = peaks[2];
           } else {
@@ -184,9 +188,6 @@
             y: fft.spectrum[peak.x + 1]
           };
           freq = parabolicInterp(left, peak, right);
-          if ((320 < freq && freq < 340)) {
-            debugger;
-          }
           console.log('F: ', freq);
         }
         context.fillStyle = '#F77';
