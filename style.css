@@ -297,6 +297,17 @@
   padding-top: 200px;
 }
 
+.tuner div {
+  color: #EEE;
+  font-family: Lekton;
+  height: 100px;
+  left: 40%;
+  line-height: 100px;
+  position: absolute;
+  top: 200px;
+  width: 20%;
+}
+
 .container {
   position: fixed;
   left: 0px;
