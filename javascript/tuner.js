@@ -53,8 +53,8 @@
       canvas.height = $('.tuner').height();
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
-      maxTime = -Infinity;
-      maxFreq = -Infinity;
+      maxTime = 0;
+      maxFreq = 0;
       noise = [];
       noiseCount = 0;
       fillBuffer = function() {};
@@ -90,7 +90,7 @@
           } else {
             return max;
           }
-        }), 0);
+        }), -Infinity);
         maxTime = newMaxTime > maxTime ? newMaxTime : maxTime;
         context.fillStyle = '#EEE';
         timeWidth = (canvas.width - 100) / upsampled.length;
@@ -107,7 +107,7 @@
           } else {
             return max;
           }
-        }), 0);
+        }), -Infinity);
         console.log(index);
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
