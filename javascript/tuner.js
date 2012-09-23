@@ -3,7 +3,7 @@
   var Tuner, root;
 
   Tuner = function() {
-    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, hamming, hp, i, lp, options, sampleRate, success, temp, _i, _ref;
+    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, hamming, hp, i, lp, options, sampleRate, success, _i, _ref;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
     sampleRate = audioContext.sampleRate;
@@ -23,7 +23,6 @@
     for (i = _i = 0, _ref = fftSize / 2; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
       buffer[i] = 0;
     }
-    temp = 0;
     bufferFillSize = 1024;
     bufferFiller = audioContext.createJavaScriptNode(bufferFillSize, 1, 1);
     bufferFiller.onaudioprocess = function(e) {
@@ -33,8 +32,8 @@
       }
       input = e.inputBuffer.getChannelData(0);
       for (i = _k = 0, _ref2 = input.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
-        temp = input[i];
-        buffer[buffer.length - (bufferFillSize + i)] = temp;
+        buffer[buffer.length - (bufferFillSize + i)] = input[0];
+        console.log(buffer[buffer.length - (bufferFillSize + 1)]);
       }
       return console.log(buffer);
     };
