@@ -92,7 +92,7 @@
           return _results;
         } else {
           denoised = [];
-          for (s = _n = 0, _ref4 = upsampled.length; 0 <= _ref4 ? _n < _ref4 : _n > _ref4; s = 0 <= _ref4 ? ++_n : --_n) {
+          for (s = _n = 0, _ref4 = upsampled.length; _n < _ref4; s = _n += 4) {
             denoised.push(upsampled[s] - noise[s]);
           }
           fft.forward(denoised);
@@ -104,7 +104,7 @@
           width = (canvas.width - 100) / (fft.spectrum.length - 20);
           _results1 = [];
           for (i = _o = 10, _ref5 = fft.spectrum.length - 10; 10 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 10 <= _ref5 ? ++_o : --_o) {
-            _results1.push(context.fillRect(width * i + 1, canvas.height / 2, width, 10000 * buffer[i]));
+            _results1.push(context.fillRect(width * i + 1, canvas.height / 2, width, 10000 * denoised[i]));
           }
           return _results1;
         }
