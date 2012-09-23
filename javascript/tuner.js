@@ -165,7 +165,7 @@
         return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
       };
       data = function() {
-        var b, bufferCopy, diff, downsampled, f, firstFreq, freq, freqWidth, left, newMaxTime, note, p, peak, peaks, q, right, s, secondFreq, spectrumPoints, thirdFreq, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _results;
+        var b, bufferCopy, diff, downsampled, f, freq, freqWidth, left, newMaxTime, note, p, peak, peaks, q, right, s, spectrumPoints, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -265,19 +265,9 @@
           })();
           maxPeaks = maxPeaks < peaks.length ? peaks.length : maxPeaks;
           peak = null;
-          firstFreq = peaks[0].x * (sampleRate / fftSize);
-          if (peaks.length > 1) {
-            secondFreq = peaks[1].x * (sampleRate / fftSize);
-            if ((1.4 < (_ref4 = firstFreq / secondFreq) && _ref4 < 1.6)) {
-              peak = peaks[1];
-            }
-          }
-          if (peaks.length > 2) {
-            thirdFreq = peaks[2].x * (sampleRate / fftSize);
-            if ((1.4 < (_ref5 = firstFreq / thirdFreq) && _ref5 < 1.6)) {
-              peak = peaks[2];
-            }
-          }
+          peaks.sort(function(a, b) {
+            return a.x - b.x;
+          });
           if (peaks.length > 1 || maxPeaks === 1) {
             if (!(peak != null)) {
               peak = peaks[0];
@@ -291,7 +281,7 @@
               y: fft.spectrum[peak.x + 1]
             };
             freq = parabolicInterp(left, peak, right);
-            _ref6 = getPitch(freq), note = _ref6[0], diff = _ref6[1];
+            _ref4 = getPitch(freq), note = _ref4[0], diff = _ref4[1];
             console.log('Note: ', note);
             console.log('Diff: ', diff);
           }
@@ -302,7 +292,7 @@
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         _results = [];
-        for (f = _p = 10, _ref7 = (fft.spectrum.length / 4) - 10; 10 <= _ref7 ? _p < _ref7 : _p > _ref7; f = 10 <= _ref7 ? ++_p : --_p) {
+        for (f = _p = 10, _ref5 = (fft.spectrum.length / 4) - 10; 10 <= _ref5 ? _p < _ref5 : _p > _ref5; f = 10 <= _ref5 ? ++_p : --_p) {
           _results.push(context.fillRect(freqWidth * f, canvas.height / 2, freqWidth, -Math.pow(1e4 * fft.spectrum[f], 2)));
         }
         return _results;
