@@ -112,7 +112,7 @@
           for (i = _o = 0, _ref5 = fft.spectrum.length; 0 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 0 <= _ref5 ? ++_o : --_o) {
             context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (denoised[i] / max));
           }
-          freqWidth = (canvas.width - 100) / 2;
+          freqWidth = (canvas.width - 100) / (fft.spectrum.length / 2);
           context.fillStyle = '#F77';
           _results1 = [];
           for (i = _p = 10, _ref6 = fft.spectrum.length / 2; 10 <= _ref6 ? _p < _ref6 : _p > _ref6; i = 10 <= _ref6 ? ++_p : --_p) {
