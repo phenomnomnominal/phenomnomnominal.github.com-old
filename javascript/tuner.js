@@ -165,7 +165,7 @@
         return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
       };
       data = function() {
-        var b, bufferCopy, diff, display, displayStr, downsampled, f, firstFreq, freq, freqWidth, left, newMaxTime, note, p, peak, peaks, pitch, q, right, s, secondFreq, spectrumPoints, thirdFreq, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _results;
+        var b, bufferCopy, diff, display, displayStr, downsampled, f, firstFreq, freq, freqWidth, left, newMaxTime, noiseThrehold, note, p, peak, peaks, pitch, q, right, s, secondFreq, spectrumPoints, thirdFreq, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _results;
         display = $('.tuner div');
         display.removeClass();
         bufferCopy = (function() {
@@ -213,6 +213,7 @@
               return max;
             }
           }), noiseThreshold);
+          noiseThrehold = noiseThreshold > 0.001 ? 0.001 : noiseThreshold;
           noiseCount++;
         }
         spectrumPoints = (function() {
@@ -308,7 +309,7 @@
             displayStr = '';
             displayStr += diff < -0.25 ? '> ' : '  ';
             displayStr += pitch;
-            displayStr += diff > 0.25 ? '< ' : '  ';
+            displayStr += diff > 0.25 ? ' <' : '  ';
             display.text(displayStr);
           }
         } else {
