@@ -62,7 +62,35 @@
       noiseCount = 0;
       noiseThreshold = -Infinity;
       parabolicInterp = function(left, peak, right) {
-        return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
+        var n, notes;
+        n = (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
+        n = n % 12;
+        notes = {
+          '-11': 'A#',
+          '-10': 'B',
+          '-9': 'C',
+          '-8': 'C#',
+          '-7': 'D',
+          '-6': 'D#',
+          '-5': 'E',
+          '-4': 'F',
+          '-3': 'F#',
+          '-2': 'G',
+          '-1': 'G#',
+          '0': 'A',
+          '1': 'A#',
+          '2': 'B',
+          '3': 'C',
+          '4': 'C#',
+          '5': 'D',
+          '6': 'D#',
+          '7': 'E',
+          '8': 'F',
+          '9': 'F#',
+          '10': 'G',
+          '11': 'G#'
+        };
+        return notes[n];
       };
       data = function() {
         var b, bufferCopy, downsampled, f, firstFreq, freq, freqWidth, left, newMaxTime, p, peak, peaks, q, right, s, secondFreq, spectrumPoints, thirdFreq, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _results;
