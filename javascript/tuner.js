@@ -167,26 +167,26 @@
             if ((1.4 < (_ref4 = firstFreq / secondFreq) && _ref4 < 1.6)) {
               peak = peaks[1];
             }
-          }
-          if (peaks.length > 2) {
-            thirdFreq = peaks[2].x * (sampleRate / fftSize);
-            if ((1.4 < (_ref5 = firstFreq / thirdFreq) && _ref5 < 1.6)) {
-              peak = peaks[2];
+            if (peaks.length > 2) {
+              thirdFreq = peaks[2].x * (sampleRate / fftSize);
+              if ((1.4 < (_ref5 = firstFreq / thirdFreq) && _ref5 < 1.6)) {
+                peak = peaks[2];
+              }
             }
+            if (!(peak != null)) {
+              peak = peaks[0];
+            }
+            left = {
+              x: peak.x - 1,
+              y: fft.spectrum[peak.x - 1]
+            };
+            right = {
+              x: peak.x + 1,
+              y: fft.spectrum[peak.x + 1]
+            };
+            freq = parabolicInterp(left, peak, right);
+            console.log('F: ', freq);
           }
-          if (!(peak != null)) {
-            peak = peaks[0];
-          }
-          left = {
-            x: peak.x - 1,
-            y: fft.spectrum[peak.x - 1]
-          };
-          right = {
-            x: peak.x + 1,
-            y: fft.spectrum[peak.x + 1]
-          };
-          freq = parabolicInterp(left, peak, right);
-          console.log('F: ', freq);
         }
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
