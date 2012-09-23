@@ -278,7 +278,7 @@
               peak = peaks[2];
             }
           }
-          if (peaks.length > 2 || maxPeaks === 1) {
+          if (peaks.length > 1 || maxPeaks === 1) {
             if (!(peak != null)) {
               peak = peaks[0];
             }
@@ -298,6 +298,7 @@
         } else {
           maxPeaks = 0;
         }
+        console.log('MAX PEAKS: ', maxPeaks);
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         _results = [];
