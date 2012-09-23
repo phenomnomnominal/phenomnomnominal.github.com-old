@@ -62,7 +62,7 @@
         return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
       };
       data = function() {
-        var b, bufferCopy, downsampled, f, firstFreq, freq, freqWidth, left, newMaxTime, p, peak, peaks, right, s, secondFreq, spectrumPoints, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results;
+        var b, bufferCopy, downsampled, f, firstFreq, freq, freqWidth, left, n, newMaxTime, p, peak, peaks, right, s, secondFreq, spectrumPoints, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -139,9 +139,13 @@
         }
         if (peaks.length > 0) {
           for (p = _n = 0, _ref2 = peaks.length; 0 <= _ref2 ? _n < _ref2 : _n > _ref2; p = 0 <= _ref2 ? ++_n : --_n) {
-            if ((peaks[p] != null) && (peaks[p + 1] != null)) {
-              if ((peaks[p + 1].x === peaks[p].x + 1) || (peaks[p + 1].x === peaks[p].x - 1)) {
-                peaks[p + 1] = null;
+            if (peaks[p] != null) {
+              n = 1;
+              while (!(peaks[p + n] != null) || (p + n > peaks.length)) {
+                n++;
+              }
+              if ((peaks[p + n].x === peaks[p].x + 1) || (peaks[p + n].x === peaks[p].x - 1)) {
+                peaks[p + n] = null;
               }
             }
           }
