@@ -107,15 +107,15 @@
           if (Math.log(next) > max) {
             left = {
               x: count - 1,
-              y: (count - 1) * (downsampleRate / fftSize)
+              y: (count - 1) * (sampleRate / fftSize)
             };
             peak = {
               x: count,
-              y: count * (downsampleRate / fftSize)
+              y: count * (sampleRate / fftSize)
             };
             right = {
               x: count + 1,
-              y: (count + 1) * (downsampleRate / fftSize)
+              y: (count + 1) * (sampleRate / fftSize)
             };
             return Math.log(next);
           } else {
@@ -123,7 +123,7 @@
           }
         }), -Infinity);
         parabolicInterp = function(left, peak, right) {
-          return (((right.y - left.y) / (2 * (2 * peak.y - left.y - right.y))) + peak.x) * (downsampleRate / fftSize);
+          return ((0.5 * ((left.y - right.y) / left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
         };
         f = parabolicInterp(left, peak, right);
         console.log('F: ', f);
