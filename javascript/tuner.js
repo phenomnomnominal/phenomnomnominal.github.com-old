@@ -123,10 +123,9 @@
         })();
         spectrumPoints.sort(function(a, b) {
           if (a.y > b.y) {
-            -1;
+            return -1;
           } else if (a.y === b.y) {
-            0;
-
+            return 0;
           }
           if (a.y < b.y) {
             return 1;
@@ -141,13 +140,10 @@
         if (peaks.length > 0) {
           peaks.sort(function(a, b) {
             if (a.x < b.x) {
-              -1;
-            }
-            if (a.x === b.x) {
-              0;
-
-            }
-            if (a.x > b.x) {
+              return -1;
+            } else if (a.x === b.x) {
+              return 0;
+            } else if (a.x > b.x) {
               return 1;
             }
           });
