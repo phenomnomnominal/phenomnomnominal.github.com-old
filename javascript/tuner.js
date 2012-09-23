@@ -314,7 +314,6 @@
           }
         } else {
           maxPeaks = 0;
-          display.text('');
         }
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
