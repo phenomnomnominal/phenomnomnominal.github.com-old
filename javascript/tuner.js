@@ -8,7 +8,7 @@
     audioContext = new AudioContext();
     sampleRate = audioContext.sampleRate;
     downsampleRate = sampleRate / 4;
-    fftSize = 16394;
+    fftSize = 16384;
     fft = new FFT(fftSize, downsampleRate);
     hamming = new WindowFunction(DSP.HAMMING);
     lp = audioContext.createBiquadFilter();
