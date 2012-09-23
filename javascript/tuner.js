@@ -62,7 +62,7 @@
         return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
       };
       data = function() {
-        var bufferCopy, downsampled, f, freqWidth, newMaxTime, p, peak, peaks, s, spectrumPoints, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _ref, _ref1, _ref2, _results;
+        var bufferCopy, downsampled, f, freqWidth, left, newMaxTime, p, peak, peaks, right, s, spectrumPoints, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _ref, _ref1, _ref2, _results;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -138,20 +138,28 @@
             peaks.push(spectrumPoints[p]);
           }
         }
-        peaks.sort(function(a, b) {
-          if (a.x < b.x) {
-            -1;
-          }
-          if (a.x === b.x) {
-            0;
+        if (peaks.length > 0) {
+          peaks.sort(function(a, b) {
+            if (a.x < b.x) {
+              -1;
+            }
+            if (a.x === b.x) {
+              0;
 
-          }
-          if (a.x > b.x) {
-            return 1;
-          }
-        });
-        peak = peaks[0];
-        if (fft.spectrum[peak.x] > noiseThreshold * 2) {
+            }
+            if (a.x > b.x) {
+              return 1;
+            }
+          });
+          peak = peaks[0];
+          left = {
+            x: peak.x - 1,
+            y: fft.spectrum[peak.x - 1]
+          };
+          right = {
+            x: peak.x + 1,
+            y: fft.spectrum[peak.x + 1]
+          };
           f = parabolicInterp(left, peak, right);
           console.log('F: ', f);
         }
