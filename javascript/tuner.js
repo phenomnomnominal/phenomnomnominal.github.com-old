@@ -42,7 +42,7 @@
       video: false
     };
     success = function(stream) {
-      var canvas, context, data, fillBuffer, noise, noiseCount, src;
+      var canvas, context, data, fillBuffer, max, noise, noiseCount, src;
       src = audioContext.createMediaStreamSource(stream);
       src.connect(lp);
       lp.connect(hp);
@@ -53,11 +53,12 @@
       canvas.height = $('.tuner').height();
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
+      max = 0;
       noise = [];
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var average, denoised, downsampled, f, freqWidth, mag2db, max, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _results, _results1;
+        var average, denoised, downsampled, f, freqWidth, mag2db, newMax, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _results, _results1;
         downsampled = [];
         for (s = _j = 0, _ref = buffer.length; _j < _ref; s = _j += 4) {
           downsampled.push(buffer[s]);
@@ -100,22 +101,23 @@
           mag2db = function(n) {
             return 20 * (Math.log(n) / Math.log(10));
           };
-          max = _.reduce(denoised, (function(max, next) {
+          newMax = _.reduce(denoised, (function(max, next) {
             if (Math.abs(next) > max) {
               return Math.abs(next);
             } else {
               return max;
             }
           }), 0);
-          timeWidth = (canvas.width - 100) / fft.spectrum.length;
+          max = newMax > max ? newMax : max;
+          timeWidth = (canvas.width - 100) / denoised.length;
           context.fillStyle = '#EEE';
-          for (i = _o = 0, _ref5 = fft.spectrum.length; 0 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 0 <= _ref5 ? ++_o : --_o) {
+          for (i = _o = 0, _ref5 = denoised.length; 0 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 0 <= _ref5 ? ++_o : --_o) {
             context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (denoised[i] / max));
           }
           freqWidth = (canvas.width - 100) / (fft.spectrum.length / 2);
           context.fillStyle = '#F77';
           _results1 = [];
-          for (i = _p = 10, _ref6 = fft.spectrum.length / 2; 10 <= _ref6 ? _p < _ref6 : _p > _ref6; i = 10 <= _ref6 ? ++_p : --_p) {
+          for (i = _p = 10, _ref6 = (fft.spectrum.length / 2) - 10; 10 <= _ref6 ? _p < _ref6 : _p > _ref6; i = 10 <= _ref6 ? ++_p : --_p) {
             _results1.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.abs(mag2db(fft.spectrum[i] - noise[i]))));
           }
           return _results1;
