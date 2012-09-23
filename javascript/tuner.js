@@ -58,11 +58,20 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var downsampled, freqWidth, newMax, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _results;
-        hamming.process(buffer);
+        var bufferCopy, downsampled, freqWidth, newMax, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _results;
+        bufferCopy = (function() {
+          var _j, _len, _results;
+          _results = [];
+          for (_j = 0, _len = buffer.length; _j < _len; _j++) {
+            s = buffer[_j];
+            _results.push(s);
+          }
+          return _results;
+        })();
+        hamming.process(bufferCopy);
         downsampled = [];
-        for (s = _j = 0, _ref = buffer.length; _j < _ref; s = _j += 4) {
-          downsampled.push(buffer[s]);
+        for (s = _j = 0, _ref = bufferCopy.length; _j < _ref; s = _j += 4) {
+          downsampled.push(bufferCopy[s]);
         }
         upsampled = [];
         for (_k = 0, _len = downsampled.length; _k < _len; _k++) {
