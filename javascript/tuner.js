@@ -57,7 +57,7 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var average, f, mag2db, s, upsampled, width, zeroPad, _j, _k, _l, _m, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1;
+        var average, f, mag2db, s, upsampled, width, zeroPad, _j, _k, _l, _m, _ref1, _ref2, _ref3, _ref4, _ref5, _results;
         hamming.process(buffer);
         zeroPad = function(a, n) {
           var _j, _results;
@@ -84,19 +84,14 @@
         } else if (noiseCount === 10) {
           noiseCount++;
           average = function(arr) {
-            var sum, _l, _len;
-            sum = 0;
-            for (_l = 0, _len = arr.length; _l < _len; _l++) {
-              i = arr[_l];
-              sum += i;
-            }
-            return sum / arr.length;
+            return (_.reduce(arr, (function(sum, next) {
+              return sum + next;
+            }), 0)) / arr.length;
           };
-          _results = [];
           for (f = _l = 0, _ref4 = fft.spectrum.length; 0 <= _ref4 ? _l < _ref4 : _l > _ref4; f = 0 <= _ref4 ? ++_l : --_l) {
-            _results.push(noise[f] = average(noise[f]));
+            noise[f] = average(noise[f]);
           }
-          return _results;
+          return bufferFiller.onaudioprocess = fillBuffer;
         } else {
           context.clearRect(0, 0, canvas.width, canvas.height);
           context.fillStyle = '#EEE';
@@ -104,11 +99,11 @@
           mag2db = function(n) {
             return 20 * (Math.log(n) / Math.log(10));
           };
-          _results1 = [];
+          _results = [];
           for (i = _m = 10, _ref5 = fft.spectrum.length - 10; 10 <= _ref5 ? _m < _ref5 : _m > _ref5; i = 10 <= _ref5 ? ++_m : --_m) {
-            _results1.push(context.fillRect(width * i + 1, canvas.height - 10, width, -mag2db(fft.spectrum[i] - noise[i])));
+            _results.push(context.fillRect(width * i + 1, canvas.height - 10, width, -mag2db(fft.spectrum[i] - noise[i])));
           }
-          return _results1;
+          return _results;
         }
       };
       return setInterval(data, 25);
