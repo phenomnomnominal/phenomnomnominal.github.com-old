@@ -142,7 +142,7 @@
             if (peaks[p] != null) {
               for (q = _o = 0, _ref3 = peaks.length; 0 <= _ref3 ? _o < _ref3 : _o > _ref3; q = 0 <= _ref3 ? ++_o : --_o) {
                 if (p !== q && (peaks[q] != null)) {
-                  if ((peaks[q].x === peaks[p].x + 1) || (peaks[q].x === peaks[p].x - 1)) {
+                  if (Math.abs(peaks[p].x - peaks[q].x) < 5) {
                     peaks[q] = null;
                   }
                 }
