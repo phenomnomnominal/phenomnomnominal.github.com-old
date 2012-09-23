@@ -297,6 +297,7 @@
             _ref6 = getPitch(freq), note = _ref6[0], diff = _ref6[1];
             pitch = note.replace(/[0-9]*/g, '');
             display = $('.tuner div');
+            display.removeClass();
             if (Math.abs(diff) < 0.25) {
               display.removeClass('outTune');
               display.addClass('inTune');
@@ -307,7 +308,8 @@
             displayStr = '';
             displayStr += diff < -0.25 ? '> ' : '  ';
             displayStr += pitch;
-            displayStr += diff > 0.25 ? '< ' : '  '.text(displayStr);
+            displayStr += diff > 0.25 ? '< ' : '  ';
+            display.text(displayStr);
           }
         } else {
           maxPeaks = 0;
