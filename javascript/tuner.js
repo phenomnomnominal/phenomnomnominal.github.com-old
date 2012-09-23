@@ -42,7 +42,7 @@
       video: false
     };
     success = function(stream) {
-      var canvas, context, data, fillBuffer, max, noise, noiseCount, src;
+      var canvas, context, data, fillBuffer, maxFreq, maxTime, noise, noiseCount, src;
       src = audioContext.createMediaStreamSource(stream);
       src.connect(lp);
       lp.connect(hp);
@@ -53,12 +53,13 @@
       canvas.height = $('.tuner').height();
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
-      max = 0;
+      maxTime = 0;
+      maxFreq = 0;
       noise = [];
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var bufferCopy, downsampled, freqWidth, newMax, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _results;
+        var bufferCopy, downsampled, freqWidth, newFreqTime, newMaxTime, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _results;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -83,24 +84,32 @@
         }
         fft.forward(upsampled);
         context.clearRect(0, 0, canvas.width, canvas.height);
-        newMax = _.reduce(upsampled, (function(max, next) {
+        newMaxTime = _.reduce(upsampled, (function(max, next) {
           if (Math.abs(next) > max) {
             return Math.abs(next);
           } else {
             return max;
           }
         }), 0);
-        max = newMax > max ? newMax : max;
+        maxTime = newMaxTime > maxTime ? newMaxTime : maxTime;
         context.fillStyle = '#EEE';
         timeWidth = (canvas.width - 100) / upsampled.length;
         for (i = _l = 0, _ref1 = upsampled.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; i = 0 <= _ref1 ? ++_l : --_l) {
-          context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (upsampled[i] / max));
+          context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (upsampled[i] / maxTime));
         }
+        newFreqTime = _.reduce(fft.spectrum, (function(max, next) {
+          if (Math.abs(next) > max) {
+            return Math.abs(next);
+          } else {
+            return max;
+          }
+        }), 0);
+        maxFreq = newFreqTime > maxFreq ? newFreqTime : maxFreq;
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         _results = [];
         for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
-          _results.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -50000 * Math.abs(fft.spectrum[i])));
+          _results.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -((Math.abs(fft.spectrum[i])) / maxFreq)));
         }
         return _results;
       };
