@@ -133,7 +133,7 @@
         });
         peaks = [];
         for (p = _m = 0; _m < 10; p = ++_m) {
-          if (spectrumPoints[p] > noiseThreshold * 2) {
+          if (spectrumPoints[p].y > noiseThreshold * 2) {
             peaks.push(spectrumPoints[p]);
           }
         }
