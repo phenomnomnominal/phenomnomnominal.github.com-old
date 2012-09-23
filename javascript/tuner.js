@@ -85,7 +85,7 @@
         }
         fft.forward(upsampled);
         context.clearRect(0, 0, canvas.width, canvas.height);
-        newMaxTime = _.reduce(upsampled, (function(max, next) {
+        newMaxTime = _.reduce(buffer, (function(max, next) {
           if (Math.abs(next) > max) {
             return Math.abs(next);
           } else {
@@ -96,7 +96,7 @@
         context.fillStyle = '#EEE';
         timeWidth = (canvas.width - 100) / upsampled.length;
         for (i = _l = 0, _ref1 = upsampled.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; i = 0 <= _ref1 ? ++_l : --_l) {
-          context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (upsampled[i] / maxTime));
+          context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (buffer[i] / maxTime));
         }
         count = -1;
         left = 0;
