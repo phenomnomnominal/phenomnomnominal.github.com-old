@@ -4,9 +4,10 @@
     __hasProp = {}.hasOwnProperty;
 
   Tuner = function() {
-    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, frequencies, gauss, getPitch, hp, i, lp, options, sampleRate, success, _i;
+    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, fft, fftSize, frequencies, gauss, getPitch, hp, i, lp, sampleRate, success, _i;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
+    analyser = audioContext.createAnalyser();
     sampleRate = audioContext.sampleRate;
     downsampleRate = sampleRate / 4;
     fftSize = 8192;
@@ -37,11 +38,6 @@
         _results.push(buffer[buffer.length - bufferFillSize + b] = input[b]);
       }
       return _results;
-    };
-    analyser = audioContext.createAnalyser();
-    options = {
-      audio: true,
-      video: false
     };
     frequencies = {
       'A0': 27.5,
@@ -311,10 +307,11 @@
       };
       return setInterval(data, 100);
     };
-    error = function(e) {
-      return console.log(e);
-    };
-    return navigator.getUserMedia(options, success, error);
+    return navigator.getUserMedia({
+      audio: true
+    }, success, (function(e) {
+      throw e;
+    }));
   };
 
   $(function() {
@@ -322,8 +319,9 @@
       if (!window.webkitAudioContext) {
         throw Error('SHITTY BROWSER');
       }
-      return window.AudioContext = window.webkitAudioContext;
+      window.AudioContext = window.webkitAudioContext;
     }
+    return $(window).resize(function() {});
   });
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
