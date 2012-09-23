@@ -138,8 +138,8 @@
           }
         }
         if (peaks.length > 0) {
-          firstFreq = peaks[0].x;
-          secondFreq = peaks[1].x;
+          firstFreq = peaks[0].x * (sampleRate / fftSize);
+          secondFreq = peaks[1].x * (sampleRate / fftSize);
           peak = null;
           if ((1.4 < (_ref2 = firstFreq / secondFreq) && _ref2 < 1.6)) {
             peak = peaks[1];
