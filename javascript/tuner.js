@@ -101,9 +101,9 @@
         index = 0;
         maxFreq = _.reduce(fft.spectrum, (function(max, next) {
           index++;
-          if (Math.log(next) > max) {
+          if (Math.log(Math.abs(next)) > max) {
             index = count;
-            return Math.log(next);
+            return Math.log(Math.abs(next));
           } else {
             return max;
           }
