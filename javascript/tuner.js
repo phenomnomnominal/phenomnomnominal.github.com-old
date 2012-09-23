@@ -3,7 +3,7 @@
   var Tuner, root;
 
   Tuner = function() {
-    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, hamming, hp, i, lp, options, sampleRate, success, _i, _ref;
+    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, fillBuffer, hamming, hp, i, lp, options, sampleRate, success, _i, _ref;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
     sampleRate = audioContext.sampleRate;
@@ -25,7 +25,7 @@
     }
     bufferFillSize = 1024;
     bufferFiller = audioContext.createJavaScriptNode(bufferFillSize, 1, 1);
-    bufferFiller.onaudioprocess = function(e) {
+    fillBuffer = function(e) {
       var input, _j, _k, _ref1, _ref2;
       for (i = _j = bufferFillSize, _ref1 = buffer.length; bufferFillSize <= _ref1 ? _j < _ref1 : _j > _ref1; i = bufferFillSize <= _ref1 ? ++_j : --_j) {
         buffer[i - bufferFillSize] = buffer[i];
@@ -42,7 +42,7 @@
       video: false
     };
     success = function(stream) {
-      var canvas, context, data, fillBuffer, noise, noiseCount, src;
+      var canvas, context, data, noise, noiseCount, src;
       src = audioContext.createMediaStreamSource(stream);
       src.connect(lp);
       lp.connect(hp);
