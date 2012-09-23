@@ -33,7 +33,6 @@
       input = e.inputBuffer.getChannelData(0);
       for (i = _k = 0, _ref2 = input.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
         buffer[buffer.length - (bufferFillSize + i)] = input[0];
-        console.log(buffer[buffer.length - (bufferFillSize + 1)]);
       }
       return console.log(buffer);
     };
