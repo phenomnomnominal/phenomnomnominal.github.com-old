@@ -30,13 +30,15 @@
       var input, _j, _k, _ref1, _ref2;
       for (i = _j = bufferFillSize, _ref1 = buffer.length; bufferFillSize <= _ref1 ? _j < _ref1 : _j > _ref1; i = bufferFillSize <= _ref1 ? ++_j : --_j) {
         buffer[i - bufferFillSize] = buffer[i];
+        buffer2[i - bufferFillSize] = buffer2[i];
       }
       input = e.inputBuffer.getChannelData(0);
       for (i = _k = 0, _ref2 = input.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
-        buffer2.push(input[i]);
+        buffer2[buffer.length - (bufferFillSize + i)] = input[i];
         buffer[buffer.length - (bufferFillSize + i)] = input[i];
       }
-      return console.log(buffer);
+      console.log(buffer);
+      return console.log(buffer2);
     };
     analyser = audioContext.createAnalyser();
     options = {
