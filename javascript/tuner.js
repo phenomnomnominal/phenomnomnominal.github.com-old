@@ -44,7 +44,7 @@
     };
     getPitch = function(freq) {
       var n, notes;
-      n = Math.round(Math.log(freq) / Math.log(440)) / Math.log(Math.pow(2, 1 / 12));
+      n = Math.round((Math.log(freq) / Math.log(440)) / Math.log(Math.pow(2, 1 / 12)));
       n = n % 12;
       notes = {
         '-11': 'A#',
