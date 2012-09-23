@@ -62,7 +62,7 @@
         return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
       };
       data = function() {
-        var bufferCopy, downsampled, f, firstFreq, freqWidth, left, newMaxTime, p, peak, peaks, right, s, secondFreq, spectrumPoints, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _ref, _ref1, _ref2, _ref3, _ref4, _results;
+        var bufferCopy, downsampled, f, firstFreq, freqWidth, left, newMaxTime, p, peak, peaks, right, s, secondFreq, spectrumPoints, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -138,12 +138,30 @@
           }
         }
         if (peaks.length > 0) {
+          for (i = _n = 0, _ref2 = peaks.length; 0 <= _ref2 ? _n < _ref2 : _n > _ref2; i = 0 <= _ref2 ? ++_n : --_n) {
+            if (peaks[i] != null) {
+              if ((peaks[i + 1].x === peaks[i].x + 1) || (peaks[i + 1].x === peaks[i].x - 1)) {
+                peaks[i + 1] = null;
+              }
+            }
+          }
+          peaks = (function() {
+            var _len1, _o, _results;
+            _results = [];
+            for (_o = 0, _len1 = peaks.length; _o < _len1; _o++) {
+              p = peaks[_o];
+              if (p != null) {
+                _results.push(p);
+              }
+            }
+            return _results;
+          })();
           firstFreq = peaks[0].x * (sampleRate / fftSize);
           secondFreq = peaks[1].x * (sampleRate / fftSize);
           peak = null;
-          if ((1.4 < (_ref2 = firstFreq / secondFreq) && _ref2 < 1.6)) {
+          if ((1.4 < (_ref3 = firstFreq / secondFreq) && _ref3 < 1.6)) {
             peak = peaks[1];
-          } else if ((1.9 < (_ref3 = firstFreq / secondFreq) && _ref3 < 2.1)) {
+          } else if ((1.9 < (_ref4 = firstFreq / secondFreq) && _ref4 < 2.1)) {
             peak = peaks[1];
           } else {
             peak = peaks[0];
@@ -165,7 +183,7 @@
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         _results = [];
-        for (i = _n = 10, _ref4 = (fft.spectrum.length / 4) - 10; 10 <= _ref4 ? _n < _ref4 : _n > _ref4; i = 10 <= _ref4 ? ++_n : --_n) {
+        for (i = _o = 10, _ref5 = (fft.spectrum.length / 4) - 10; 10 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 10 <= _ref5 ? ++_o : --_o) {
           _results.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.pow(5 * fft.spectrum[i], 2)));
         }
         return _results;
