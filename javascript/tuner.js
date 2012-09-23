@@ -241,7 +241,7 @@
           }
         }
         if (peaks.length > 0) {
-          maxPeaks = peaks.length;
+          maxPeaks = maxPeaks < peaks.length ? peaks.length : maxPeaks;
           for (p = _n = 0, _ref2 = peaks.length; 0 <= _ref2 ? _n < _ref2 : _n > _ref2; p = 0 <= _ref2 ? ++_n : --_n) {
             if (peaks[p] != null) {
               for (q = _o = 0, _ref3 = peaks.length; 0 <= _ref3 ? _o < _ref3 : _o > _ref3; q = 0 <= _ref3 ? ++_o : --_o) {
@@ -295,6 +295,8 @@
             console.log('Note: ', note);
             console.log('Diff: ', diff);
           }
+        } else {
+          maxPeaks = 0;
         }
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
