@@ -103,7 +103,7 @@
           index++;
           if (Math.log(next) > max) {
             index = count;
-            return Math.abs(next);
+            return Math.log(next);
           } else {
             return max;
           }
