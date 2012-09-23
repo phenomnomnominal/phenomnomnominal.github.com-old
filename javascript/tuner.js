@@ -123,7 +123,7 @@
           }
         }), -Infinity);
         parabolicInterp = function(left, peak, right) {
-          return ((0.5 * ((left.y - right.y) / left.y - (2 * peak.y) + right.y)) + peak.x) * (downsampleRate / fftSize);
+          return (((right.y - left.y) / (2 * (2 * peak.y - left.y - right.y))) + peak.x) * (downsampleRate / fftSize);
         };
         f = parabolicInterp(left, peak, right);
         console.log('F: ', f);
