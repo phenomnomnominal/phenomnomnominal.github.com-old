@@ -109,7 +109,7 @@
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         _results = [];
         for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
-          _results.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -((Math.abs(fft.spectrum[i])) / maxFreq)));
+          _results.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -(canvas.height / 2) * (Math.abs(fft.spectrum[i]) / maxFreq)));
         }
         return _results;
       };
