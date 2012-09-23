@@ -103,7 +103,7 @@
           };
           _results1 = [];
           for (i = _m = 10, _ref5 = fft.spectrum.length - 10; 10 <= _ref5 ? _m < _ref5 : _m > _ref5; i = 10 <= _ref5 ? ++_m : --_m) {
-            _results1.push(context.fillRect(width * i + 1, canvas.height - 10, width, -mag2db(fft.spectrum[i] - noise[i])));
+            _results1.push(context.fillRect(width * i + 1, canvas.height - 10, width, -(fft.spectrum[i] - noise[i])));
           }
           return _results1;
         }
