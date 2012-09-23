@@ -67,6 +67,8 @@
           s = downsampled[_k];
           upsampled.push(s);
           upsampled.push(0);
+          upsampled.push(0);
+          upsampled.push(0);
         }
         fft.forward(upsampled);
         if (noiseCount < 10) {
