@@ -92,16 +92,16 @@
           }
           return _results;
         } else {
+          fft.forward(upsampled);
           denoised = [];
-          for (s = _n = 0, _ref4 = upsampled.length; 0 <= _ref4 ? _n < _ref4 : _n > _ref4; s = 0 <= _ref4 ? ++_n : --_n) {
-            denoised.push(upsampled[s] - noise[s]);
+          for (s = _n = 0, _ref4 = fft.spectrum.length; 0 <= _ref4 ? _n < _ref4 : _n > _ref4; s = 0 <= _ref4 ? ++_n : --_n) {
+            denoised.push(fft.spectrum[s] - noise[s]);
           }
-          fft.forward(denoised);
           context.clearRect(0, 0, canvas.width, canvas.height);
           mag2db = function(n) {
             return 20 * (Math.log(n) / Math.log(10));
           };
-          newMax = _.reduce(denoised, (function(max, next) {
+          newMax = _.reduce(upsampled, (function(max, next) {
             if (Math.abs(next) > max) {
               return Math.abs(next);
             } else {
@@ -109,16 +109,16 @@
             }
           }), 0);
           max = newMax > max ? newMax : max;
-          timeWidth = (canvas.width - 100) / denoised.length;
+          timeWidth = (canvas.width - 100) / upsampled.length;
           context.fillStyle = '#EEE';
-          for (i = _o = 0, _ref5 = denoised.length; 0 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 0 <= _ref5 ? ++_o : --_o) {
-            context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (denoised[i] / max));
+          for (i = _o = 0, _ref5 = upsampled.length; 0 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 0 <= _ref5 ? ++_o : --_o) {
+            context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (upsampled[i] / max));
           }
-          freqWidth = (canvas.width - 100) / (fft.spectrum.length / 2);
+          freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
           context.fillStyle = '#F77';
           _results1 = [];
-          for (i = _p = 10, _ref6 = (fft.spectrum.length / 2) - 10; 10 <= _ref6 ? _p < _ref6 : _p > _ref6; i = 10 <= _ref6 ? ++_p : --_p) {
-            _results1.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.abs(mag2db(fft.spectrum[i] - noise[i]))));
+          for (i = _p = 10, _ref6 = (denoised.length / 2) - 10; 10 <= _ref6 ? _p < _ref6 : _p > _ref6; i = 10 <= _ref6 ? ++_p : --_p) {
+            _results1.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.abs(mag2db(denoised[i] - noise[i]))));
           }
           return _results1;
         }
