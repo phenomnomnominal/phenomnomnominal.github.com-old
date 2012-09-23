@@ -26,12 +26,13 @@
     bufferFillSize = 1024;
     bufferFiller = audioContext.createJavaScriptNode(bufferFillSize, 1, 1);
     bufferFiller.onaudioprocess = function(e) {
-      var _j, _k, _ref1, _ref2;
+      var input, _j, _k, _ref1, _ref2;
       for (i = _j = bufferFillSize, _ref1 = buffer.length; bufferFillSize <= _ref1 ? _j < _ref1 : _j > _ref1; i = bufferFillSize <= _ref1 ? ++_j : --_j) {
         buffer[i - bufferFillSize] = buffer[i];
       }
-      for (i = _k = 0, _ref2 = e.inputs[1].length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
-        buffer[buffer.length - (bufferFillSize + i)] = e.inputs[1][i];
+      input = e.inputBuffer.getChannelData(1);
+      for (i = _k = 0, _ref2 = input.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
+        buffer[buffer.length - (bufferFillSize + i)] = input[i];
       }
       return console.log(buffer);
     };
