@@ -90,7 +90,7 @@
           for (f = _l = 0, _ref4 = fft.spectrum.length; 0 <= _ref4 ? _l < _ref4 : _l > _ref4; f = 0 <= _ref4 ? ++_l : --_l) {
             noise = average(noise[f]);
           }
-          return noiseCount = null;
+          return noiseCount++;
         } else {
           context.clearRect(0, 0, canvas.width, canvas.height);
           context.fillStyle = '#EEE';
