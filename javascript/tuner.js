@@ -71,12 +71,13 @@
           upsampled.push(0);
           upsampled.push(0);
         }
+        fft.forward(upsampled);
         if (noiseCount < 10) {
-          for (f = _l = 0, _ref1 = upsampled.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; f = 0 <= _ref1 ? ++_l : --_l) {
+          for (f = _l = 0, _ref1 = fft.spectrum.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; f = 0 <= _ref1 ? ++_l : --_l) {
             if ((_ref2 = noise[f]) == null) {
               noise[f] = [];
             }
-            noise[f].push(upsampled[f]);
+            noise[f].push(fft.spectrum[f]);
           }
           return noiseCount++;
         } else if (noiseCount === 10) {
@@ -87,12 +88,11 @@
             }), 0)) / arr.length;
           };
           _results = [];
-          for (f = _m = 0, _ref3 = upsampled.length; 0 <= _ref3 ? _m < _ref3 : _m > _ref3; f = 0 <= _ref3 ? ++_m : --_m) {
+          for (f = _m = 0, _ref3 = fft.spectrum.length; 0 <= _ref3 ? _m < _ref3 : _m > _ref3; f = 0 <= _ref3 ? ++_m : --_m) {
             _results.push(noise[f] = average(noise[f]));
           }
           return _results;
         } else {
-          fft.forward(upsampled);
           denoised = [];
           for (s = _n = 0, _ref4 = fft.spectrum.length; 0 <= _ref4 ? _n < _ref4 : _n > _ref4; s = 0 <= _ref4 ? ++_n : --_n) {
             denoised.push(fft.spectrum[s] - noise[s]);
