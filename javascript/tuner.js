@@ -57,7 +57,7 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var average, downsampled, f, mag2db, s, upsampled, width, _j, _k, _l, _len, _m, _n, _ref, _ref1, _ref2, _ref3, _ref4, _results, _results1;
+        var average, denoised, downsampled, f, mag2db, s, upsampled, width, _j, _k, _l, _len, _m, _n, _o, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1;
         downsampled = [];
         for (s = _j = 0, _ref = buffer.length; _j < _ref; s = _j += 4) {
           downsampled.push(buffer[s]);
@@ -70,13 +70,12 @@
           upsampled.push(0);
           upsampled.push(0);
         }
-        fft.forward(upsampled);
         if (noiseCount < 10) {
-          for (f = _l = 0, _ref1 = fft.spectrum.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; f = 0 <= _ref1 ? ++_l : --_l) {
+          for (f = _l = 0, _ref1 = upsampled.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; f = 0 <= _ref1 ? ++_l : --_l) {
             if ((_ref2 = noise[f]) == null) {
               noise[f] = [];
             }
-            noise[f].push(fft.spectrum[f]);
+            noise[f].push(upsampled[f]);
           }
           return noiseCount++;
         } else if (noiseCount === 10) {
@@ -87,11 +86,16 @@
             }), 0)) / arr.length;
           };
           _results = [];
-          for (f = _m = 0, _ref3 = fft.spectrum.length; 0 <= _ref3 ? _m < _ref3 : _m > _ref3; f = 0 <= _ref3 ? ++_m : --_m) {
+          for (f = _m = 0, _ref3 = upsampled.length; 0 <= _ref3 ? _m < _ref3 : _m > _ref3; f = 0 <= _ref3 ? ++_m : --_m) {
             _results.push(noise[f] = average(noise[f]));
           }
           return _results;
         } else {
+          denoised = [];
+          for (s = _n = 0, _ref4 = upsampled.length; 0 <= _ref4 ? _n < _ref4 : _n > _ref4; s = 0 <= _ref4 ? ++_n : --_n) {
+            denoised.push(upsampled[s] - noise[s]);
+          }
+          fft.forward(denoised);
           context.clearRect(0, 0, canvas.width, canvas.height);
           context.fillStyle = '#EEE';
           mag2db = function(n) {
@@ -99,7 +103,7 @@
           };
           width = (canvas.width - 100) / (fft.spectrum.length - 20);
           _results1 = [];
-          for (i = _n = 10, _ref4 = fft.spectrum.length - 10; 10 <= _ref4 ? _n < _ref4 : _n > _ref4; i = 10 <= _ref4 ? ++_n : --_n) {
+          for (i = _o = 10, _ref5 = fft.spectrum.length - 10; 10 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 10 <= _ref5 ? ++_o : --_o) {
             _results1.push(context.fillRect(width * i + 1, canvas.height / 2, width, 10000 * buffer[i]));
           }
           return _results1;
