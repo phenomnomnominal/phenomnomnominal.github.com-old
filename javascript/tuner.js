@@ -43,7 +43,7 @@
       video: false
     };
     success = function(stream) {
-      var canvas, context, data, fillBuffer, maxFreq, maxTime, noiseCount, noiseThreshold, src;
+      var canvas, context, data, maxFreq, maxTime, noiseCount, noiseThreshold, parabolicInterp, src;
       src = audioContext.createMediaStreamSource(stream);
       src.connect(lp);
       lp.connect(hp);
@@ -58,9 +58,11 @@
       maxFreq = 0;
       noiseCount = 0;
       noiseThreshold = -Infinity;
-      fillBuffer = function() {};
+      parabolicInterp = function(left, peak, right) {
+        return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
+      };
       data = function() {
-        var bufferCopy, count, downsampled, f, freqWidth, left, newMaxTime, parabolicInterp, peak, right, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2;
+        var bufferCopy, downsampled, f, freqWidth, newMaxTime, p, peak, peaks, s, spectrumPoints, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _results;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -108,43 +110,58 @@
           }), noiseThreshold);
           noiseCount++;
         }
-        count = -1;
-        left = 0;
-        peak = 0;
-        right = 0;
-        maxFreq = _.reduce(fft.spectrum, (function(max, next) {
-          count++;
-          if (Math.log(next) > max) {
-            left = {
-              x: count - 1,
-              y: Math.log(fft.spectrum[count - 1])
-            };
-            peak = {
-              x: count,
-              y: Math.log(fft.spectrum[count])
-            };
-            right = {
-              x: count + 1,
-              y: Math.log(fft.spectrum[count + 1])
-            };
-            return Math.log(next);
-          } else {
-            return max;
+        spectrumPoints = (function() {
+          var _m, _ref2, _results;
+          _results = [];
+          for (x = _m = 0, _ref2 = fft.spectrum.length; 0 <= _ref2 ? _m < _ref2 : _m > _ref2; x = 0 <= _ref2 ? ++_m : --_m) {
+            _results.push({
+              x: x,
+              y: fft.spectrum[x]
+            });
           }
-        }), -Infinity);
-        parabolicInterp = function(left, peak, right) {
-          return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
-        };
+          return _results;
+        })();
+        spectrumPoints.sort(function(a, b) {
+          if (a.y > b.y) {
+            -1;
+          } else if (a.y === b.y) {
+            0;
+
+          }
+          if (a.y < b.y) {
+            return 1;
+          }
+        });
+        peaks = [];
+        p = 0;
+        while (!(spectrumPoints[p] < noiseThreshold * 2)) {
+          peaks.push(spectrumPoints[p]);
+          p++;
+        }
+        peaks.sort(function(a, b) {
+          if (a.x < b.x) {
+            -1;
+          }
+          if (a.x === b.x) {
+            0;
+
+          }
+          if (a.x > b.x) {
+            return 1;
+          }
+        });
+        peak = peaks[0];
         if (fft.spectrum[peak.x] > noiseThreshold * 2) {
           f = parabolicInterp(left, peak, right);
           console.log('F: ', f);
         }
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
+        _results = [];
         for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
-          context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.pow(5 * fft.spectrum[i], 2));
+          _results.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.pow(5 * fft.spectrum[i], 2)));
         }
-        return peak;
+        return _results;
       };
       return setInterval(data, 100);
     };
