@@ -241,7 +241,6 @@
           }
         }
         if (peaks.length > 0) {
-          maxPeaks = maxPeaks < peaks.length ? peaks.length : maxPeaks;
           for (p = _n = 0, _ref2 = peaks.length; 0 <= _ref2 ? _n < _ref2 : _n > _ref2; p = 0 <= _ref2 ? ++_n : --_n) {
             if (peaks[p] != null) {
               for (q = _o = 0, _ref3 = peaks.length; 0 <= _ref3 ? _o < _ref3 : _o > _ref3; q = 0 <= _ref3 ? ++_o : --_o) {
@@ -264,6 +263,7 @@
             }
             return _results;
           })();
+          maxPeaks = maxPeaks < peaks.length ? peaks.length : maxPeaks;
           peak = null;
           firstFreq = peaks[0].x * (sampleRate / fftSize);
           if (peaks.length > 1) {
