@@ -8,7 +8,7 @@
     audioContext = new AudioContext();
     sampleRate = audioContext.sampleRate;
     downsampleRate = sampleRate / 4;
-    fftSize = 16384;
+    fftSize = 8192;
     fft = new FFT(fftSize, downsampleRate);
     hamming = new WindowFunction(DSP.HAMMING);
     lp = audioContext.createBiquadFilter();
@@ -106,7 +106,7 @@
           count++;
           if (next > max) {
             left = {
-              x: count,
+              x: count - 1,
               y: (count - 1) * (downsampleRate / fftSize)
             };
             peak = {
@@ -114,7 +114,7 @@
               y: count * (downsampleRate / fftSize)
             };
             right = {
-              x: count,
+              x: count + 1,
               y: (count + 1) * (downsampleRate / fftSize)
             };
             return next;
