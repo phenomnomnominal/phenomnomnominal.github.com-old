@@ -57,7 +57,7 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var average, f, mag2db, s, upsampled, width, zeroPad, _j, _k, _l, _m, _ref1, _ref2, _ref3, _ref4, _ref5, _results;
+        var average, f, mag2db, s, upsampled, width, zeroPad, _j, _k, _l, _m, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1;
         hamming.process(buffer);
         zeroPad = function(a, n) {
           var _j, _results;
@@ -82,15 +82,17 @@
           }
           return noiseCount++;
         } else if (noiseCount === 10) {
+          noiseCount++;
           average = function(arr) {
             return (_.reduce(arr, (function(sum, next) {
               return sum + next;
             }), 0)) / arr.length;
           };
+          _results = [];
           for (f = _l = 0, _ref4 = fft.spectrum.length; 0 <= _ref4 ? _l < _ref4 : _l > _ref4; f = 0 <= _ref4 ? ++_l : --_l) {
-            noise = average(noise[f]);
+            _results.push(noise = average(noise[f]));
           }
-          return noiseCount++;
+          return _results;
         } else {
           context.clearRect(0, 0, canvas.width, canvas.height);
           context.fillStyle = '#EEE';
@@ -98,11 +100,11 @@
           mag2db = function(n) {
             return 20 * (Math.log(n) / Math.log(10));
           };
-          _results = [];
+          _results1 = [];
           for (i = _m = 10, _ref5 = fft.spectrum.length - 10; 10 <= _ref5 ? _m < _ref5 : _m > _ref5; i = 10 <= _ref5 ? ++_m : --_m) {
-            _results.push(context.fillRect(width * i + 1, canvas.height - 10, width, -mag2db(fft.spectrum[i] - noise[i])));
+            _results1.push(context.fillRect(width * i + 1, canvas.height - 10, width, -mag2db(fft.spectrum[i] - noise[i])));
           }
-          return _results;
+          return _results1;
         }
       };
       return setInterval(data, 25);
