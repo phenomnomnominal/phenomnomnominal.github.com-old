@@ -88,13 +88,13 @@
         } else {
           context.clearRect(0, 0, canvas.width, canvas.height);
           context.fillStyle = '#EEE';
-          width = (canvas.width - 100) / (fft.spectrum.length - 20);
           mag2db = function(n) {
             return 20 * (Math.log(n) / Math.log(10));
           };
+          width = (canvas.width - 100) / (fft.spectrum.length - 20);
           _results1 = [];
           for (i = _m = 10, _ref4 = fft.spectrum.length - 10; 10 <= _ref4 ? _m < _ref4 : _m > _ref4; i = 10 <= _ref4 ? ++_m : --_m) {
-            _results1.push(context.fillRect(width * i + 1, canvas.height - 10, width, -Math.abs(mag2dg(fft.spectrum[i] - noise[i]))));
+            _results1.push(context.fillRect(width * i + 1, canvas.height - 10, width, -Math.abs(mag2db(fft.spectrum[i] - noise[i]))));
           }
           return _results1;
         }
