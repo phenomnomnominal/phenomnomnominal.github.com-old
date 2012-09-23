@@ -167,12 +167,14 @@
             if ((1.4 < (_ref4 = firstFreq / secondFreq) && _ref4 < 1.6)) {
               peak = peaks[1];
             }
-            if (peaks.length > 2) {
-              thirdFreq = peaks[2].x * (sampleRate / fftSize);
-              if ((1.4 < (_ref5 = firstFreq / thirdFreq) && _ref5 < 1.6)) {
-                peak = peaks[2];
-              }
+          }
+          if (peaks.length > 2) {
+            thirdFreq = peaks[2].x * (sampleRate / fftSize);
+            if ((1.4 < (_ref5 = firstFreq / thirdFreq) && _ref5 < 1.6)) {
+              peak = peaks[2];
             }
+          }
+          if (peaks.length > 2) {
             if (!(peak != null)) {
               peak = peaks[0];
             }
