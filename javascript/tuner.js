@@ -57,7 +57,7 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var average, denoised, downsampled, f, mag2db, max, s, upsampled, width, _j, _k, _l, _len, _m, _n, _o, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _results1;
+        var average, denoised, downsampled, f, freqWidth, mag2db, max, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _results, _results1;
         downsampled = [];
         for (s = _j = 0, _ref = buffer.length; _j < _ref; s = _j += 4) {
           downsampled.push(buffer[s]);
@@ -107,13 +107,16 @@
               return max;
             }
           }), 0);
-          width = (canvas.width - 100) / (fft.spectrum.length - 20);
+          timeWidth = (canvas.width - 100) / fft.spectrum.length;
+          context.fillStyle = '#EEE';
+          for (i = _o = 0, _ref5 = fft.spectrum.length; 0 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 0 <= _ref5 ? ++_o : --_o) {
+            context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (denoised[i] / max));
+          }
+          freqWidth = (canvas.width - 100) / 2;
+          context.fillStyle = '#F77';
           _results1 = [];
-          for (i = _o = 10, _ref5 = fft.spectrum.length - 10; 10 <= _ref5 ? _o < _ref5 : _o > _ref5; i = 10 <= _ref5 ? ++_o : --_o) {
-            context.fillStyle = '#F77';
-            context.fillRect(width * i + 1, canvas.height / 2, width, -Math.abs(mag2db(fft.spectrum[i] - noise[i])));
-            context.fillStyle = '#EEE';
-            _results1.push(context.fillRect(width * i + 1, canvas.height / 2, width, -(canvas.height / 2) * (denoised[i] / max)));
+          for (i = _p = 10, _ref6 = fft.spectrum.length / 2; 10 <= _ref6 ? _p < _ref6 : _p > _ref6; i = 10 <= _ref6 ? ++_p : --_p) {
+            _results1.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.abs(mag2db(fft.spectrum[i] - noise[i]))));
           }
           return _results1;
         }
