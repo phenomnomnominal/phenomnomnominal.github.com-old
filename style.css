@@ -289,6 +289,10 @@
   right: -2000px;
 }
 
+.tuner {
+  min-width: 755px;
+}
+
 .tuner canvas {
   padding-top: 200px;
 }
