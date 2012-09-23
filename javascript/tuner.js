@@ -94,7 +94,7 @@
           };
           _results = [];
           for (f = _l = 0, _ref4 = fft.spectrum.length; 0 <= _ref4 ? _l < _ref4 : _l > _ref4; f = 0 <= _ref4 ? ++_l : --_l) {
-            _results.push(noise = average(noise[f]));
+            _results.push(noise[f] = average(noise[f]));
           }
           return _results;
         } else {
