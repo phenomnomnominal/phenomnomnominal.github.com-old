@@ -138,7 +138,7 @@
           }
         }
         if (peaks.length > 0) {
-          for (p = _n = 0, _ref2 = peaks.length; 0 <= _ref2 ? _n < _ref2 : _n > _ref2; p = 0 <= _ref2 ? ++_n : --_n) {
+          for (p = _n = 0, _ref2 = peaks.length - 1; 0 <= _ref2 ? _n < _ref2 : _n > _ref2; p = 0 <= _ref2 ? ++_n : --_n) {
             if (peaks[p] != null) {
               n = 1;
               while (!(peaks[p + n] != null) && (p + n < peaks.length)) {
