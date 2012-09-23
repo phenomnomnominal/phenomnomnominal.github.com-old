@@ -26,16 +26,15 @@
     bufferFillSize = 256;
     bufferFiller = audioContext.createJavaScriptNode(bufferFillSize, 1, 1);
     bufferFiller.onaudioprocess = function(e) {
-      var input, _j, _k, _ref, _ref1, _results;
+      var input, output, _j, _k, _ref, _ref1;
       for (i = _j = bufferFillSize, _ref = buffer.length; bufferFillSize <= _ref ? _j < _ref : _j > _ref; i = bufferFillSize <= _ref ? ++_j : --_j) {
         buffer[i - bufferFillSize] = buffer[i];
       }
       input = e.inputBuffer.getChannelData(0);
-      _results = [];
       for (i = _k = 0, _ref1 = input.length; 0 <= _ref1 ? _k < _ref1 : _k > _ref1; i = 0 <= _ref1 ? ++_k : --_k) {
-        _results.push(buffer[buffer.length - bufferFillSize + i] = input[i]);
+        buffer[buffer.length - bufferFillSize + i] = input[i];
       }
-      return _results;
+      return output = e.outputBuffer.getChannelData(0);
     };
     analyser = audioContext.createAnalyser();
     options = {
