@@ -107,15 +107,15 @@
           if (Math.log(next) > max) {
             left = {
               x: count - 1,
-              y: (count - 1) * (sampleRate / fftSize)
+              y: fft.spectrum[count - 1]
             };
             peak = {
               x: count,
-              y: count * (sampleRate / fftSize)
+              y: fft.spectrum[count]
             };
             right = {
               x: count + 1,
-              y: (count + 1) * (sampleRate / fftSize)
+              y: fft.spectrum[count + 1]
             };
             return Math.log(next);
           } else {
