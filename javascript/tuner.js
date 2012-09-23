@@ -92,7 +92,7 @@
           return _results;
         } else {
           denoised = [];
-          for (s = _n = 0, _ref4 = upsampled.length; _n < _ref4; s = _n += 4) {
+          for (s = _n = 0, _ref4 = upsampled.length; 0 <= _ref4 ? _n < _ref4 : _n > _ref4; s = 0 <= _ref4 ? ++_n : --_n) {
             denoised.push(upsampled[s] - noise[s]);
           }
           fft.forward(denoised);
