@@ -59,7 +59,7 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var bufferCopy, count, downsampled, freqWidth, index, newMaxTime, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _results;
+        var bufferCopy, count, downsampled, freqWidth, index, newMaxTime, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -111,11 +111,10 @@
         console.log(index);
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
-        _results = [];
         for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
-          _results.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -(canvas.height / 2) * (Math.log(fft.spectrum[i]) / maxFreq)));
+          context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -(canvas.height / 2) * (Math.log(Math.abs(fft.spectrum[i])) / maxFreq));
         }
-        return _results;
+        return index;
       };
       return setInterval(data, 25);
     };
