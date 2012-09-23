@@ -278,8 +278,9 @@
   right: -2000px;
 }
 
-
-canvas { cursor: move }
+.tuner canvas {
+  padding-top: 200px;
+}
 
 .container {
   position: fixed;
