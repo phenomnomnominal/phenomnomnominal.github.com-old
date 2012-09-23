@@ -59,7 +59,6 @@
       fillBuffer = function() {};
       data = function() {
         var average, f, mag2db, width, _j, _k, _l, _ref, _ref1, _ref2, _ref3, _results, _results1;
-        hamming.process(buffer);
         fft.forward(buffer);
         if (noiseCount < 10) {
           for (f = _j = 0, _ref = fft.spectrum.length; 0 <= _ref ? _j < _ref : _j > _ref; f = 0 <= _ref ? ++_j : --_j) {
