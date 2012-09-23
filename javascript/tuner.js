@@ -187,6 +187,9 @@
               y: fft.spectrum[peak.x + 1]
             };
             freq = parabolicInterp(left, peak, right);
+            if ((320 < freq && freq < 340)) {
+              debugger;
+            }
             console.log('F: ', freq);
           }
         }
