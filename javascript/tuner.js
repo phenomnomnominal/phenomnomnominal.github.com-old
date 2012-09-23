@@ -82,13 +82,13 @@
           }
         }), 0);
         max = newMax > max ? newMax : max;
-        timeWidth = (canvas.width - 100) / upsampled.length;
         context.fillStyle = '#EEE';
+        timeWidth = (canvas.width - 100) / upsampled.length;
         for (i = _l = 0, _ref1 = upsampled.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; i = 0 <= _ref1 ? ++_l : --_l) {
           context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (upsampled[i] / max));
         }
-        freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         context.fillStyle = '#F77';
+        freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         _results = [];
         for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
           _results.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -50000 * Math.abs(fft.spectrum[i])));
