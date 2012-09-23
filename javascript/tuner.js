@@ -30,7 +30,7 @@
       for (i = _j = bufferFillSize, _ref1 = buffer.length; bufferFillSize <= _ref1 ? _j < _ref1 : _j > _ref1; i = bufferFillSize <= _ref1 ? ++_j : --_j) {
         buffer[i - bufferFillSize] = buffer[i];
       }
-      input = e.inputBuffer.getChannelData(1);
+      input = e.inputBuffer.getChannelData(0);
       for (i = _k = 0, _ref2 = input.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
         buffer[buffer.length - (bufferFillSize + i)] = input[i];
       }
