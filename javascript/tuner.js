@@ -53,8 +53,8 @@
       canvas.height = $('.tuner').height();
       canvas.width = $('.tuner').width();
       context = canvas.getContext('2d');
-      maxTime = 0;
-      maxFreq = 0;
+      maxTime = -Infinity;
+      maxFreq = -Infinity;
       noise = [];
       noiseCount = 0;
       fillBuffer = function() {};
