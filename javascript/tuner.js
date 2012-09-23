@@ -321,6 +321,8 @@
       window.AudioContext = window.webkitAudioContext;
     }
     return $(window).resize(function() {
+      var canvas;
+      canvas = $('#tuner_canvas')[0];
       canvas.height = $('.tuner').height();
       return canvas.width = $('.tuner').width();
     });
