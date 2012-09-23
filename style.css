@@ -302,7 +302,7 @@
   font-family: Lekton;
   font-size: 100px;
   height: 100px;
-  left: 40%;
+  left: 30%;
   line-height: 100px;
   position: absolute;
   text-align: center;
@@ -310,11 +310,11 @@
   width: 20%;
 }
 
-.tuner.inTune {
+.tuner .inTune {
   color: #7F7;
 }
 
-.tuner.outTune {
+.tuner .outTune {
   color: #F77;
 }
 

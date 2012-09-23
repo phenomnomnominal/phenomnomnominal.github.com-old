@@ -166,6 +166,8 @@
       };
       data = function() {
         var b, bufferCopy, diff, display, displayStr, downsampled, f, firstFreq, freq, freqWidth, left, newMaxTime, note, p, peak, peaks, pitch, q, right, s, secondFreq, spectrumPoints, thirdFreq, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _results;
+        display = $('.tuner div');
+        display.removeClass();
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -296,8 +298,6 @@
             freq = parabolicInterp(left, peak, right);
             _ref6 = getPitch(freq), note = _ref6[0], diff = _ref6[1];
             pitch = note.replace(/[0-9]*/g, '');
-            display = $('.tuner div');
-            display.removeClass();
             if (Math.abs(diff) < 0.25) {
               display.removeClass('outTune');
               display.addClass('inTune');
@@ -313,6 +313,7 @@
           }
         } else {
           maxPeaks = 0;
+          display.text('');
         }
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
