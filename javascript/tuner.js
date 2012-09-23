@@ -113,7 +113,7 @@
         spectrumPoints = (function() {
           var _m, _ref2, _results;
           _results = [];
-          for (x = _m = 0, _ref2 = fft.spectrum.length / 2; 0 <= _ref2 ? _m < _ref2 : _m > _ref2; x = 0 <= _ref2 ? ++_m : --_m) {
+          for (x = _m = 0, _ref2 = fft.spectrum.length / 4; 0 <= _ref2 ? _m < _ref2 : _m > _ref2; x = 0 <= _ref2 ? ++_m : --_m) {
             _results.push({
               x: x,
               y: fft.spectrum[x]
@@ -162,7 +162,7 @@
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         _results = [];
-        for (i = _n = 10, _ref4 = (fft.spectrum.length / 2) - 10; 10 <= _ref4 ? _n < _ref4 : _n > _ref4; i = 10 <= _ref4 ? ++_n : --_n) {
+        for (i = _n = 10, _ref4 = (fft.spectrum.length / 4) - 10; 10 <= _ref4 ? _n < _ref4 : _n > _ref4; i = 10 <= _ref4 ? ++_n : --_n) {
           _results.push(context.fillRect(freqWidth * i, canvas.height / 2, freqWidth, -Math.pow(5 * fft.spectrum[i], 2)));
         }
         return _results;
