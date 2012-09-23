@@ -23,7 +23,7 @@
     for (i = _i = 0; 0 <= fftSize ? _i < fftSize : _i > fftSize; i = 0 <= fftSize ? ++_i : --_i) {
       buffer[i] = 0;
     }
-    bufferFillSize = 1024;
+    bufferFillSize = 2048;
     bufferFiller = audioContext.createJavaScriptNode(bufferFillSize, 1, 1);
     bufferFiller.onaudioprocess = function(e) {
       var input, _j, _k, _ref, _ref1, _results;
@@ -43,7 +43,7 @@
       video: false
     };
     success = function(stream) {
-      var canvas, context, data, fillBuffer, maxFreq, maxTime, noise, noiseCount, src;
+      var canvas, context, data, fillBuffer, maxFreq, maxTime, noiseCount, noiseThreshold, src;
       src = audioContext.createMediaStreamSource(stream);
       src.connect(lp);
       lp.connect(hp);
@@ -56,8 +56,8 @@
       context = canvas.getContext('2d');
       maxTime = 0;
       maxFreq = 0;
-      noise = [];
       noiseCount = 0;
+      noiseThreshold = -Infinity;
       fillBuffer = function() {};
       data = function() {
         var bufferCopy, count, downsampled, f, freqWidth, left, newMaxTime, parabolicInterp, peak, right, s, timeWidth, upsampled, _j, _k, _l, _len, _m, _ref, _ref1, _ref2;
@@ -98,6 +98,16 @@
         for (i = _l = 0, _ref1 = upsampled.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; i = 0 <= _ref1 ? ++_l : --_l) {
           context.fillRect(timeWidth * i, canvas.height / 2, timeWidth, -(canvas.height / 2) * (buffer[i] / maxTime));
         }
+        if (noiseCount < 10) {
+          noiseThreshold = _.reduce(fft.spectrum, (function(max, next) {
+            if (Math.log(next) > max) {
+              return Math.log(next);
+            } else {
+              return max;
+            }
+          }), noiseThreshold);
+          noiseCount++;
+        }
         count = -1;
         left = 0;
         peak = 0;
@@ -125,8 +135,10 @@
         parabolicInterp = function(left, peak, right) {
           return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
         };
-        f = parabolicInterp(left, peak, right);
-        console.log('F: ', f);
+        if (peak.y > noiseThreshold * 2) {
+          f = parabolicInterp(left, peak, right);
+          console.log('F: ', f);
+        }
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
         for (i = _m = 10, _ref2 = (fft.spectrum.length / 2) - 10; 10 <= _ref2 ? _m < _ref2 : _m > _ref2; i = 10 <= _ref2 ? ++_m : --_m) {
@@ -134,7 +146,7 @@
         }
         return peak;
       };
-      return setInterval(data, 25);
+      return setInterval(data, 100);
     };
     error = function(e) {
       return console.log(e);
