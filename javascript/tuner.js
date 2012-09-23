@@ -7,7 +7,7 @@
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
     sampleRate = audioContext.sampleRate;
-    downsampleRate = 8000;
+    downsampleRate = sampleRate / 4;
     fftSize = 16384;
     fft = new FFT(fftSize, downsampleRate);
     hamming = new WindowFunction(DSP.HAMMING);
@@ -23,7 +23,7 @@
     for (i = _i = 0; 0 <= fftSize ? _i < fftSize : _i > fftSize; i = 0 <= fftSize ? ++_i : --_i) {
       buffer[i] = 0;
     }
-    bufferFillSize = 256;
+    bufferFillSize = 1024;
     bufferFiller = audioContext.createJavaScriptNode(bufferFillSize, 1, 1);
     bufferFiller.onaudioprocess = function(e) {
       var input, output, _j, _k, _ref, _ref1;
@@ -57,11 +57,16 @@
       noiseCount = 0;
       fillBuffer = function() {};
       data = function() {
-        var average, f, mag2db, width, _j, _k, _l, _ref, _ref1, _ref2, _ref3, _results, _results1;
-        fft.forward(buffer);
+        var average, downsampled, f, mag2db, s, width, _j, _k, _l, _m, _ref, _ref1, _ref2, _ref3, _ref4, _results, _results1;
+        downsampled = [];
+        for (s = _j = 0, _ref = buffer.length; _j < _ref; s = _j += 4) {
+          downsampled.push(buffer[s]);
+        }
+        console.log(downsampled);
+        fft.forward(downsampled);
         if (noiseCount < 10) {
-          for (f = _j = 0, _ref = fft.spectrum.length; 0 <= _ref ? _j < _ref : _j > _ref; f = 0 <= _ref ? ++_j : --_j) {
-            if ((_ref1 = noise[f]) == null) {
+          for (f = _k = 0, _ref1 = fft.spectrum.length; 0 <= _ref1 ? _k < _ref1 : _k > _ref1; f = 0 <= _ref1 ? ++_k : --_k) {
+            if ((_ref2 = noise[f]) == null) {
               noise[f] = [];
             }
             noise[f].push(fft.spectrum[f]);
@@ -75,7 +80,7 @@
             }), 0)) / arr.length;
           };
           _results = [];
-          for (f = _k = 0, _ref2 = fft.spectrum.length; 0 <= _ref2 ? _k < _ref2 : _k > _ref2; f = 0 <= _ref2 ? ++_k : --_k) {
+          for (f = _l = 0, _ref3 = fft.spectrum.length; 0 <= _ref3 ? _l < _ref3 : _l > _ref3; f = 0 <= _ref3 ? ++_l : --_l) {
             _results.push(noise[f] = average(noise[f]));
           }
           return _results;
@@ -87,7 +92,7 @@
           };
           width = (canvas.width - 100) / (fft.spectrum.length - 20);
           _results1 = [];
-          for (i = _l = 10, _ref3 = fft.spectrum.length - 10; 10 <= _ref3 ? _l < _ref3 : _l > _ref3; i = 10 <= _ref3 ? ++_l : --_l) {
+          for (i = _m = 10, _ref4 = fft.spectrum.length - 10; 10 <= _ref4 ? _m < _ref4 : _m > _ref4; i = 10 <= _ref4 ? ++_m : --_m) {
             _results1.push(context.fillRect(width * i + 1, canvas.height / 2, width, 10000 * buffer[i]));
           }
           return _results1;
