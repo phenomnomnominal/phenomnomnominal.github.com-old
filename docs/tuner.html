@@ -1,11 +1,9 @@
 <!DOCTYPE html>  <html> <head>   <title>tuner.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               tuner.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <h3><em><a href="../../tuner">Web Audio API Chromatic Tuner</a></em></h3>
 
-<p><em>tuner.coffee</em> contains the implementation of a pure JavaScript Chromatic Tuner, which uses the Microphone input of the computer with the Google Chrome Web Audio API to perform real-time pitch detection. Currently requires the latest build of Google Canary using a Mac computer with "Web Audio Input" enabled in <a href="chrome://flags">chrome://flags</a>.</p>
+<p><em>tuner.coffee</em> contains the implementation of a pure JavaScript Chromatic Tuner, which uses the Microphone input of the computer with the <strong><a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html">Web Audio API</a></strong> to perform real-time pitch detection. Currently requires the latest build of Google Canary using a Mac computer with "Web Audio Input" enabled in <a href="chrome://flags">chrome://flags</a>.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <hr />
 
-<hr />             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h2>Constants:</h2>
-
-<ul>
-<li><strong><code>frequencies</code></strong> - Frequencies for the 88 notes on a standard piano (In <a href="http://en.wikipedia.org/wiki/Well_temperament">well-tempered tuning</a>) are stored as reference frequencies.</li>
+<h2>Constants:</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <ul>
+<li><strong><code>frequencies</code></strong> - Frequencies for the <code>88</code> notes on a standard piano (<a href="http://en.wikipedia.org/wiki/Well_temperament">Well-tempered tuning</a>) are stored as reference frequencies.</li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">frequencies =</span>
   <span class="s">&#39;A0&#39;</span><span class="o">:</span> <span class="mf">27.5</span><span class="p">,</span> <span class="s">&#39;A1&#39;</span><span class="o">:</span> <span class="mi">55</span><span class="p">,</span> <span class="s">&#39;A2&#39;</span><span class="o">:</span> <span class="mi">110</span><span class="p">,</span> <span class="s">&#39;A3&#39;</span><span class="o">:</span> <span class="mi">220</span><span class="p">,</span> <span class="s">&#39;A4&#39;</span><span class="o">:</span> <span class="mi">440</span><span class="p">,</span> <span class="s">&#39;A5&#39;</span><span class="o">:</span> <span class="mi">880</span><span class="p">,</span> <span class="s">&#39;A6&#39;</span><span class="o">:</span> <span class="mi">1760</span><span class="p">,</span> <span class="s">&#39;A7&#39;</span><span class="o">:</span> <span class="mf">3520.00</span>
   <span class="s">&#39;A#0&#39;</span><span class="o">:</span> <span class="mf">29.1352</span><span class="p">,</span> <span class="s">&#39;A#1&#39;</span><span class="o">:</span> <span class="mf">58.2705</span><span class="p">,</span> <span class="s">&#39;A#2&#39;</span><span class="o">:</span> <span class="mf">116.541</span><span class="p">,</span> <span class="s">&#39;A#3&#39;</span><span class="o">:</span> <span class="mf">233.082</span><span class="p">,</span> <span class="s">&#39;A#4&#39;</span><span class="o">:</span> <span class="mf">466.164</span><span class="p">,</span> <span class="s">&#39;A#5&#39;</span><span class="o">:</span> <span class="mf">932.328</span><span class="p">,</span> <span class="s">&#39;A#6&#39;</span><span class="o">:</span> <span class="mf">1864.66</span><span class="p">,</span> <span class="s">&#39;A#7&#39;</span><span class="o">:</span> <span class="mf">3729.31</span>
@@ -18,13 +16,13 @@
   <span class="s">&#39;F1&#39;</span><span class="o">:</span> <span class="mf">43.6563</span><span class="p">,</span> <span class="s">&#39;F2&#39;</span><span class="o">:</span> <span class="mf">87.3071</span><span class="p">,</span> <span class="s">&#39;F3&#39;</span><span class="o">:</span> <span class="mf">174.614</span><span class="p">,</span> <span class="s">&#39;F4&#39;</span><span class="o">:</span> <span class="mf">349.228</span><span class="p">,</span> <span class="s">&#39;F5&#39;</span><span class="o">:</span> <span class="mf">698.456</span><span class="p">,</span> <span class="s">&#39;F6&#39;</span><span class="o">:</span> <span class="mf">1396.91</span><span class="p">,</span> <span class="s">&#39;F7&#39;</span><span class="o">:</span> <span class="mf">2793.83</span>
   <span class="s">&#39;F#1&#39;</span><span class="o">:</span> <span class="mf">46.2493</span><span class="p">,</span> <span class="s">&#39;F#2&#39;</span><span class="o">:</span> <span class="mf">92.4986</span><span class="p">,</span> <span class="s">&#39;F#3&#39;</span><span class="o">:</span> <span class="mf">184.997</span><span class="p">,</span> <span class="s">&#39;F#4&#39;</span><span class="o">:</span> <span class="mf">369.994</span><span class="p">,</span> <span class="s">&#39;F#5&#39;</span><span class="o">:</span> <span class="mf">739.989</span><span class="p">,</span> <span class="s">&#39;F#6&#39;</span><span class="o">:</span> <span class="mf">1479.98</span><span class="p">,</span> <span class="s">&#39;F#7&#39;</span><span class="o">:</span> <span class="mf">2959.96</span>
   <span class="s">&#39;G1&#39;</span><span class="o">:</span> <span class="mf">48.9994</span><span class="p">,</span> <span class="s">&#39;G2&#39;</span><span class="o">:</span> <span class="mf">97.9989</span><span class="p">,</span> <span class="s">&#39;G3&#39;</span><span class="o">:</span> <span class="mf">195.998</span><span class="p">,</span> <span class="s">&#39;G4&#39;</span><span class="o">:</span> <span class="mf">391.995</span><span class="p">,</span> <span class="s">&#39;G5&#39;</span><span class="o">:</span> <span class="mf">783.991</span><span class="p">,</span> <span class="s">&#39;G6&#39;</span><span class="o">:</span> <span class="mf">1567.98</span><span class="p">,</span> <span class="s">&#39;G7&#39;</span><span class="o">:</span> <span class="mf">3135.96</span>
-  <span class="s">&#39;G#1&#39;</span><span class="o">:</span> <span class="mf">51.9131</span><span class="p">,</span> <span class="s">&#39;G#&#39;</span><span class="o">:</span> <span class="mf">103.826</span><span class="p">,</span> <span class="s">&#39;G#3&#39;</span><span class="o">:</span> <span class="mf">207.652</span><span class="p">,</span> <span class="s">&#39;G#4&#39;</span><span class="o">:</span> <span class="mf">415.305</span><span class="p">,</span> <span class="s">&#39;G#5&#39;</span><span class="o">:</span> <span class="mf">830.609</span><span class="p">,</span> <span class="s">&#39;G#6&#39;</span><span class="o">:</span> <span class="mf">1661.22</span><span class="p">,</span> <span class="s">&#39;G#7&#39;</span><span class="o">:</span> <span class="mf">3322.44</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <hr />
+  <span class="s">&#39;G#1&#39;</span><span class="o">:</span> <span class="mf">51.9131</span><span class="p">,</span> <span class="s">&#39;G#&#39;</span><span class="o">:</span> <span class="mf">103.826</span><span class="p">,</span> <span class="s">&#39;G#3&#39;</span><span class="o">:</span> <span class="mf">207.652</span><span class="p">,</span> <span class="s">&#39;G#4&#39;</span><span class="o">:</span> <span class="mf">415.305</span><span class="p">,</span> <span class="s">&#39;G#5&#39;</span><span class="o">:</span> <span class="mf">830.609</span><span class="p">,</span> <span class="s">&#39;G#6&#39;</span><span class="o">:</span> <span class="mf">1661.22</span><span class="p">,</span> <span class="s">&#39;G#7&#39;</span><span class="o">:</span> <span class="mf">3322.44</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <hr />
 
-<h1>Tuner:</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>The main <strong><code>Tuner</code></strong> function initialises the running of the tuner.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">Tuner = </span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <hr />
+<h1><section id='t'>Tuner:</section></h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <blockquote>
+  <p>The main <strong><code>Tuner</code></strong> function initialises the running of the tuner.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">Tuner = </span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <hr />
 
-<h2>Functionality Checks:</h2>
-
-<hr />             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <blockquote>
+<h2>Functionality Checks:</h2>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <blockquote>
   <p>First there is a check for the <strong><code>AudioContext</code></strong> constructor, which is only available in Google Chrome. This is the interface to the <strong><a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html">Web Audio API</a></strong>, which enables the majority of the functionality required for the tuner.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nb">window</span><span class="p">.</span><span class="nv">AudioContext = </span><span class="p">(</span><span class="o">-&gt;</span>
     <span class="nb">window</span><span class="p">.</span><span class="nx">AudioContext</span> <span class="o">or</span>
@@ -33,8 +31,8 @@
     <span class="nb">window</span><span class="p">.</span><span class="nx">msAudioContext</span> <span class="o">or</span>
     <span class="nb">window</span><span class="p">.</span><span class="nx">oAudioContext</span><span class="p">)()</span>
   <span class="k">if</span> <span class="o">not</span> <span class="nb">window</span><span class="p">.</span><span class="nx">AudioContext</span>
-    <span class="nx">alert</span> <span class="s">&#39;THIS TUNER REQUIRES THE LATEST BUILD OF CHROME CANARY (23/09/2012) ON MAC WITH &quot;Web Audio Input&quot; ENABLED IN chrome://flags.&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <blockquote>
-  <p>Similarly, there is a check for the <strong><code>GetUserMedia</code></strong> function, which allows the browser to have access to the audio/video input hardware of the device. Currently, there is only limited support (Chrome &amp; Opera), but more is likely to follow.</p>
+    <span class="nx">alert</span> <span class="s">&#39;THIS TUNER REQUIRES THE LATEST BUILD OF CHROME CANARY (23/09/2012) ON MAC WITH &quot;Web Audio Input&quot; ENABLED IN chrome://flags.&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <blockquote>
+  <p>Similarly, there is a check for the <strong><code>GetUserMedia</code></strong> function, which allows the browser to have access to the audio/video input hardware of the device. Currently, there is only limited support (<strong>Chrome</strong> &amp; <strong>Opera</strong>), but more is likely to follow.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">navigator.getUserMedia = </span><span class="p">(</span><span class="o">-&gt;</span>
     <span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span> <span class="o">or</span>
     <span class="nx">navigator</span><span class="p">.</span><span class="nx">mozGetUserMedia</span> <span class="o">or</span>
@@ -42,54 +40,51 @@
     <span class="nx">navigator</span><span class="p">.</span><span class="nx">msGetUserMedia</span> <span class="o">or</span>
     <span class="nx">navigator</span><span class="p">.</span><span class="nx">oGetUserMedia</span><span class="p">)()</span>
   <span class="k">if</span> <span class="o">not</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span>
-    <span class="nx">alert</span> <span class="s">&#39;THIS TUNER REQUIRES THE LATEST BUILD OF CHROME CANARY (23/09/2012) ON MAC WITH &quot;Web Audio Input&quot; ENABLED IN chrome://flags.&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <hr />
+    <span class="nx">alert</span> <span class="s">&#39;THIS TUNER REQUIRES THE LATEST BUILD OF CHROME CANARY (23/09/2012) ON MAC WITH &quot;Web Audio Input&quot; ENABLED IN chrome://flags.&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <hr />
 
-<h2>Canvas Initialisation:</h2>
-
-<hr />             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <blockquote>
+<h2>Canvas Initialisation:</h2>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <blockquote>
   <p>Once we have checked that the required functionality esists, the canvas element is initalised and a resize listener is added so that it correctly fits the display window. This event is manually triggered to initialise the size of the canvas.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">canvas = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.tuner canvas&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
   <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span> <span class="o">-&gt;</span>
     <span class="nv">canvas.height = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.tuner&#39;</span><span class="p">).</span><span class="nx">height</span><span class="p">()</span>
     <span class="nv">canvas.width = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.tuner&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">()</span>
-  <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">trigger</span> <span class="s">&#39;resize&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <hr />
+  <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">trigger</span> <span class="s">&#39;resize&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <hr />
 
-<h2>Context Initialisation:</h2>
-
-<hr />             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <blockquote>
+<h2>Context Initialisation:</h2>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <blockquote>
   <p>In order to actually do anything, the 2D drawing context for the canvas and the audio manipulation context need to be accessed.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">context = </span><span class="nx">canvas</span><span class="p">.</span><span class="nx">getContext</span> <span class="s">&#39;2d&#39;</span>
-  <span class="nv">audioContext = </span><span class="k">new</span> <span class="nx">AudioContext</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <hr />
+  <span class="nv">audioContext = </span><span class="k">new</span> <span class="nx">AudioContext</span><span class="p">()</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <hr />
 
-<h2>DSP Initialisation:</h2>
-
-<hr />             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <blockquote>
-  <p>We now initialise the signal processing parts of the system:</p>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <hr />
-
-<h2>Fast Fourier Transform:</h2>
-
-<hr />             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <blockquote>
-  <p>The incoming audio from the microphone has a sample rate (F<sub>s</sub>) of 44100Hz. Since the highest possible frequency we are interested in is the 'Top C' on the piano (4186.01Hz), we can safely ignore data over roughly 10KHz. The downsampled rate that we use is 11025Hz (F<sub>s</sub> / 4). </p>
+<h2>DSP Initialisation:</h2>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <blockquote>
+  <h3>Fast Fourier Transform:</h3>
   
-  <p>As the FFT requires a input of length 2<sup>n</sup>, we use <code>8192</code> (2<sup>13</sup>).</p>
-  
-  <p>The relationship between FFT sample rate, FFT buffer length and FFT bin resolution, is:</p>
-  
+  <hr />
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <blockquote>
   <blockquote>
-    <p><strong>FFT<sub>r</sub> = FFT<sub>s</sub> / FFT<sub>L</sub></strong></p>
+    <p>The incoming audio from the microphone has a sample rate (F<sub>s</sub>) of <code>44100Hz</code>. Since the highest possible frequency we are interested in is the 'Top C' on the piano (<code>4186.01Hz</code>), we can safely ignore data over roughly <code>10KHz</code>. The downsampled rate that we use is <code>11025Hz</code> (F<sub>s</sub> / 4). </p>
+    
+    <p>As the FFT requires a input of length 2<sup>n</sup>, we use <code>8192</code> (2<sup>13</sup>).</p>
+    
+    <p>The relationship between FFT sample rate, FFT buffer length and FFT bin resolution, is:</p>
+    
+    <blockquote>
+      <p><strong>FFT<sub>r</sub> = FFT<sub>s</sub> / FFT<sub>L</sub></strong></p>
+    </blockquote>
+    
+    <p>FFT<sub>s</sub> of <code>11025Hz</code> and FFT buffer length of <code>8192</code> gives us a bin resolution of <code>1.3458Hz</code></p>
   </blockquote>
-  
-  <p>FFT<sub>s</sub> of 11025Hz and FFT buffer length of <code>8192</code> gives us a bin resolution of 1.3458Hz</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">sampleRate = </span><span class="nx">audioContext</span><span class="p">.</span><span class="nx">sampleRate</span>
   <span class="nv">fftSize = </span><span class="mi">8192</span>
   <span class="nv">fft = </span><span class="k">new</span> <span class="nx">FFT</span><span class="p">(</span><span class="nx">fftSize</span><span class="p">,</span> <span class="nx">sampleRate</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <hr />
-
-<h2>Sample Buffer:</h2>
-
-<hr />             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <blockquote>
-  <p>In order to always have enough data to get sufficient resolution, whilst maintaining the real-time requirement of a tuner, a shifting window buffer is used. This buffer always contains <code>8192</code> samples, however the buffer windows shifts every <code>2048</code> samples.</p>
+  </pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <blockquote>
+  <h3>Sample Buffer:</h3>
+  
+  <hr />
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <blockquote>
+  <blockquote>
+    <p>In order to always have enough data to get sufficient resolution while maintaining the real-time requirement of a tuner, a shifting window buffer is used. This buffer always contains <code>8192</code> samples, however the buffer windows shifts every <code>2048</code> samples.</p>
+  </blockquote>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">buffer = </span><span class="p">(</span><span class="mi">0</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">fftSize</span><span class="p">])</span>
   <span class="nv">bufferFillSize = </span><span class="mi">2048</span>
   <span class="nv">bufferFiller = </span><span class="nx">audioContext</span><span class="p">.</span><span class="nx">createJavaScriptNode</span> <span class="nx">bufferFillSize</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
@@ -99,18 +94,20 @@
       <span class="nx">buffer</span><span class="p">[</span><span class="nx">b</span> <span class="o">-</span> <span class="nx">bufferFillSize</span><span class="p">]</span> <span class="o">=</span> <span class="nx">buffer</span><span class="p">[</span><span class="nx">b</span><span class="p">]</span>
     <span class="k">for</span> <span class="nx">b</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">input</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
       <span class="nx">buffer</span><span class="p">[</span><span class="nx">buffer</span><span class="p">.</span><span class="nx">length</span> <span class="o">-</span> <span class="nx">bufferFillSize</span> <span class="o">+</span> <span class="nx">b</span><span class="p">]</span> <span class="o">=</span> <span class="nx">input</span><span class="p">[</span><span class="nx">b</span><span class="p">]</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <hr />
-
-<h2>Filters:</h2>
-
-<hr />             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <blockquote>
-  <p>Three filters are used:</p>
+  </pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <blockquote>
+  <h3>Filters:</h3>
   
-  <ul>
-  <li><p><strong><code>gauss</code></strong> - A <strong><a href="http://en.wikipedia.org/wiki/Window_function#Gaussian_windows">Gaussian</a></strong> window function is used on the time-domain buffer data. A Gaussian function is also Gaussian in the frequency-domain. Since the <em>log</em> of a Gaussian is a parabola, the resulting data can be used for exact parabolic interpolation in the frequency domain, allowing for highly accurate frequency estimation.</p></li>
-  <li><p><strong><code>lp</code></strong> - A <strong><a href="http://en.wikipedia.org/wiki/Low-pass_filter">low-pass filter</a></strong> is also used to attenuate frequencies above 8KHz, as we are not interested in these frequencies.</p></li>
-  <li><p><strong><code>hp</code></strong> - A <strong><a href="http://en.wikipedia.org/wiki/High-pass_filter">high-pass filter</a></strong> is used to attenuate frequencies below 20Hz, as we are not interested in these frequencies (and they are outside the frequency response of many basic microphones anyway).</p></li>
-  </ul>
+  <hr />
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <blockquote>
+  <blockquote>
+    <p>Three filters are used:</p>
+    
+    <ul>
+    <li><p><strong><code>gauss</code></strong> - A <strong><a href="http://en.wikipedia.org/wiki/Window_function#Gaussian_windows">Gaussian</a></strong> window function is used on the time-domain buffer data. A Gaussian function is also Gaussian in the frequency-domain. Since the <em>log</em> of a Gaussian is a parabola, the resulting data can be used for exact parabolic interpolation in the frequency domain, allowing for highly accurate frequency estimation.</p></li>
+    <li><p><strong><code>lp</code></strong> - A <strong><a href="http://en.wikipedia.org/wiki/Low-pass_filter">low-pass filter</a></strong> is also used to attenuate frequencies above <code>8KHz</code>, as we are not interested in these frequencies.</p></li>
+    <li><p><strong><code>hp</code></strong> - A <strong><a href="http://en.wikipedia.org/wiki/High-pass_filter">high-pass filter</a></strong> is used to attenuate frequencies below <code>20Hz</code>, as we are not interested in these frequencies (and they are outside the frequency response of many basic microphones anyway).</p></li>
+    </ul>
+  </blockquote>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">gauss = </span><span class="k">new</span> <span class="nx">WindowFunction</span><span class="p">(</span><span class="nx">DSP</span><span class="p">.</span><span class="nx">GAUSS</span><span class="p">)</span>
 
   <span class="nv">lp = </span><span class="nx">audioContext</span><span class="p">.</span><span class="nx">createBiquadFilter</span><span class="p">()</span>
@@ -123,34 +120,29 @@
   <span class="nv">hp.frequency = </span><span class="mi">20</span>
   <span class="nv">hp.Q = </span><span class="mf">0.1</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <hr />
 
-<h3>GetUserMedia Success:</h3>
-
-<hr />             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <blockquote>
+<h2>GetUserMedia Success:</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <blockquote>
   <p>Once a successful connection is made to the user media device (microphone), the audio set-up is intialised:</p>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">success = </span><span class="nf">(stream) -&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <blockquote>
-  <p>Some <em>'global'</em> (within the success function) variables are initalised.</p>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">maxTime = </span><span class="mi">0</span>
-
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">success = </span><span class="nf">(stream) -&gt;</span>
+    <span class="nv">maxTime = </span><span class="mi">0</span>
     <span class="nv">noiseCount = </span><span class="mi">0</span>
     <span class="nv">noiseThreshold = </span><span class="o">-</span><span class="kc">Infinity</span>
-
     <span class="nv">maxPeaks = </span><span class="mi">0</span>
     <span class="nv">maxPeakCount = </span><span class="mi">0</span>
     
-    <span class="k">try</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <blockquote>
-  <p>The source of the audio (the stream from the microphone) is connected through the low-pass filter and the high-pass filter, and ends up in the bufferFiller. The bufferFiller must be connected to the destination, but as the bufferFiller does not create any output, no audible sound is played.</p>
+    <span class="k">try</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <blockquote>
+  <p>The source of the audio (the <code>stream</code> from the microphone) is connected through the low-pass filter and the high-pass filter, and ends up in the <code>bufferFiller</code>. The <code>bufferFiller</code> must be connected to the destination, but as the <code>bufferFiller</code> does not create any output, no audible sound is played.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nv">src = </span><span class="nx">audioContext</span><span class="p">.</span><span class="nx">createMediaStreamSource</span> <span class="nx">stream</span>
       <span class="nx">src</span><span class="p">.</span><span class="nx">connect</span> <span class="nx">lp</span>
       <span class="nx">lp</span><span class="p">.</span><span class="nx">connect</span> <span class="nx">hp</span>
       <span class="nx">hp</span><span class="p">.</span><span class="nx">connect</span> <span class="nx">bufferFiller</span>
       <span class="nx">bufferFiller</span><span class="p">.</span><span class="nx">connect</span> <span class="nx">audioContext</span><span class="p">.</span><span class="nx">destination</span>
-      </pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <hr />
-
-<h3>Process:</h3>
-
-<hr />             </td>             <td class="code">               <div class="highlight"><pre>      </pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <blockquote>
+      </pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <blockquote>
+  <h3>Process:</h3>
+  
+  <hr />
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      </pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <blockquote>
   <p>10 times a second, the data in the buffer is proccessed. This involves several steps:</p>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nv">process = </span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      <span class="nv">process = </span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <blockquote>
   <ol>
   <li><p>A copy is made of the buffer data</p></li>
   <li><p>The Gaussian window is applied to the buffer data.</p></li>
@@ -250,33 +242,49 @@
         <span class="nx">render</span><span class="p">()</span>
     <span class="k">catch</span> <span class="nx">e</span>
       <span class="nx">error</span> <span class="nx">e</span>
-    </pre></div>             </td>           </tr>                               <tr id="section-27">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-27">&#182;</a>               </div>               <hr />
-
-<h3>Display:</h3>
-
-<hr />             </td>             <td class="code">               <div class="highlight"><pre>    </pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <blockquote>
-  <p>The display functions (<strong><code>display</code></strong> and <strong><code>clear</code></strong>) simply update the display to show which pitch is closest and whether the current pitch is sharper or flatter, and clear the display.</p>
+      </pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <blockquote>
+  <h3>getPitch:</h3>
+  
+  <hr />
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>      </pre></div>             </td>           </tr>                               <tr id="section-27">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-27">&#182;</a>               </div>               <blockquote>
+  <p>The <strong><code>getPitch</code></strong> function takes the current estimated frequency and finds the closest pitch to that frequency. It also returns the distance from the current frequency to the in-tune pitch of the note.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">getPitch = </span><span class="nf">(freq) -&gt;</span>
+      <span class="nv">minDiff = </span><span class="kc">Infinity</span>
+      <span class="nv">diff = </span><span class="kc">Infinity</span>
+      <span class="k">for</span> <span class="nx">own</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">val</span> <span class="k">of</span> <span class="nx">frequencies</span>
+        <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">freq</span> <span class="o">-</span> <span class="nx">val</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nx">minDiff</span>
+          <span class="nv">minDiff = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">freq</span> <span class="o">-</span> <span class="nx">val</span><span class="p">)</span>
+          <span class="nv">diff = </span><span class="nx">freq</span> <span class="o">-</span> <span class="nx">val</span>
+          <span class="nv">note = </span><span class="nx">key</span>
+      <span class="p">[</span><span class="nx">note</span><span class="p">,</span> <span class="nx">diff</span><span class="p">]</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <blockquote>
+  <h3>display:</h3>
+  
+  <hr />
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    </pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <blockquote>
+  <p>The display functions (<strong><code>draw</code></strong> and <strong><code>clear</code></strong>) simply update the display to show which pitch is closest and whether the current pitch is sharper or flatter, and clear the display.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">display = </span>
       <span class="nv">draw: </span><span class="nf">(note, diff) -&gt;</span>
-        <span class="nv">pitch = </span><span class="nx">note</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[0-9]*/g</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
-      
         <span class="nv">displayDiv = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.tuner div&#39;</span><span class="p">)</span>
         <span class="nx">displayDiv</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">()</span>
-
         <span class="nx">displayDiv</span><span class="p">.</span><span class="nx">addClass</span> <span class="p">(</span><span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">diff</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.25</span> <span class="k">then</span> <span class="s">&#39;inTune&#39;</span> <span class="k">else</span> <span class="s">&#39;outTune&#39;</span><span class="p">)</span>
-        
         <span class="nv">displayStr = </span><span class="s">&#39;&#39;</span>
         <span class="nx">displayStr</span> <span class="o">+=</span> <span class="k">if</span> <span class="nx">diff</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">0.25</span> <span class="k">then</span> <span class="s">&#39;&gt;&amp;nbsp;&#39;</span> <span class="k">else</span> <span class="s">&#39;&amp;nbsp;&amp;nbsp;&#39;</span>
-        <span class="nx">displayStr</span> <span class="o">+=</span> <span class="nx">pitch</span>
+        <span class="nx">displayStr</span> <span class="o">+=</span> <span class="nx">note</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/[0-9]*/g</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
         <span class="nx">displayStr</span> <span class="o">+=</span> <span class="k">if</span> <span class="nx">diff</span> <span class="o">&gt;</span> <span class="mf">0.25</span> <span class="k">then</span> <span class="s">&#39;&amp;nbsp;&lt;&#39;</span> <span class="k">else</span> <span class="s">&#39;&amp;nbsp;&amp;nbsp;&#39;</span>
-      
         <span class="nx">displayDiv</span><span class="p">.</span><span class="nx">html</span> <span class="nx">displayStr</span>
+        
       <span class="nv">clear: </span><span class="o">-&gt;</span>
         <span class="nv">displayDiv = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.tuner div&#39;</span><span class="p">)</span>
         <span class="nx">displayDiv</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">()</span>
         <span class="nx">displayDiv</span><span class="p">.</span><span class="nx">html</span> <span class="s">&#39;&#39;</span>
-      
-    <span class="nv">render = </span><span class="o">-&gt;</span>
+      </pre></div>             </td>           </tr>                               <tr id="section-30">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-30">&#182;</a>               </div>               <blockquote>
+  <h3>render:</h3>
+  
+  <hr />
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <blockquote>
+  <p>The <strong><code>render</code></strong> function uses the HTML5 Canvas element to draw both the time-domain and frequency-domain data to display it to the user.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">render = </span><span class="o">-&gt;</span>
       <span class="nx">context</span><span class="p">.</span><span class="nx">clearRect</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span>
       <span class="nv">newMaxTime = </span><span class="nx">_</span><span class="p">.</span><span class="nx">reduce</span> <span class="nx">buffer</span><span class="p">,</span> <span class="p">(</span><span class="nf">(max, next) -&gt;</span> <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">next</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nx">max</span> <span class="k">then</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">next</span><span class="p">)</span> <span class="k">else</span> <span class="nx">max</span><span class="p">),</span> <span class="o">-</span><span class="kc">Infinity</span>
       <span class="nv">maxTime = </span><span class="k">if</span> <span class="nx">newMaxTime</span> <span class="o">&gt;</span> <span class="nx">maxTime</span> <span class="k">then</span> <span class="nx">newMaxTime</span> <span class="k">else</span> <span class="nx">maxTime</span>
@@ -288,27 +296,26 @@
       <span class="nv">freqWidth = </span><span class="p">(</span><span class="nx">canvas</span><span class="p">.</span><span class="nx">width</span> <span class="o">-</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nx">fft</span><span class="p">.</span><span class="nx">spectrum</span><span class="p">.</span><span class="nx">length</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
       <span class="k">for</span> <span class="nx">f</span> <span class="k">in</span> <span class="p">[</span><span class="mi">10</span><span class="p">...(</span><span class="nx">fft</span><span class="p">.</span><span class="nx">spectrum</span><span class="p">.</span><span class="nx">length</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span> <span class="o">-</span> <span class="mi">10</span><span class="p">]</span>
         <span class="nx">context</span><span class="p">.</span><span class="nx">fillRect</span> <span class="nx">freqWidth</span> <span class="o">*</span> <span class="nx">f</span><span class="p">,</span> <span class="nx">canvas</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">freqWidth</span><span class="p">,</span> <span class="o">-</span><span class="nb">Math</span><span class="p">.</span><span class="nx">pow</span><span class="p">(</span><span class="mi">1</span><span class="nx">e4</span> <span class="o">*</span> <span class="nx">fft</span><span class="p">.</span><span class="nx">spectrum</span><span class="p">[</span><span class="nx">f</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
-    
-    <span class="nv">getPitch = </span><span class="nf">(freq) -&gt;</span>
-      <span class="nv">minDiff = </span><span class="kc">Infinity</span>
-      <span class="nv">diff = </span><span class="kc">Infinity</span>
-      <span class="k">for</span> <span class="nx">own</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">val</span> <span class="k">of</span> <span class="nx">frequencies</span>
-        <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">freq</span> <span class="o">-</span> <span class="nx">val</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nx">minDiff</span>
-          <span class="nv">minDiff = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">freq</span> <span class="o">-</span> <span class="nx">val</span><span class="p">)</span>
-          <span class="nv">diff = </span><span class="nx">freq</span> <span class="o">-</span> <span class="nx">val</span>
-          <span class="nv">note = </span><span class="nx">key</span>
-      <span class="p">[</span><span class="nx">note</span><span class="p">,</span> <span class="nx">diff</span><span class="p">]</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-32">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-32">&#182;</a>               </div>               <blockquote>
+  <h3>Start process loop:</h3>
+  
+  <hr />
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    </pre></div>             </td>           </tr>                               <tr id="section-33">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-33">&#182;</a>               </div>               <blockquote>
+  <p>Once all the functions are initialised, an interval loop is set up with calls the <strong><code>process</code></strong> function <code>10</code> times per second.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">setInterval</span> <span class="nx">process</span><span class="p">,</span> <span class="mi">100</span></pre></div>             </td>           </tr>                               <tr id="section-34">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-34">&#182;</a>               </div>               <hr />
 
-    <span class="nx">setInterval</span> <span class="nx">process</span><span class="p">,</span> <span class="mi">100</span>
-    
-  <span class="nv">error = </span><span class="nf">(e) -&gt;</span> 
+<h2>GetUserMedia Error:</h2>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-35">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-35">&#182;</a>               </div>               <blockquote>
+  <p>An error function is also required for when something goes wrong with accessing the user microphone.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">error = </span><span class="nf">(e) -&gt;</span> 
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">e</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&#39;ARE YOU USING CHROME CANARY (23/09/2012) ON A MAC WITH &quot;Web Audio Input&quot; ENABLED IN chrome://flags?&#39;</span>
-    <span class="nx">alert</span> <span class="s">&#39;ERROR: CHECK ERROR CONSOLE&#39;</span>
-    
-  <span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span> <span class="nv">audio: </span><span class="kc">true</span><span class="p">,</span> <span class="nx">success</span><span class="p">,</span> <span class="nx">error</span>
+    <span class="nx">alert</span> <span class="s">&#39;ERROR: CHECK ERROR CONSOLE&#39;</span></pre></div>             </td>           </tr>                               <tr id="section-36">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-36">&#182;</a>               </div>               <hr />
 
-<span class="nv">root = </span><span class="nx">exports</span> <span class="o">?</span> <span class="k">this</span>
+<h2>Access user media:</h2>             </td>             <td class="code">               <div class="highlight"><pre>    </pre></div>             </td>           </tr>                               <tr id="section-37">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-37">&#182;</a>               </div>               <blockquote>
+  <p>Once everything needed for the tuner is initialised, we attempt to access an audio stream from the microphone.</p>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">navigator</span><span class="p">.</span><span class="nx">getUserMedia</span> <span class="nv">audio: </span><span class="kc">true</span><span class="p">,</span> <span class="nx">success</span><span class="p">,</span> <span class="nx">error</span></pre></div>             </td>           </tr>                               <tr id="section-38">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-38">&#182;</a>               </div>               <hr />
+
+<h2>Exports:</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-39">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-39">&#182;</a>               </div>               <p>The <a href="#t"><strong><code>Tuner</code></strong></a> function is added to the global <code>root</code> object.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">root = </span><span class="nx">exports</span> <span class="o">?</span> <span class="k">this</span>
 <span class="nv">root.Tuner = </span><span class="nx">Tuner</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
