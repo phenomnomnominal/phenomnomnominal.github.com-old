@@ -4,7 +4,7 @@
     __hasProp = {}.hasOwnProperty;
 
   Tuner = function() {
-    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, fft, fftSize, frequencies, gauss, getPitch, hp, i, lp, sampleRate, success, _i;
+    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, frequencies, gauss, getPitch, hp, i, lp, sampleRate, success, _i;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
     analyser = audioContext.createAnalyser();
@@ -145,7 +145,7 @@
       return [note, diff];
     };
     success = function(stream) {
-      var canvas, context, data, maxFreq, maxPeaks, maxTime, noiseCount, noiseThreshold, parabolicInterp, src;
+      var canvas, context, data, maxFreq, maxPeakCount, maxPeaks, maxTime, noiseCount, noiseThreshold, parabolicInterp, src;
       src = audioContext.createMediaStreamSource(stream);
       src.connect(lp);
       lp.connect(hp);
@@ -161,11 +161,12 @@
       noiseCount = 0;
       noiseThreshold = -Infinity;
       maxPeaks = 0;
+      maxPeakCount = 0;
       parabolicInterp = function(left, peak, right) {
         return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
       };
       data = function() {
-        var b, bufferCopy, diff, display, displayStr, downsampled, f, firstFreq, freq, freqWidth, left, newMaxTime, noiseThrehold, note, p, peak, peaks, pitch, q, right, s, secondFreq, spectrumPoints, thirdFreq, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _results;
+        var b, bufferCopy, diff, display, displayStr, downsampled, f, firstFreq, freq, freqWidth, left, maxPeaksCount, newMaxTime, noiseThrehold, note, p, peak, peaks, pitch, q, right, s, secondFreq, spectrumPoints, thirdFreq, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _results;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -226,14 +227,7 @@
           return _results;
         })();
         spectrumPoints.sort(function(a, b) {
-          if (a.y > b.y) {
-            return -1;
-          } else if (a.y === b.y) {
-            return 0;
-          }
-          if (a.y < b.y) {
-            return 1;
-          }
+          return b.y - a.y;
         });
         peaks = [];
         for (p = _m = 0; _m < 8; p = ++_m) {
@@ -265,6 +259,9 @@
             return _results;
           })();
           maxPeaks = maxPeaks < peaks.length ? peaks.length : maxPeaks;
+          if (maxPeaks > 0) {
+            maxPeaksCount = 0;
+          }
           peak = null;
           peaks.sort(function(a, b) {
             return a.x - b.x;
@@ -299,13 +296,7 @@
             pitch = note.replace(/[0-9]*/g, '');
             display = $('.tuner div');
             display.removeClass();
-            if (Math.abs(diff) < 0.25) {
-              display.removeClass('outTune');
-              display.addClass('inTune');
-            } else {
-              display.removeClass('inTune');
-              display.addClass('outTune');
-            }
+            display.addClass((Math.abs(diff) < 0.25 ? 'inTune' : 'outTune'));
             displayStr = '';
             displayStr += diff < -0.25 ? '>&nbsp;' : '&nbsp;&nbsp;';
             displayStr += pitch;
@@ -314,6 +305,12 @@
           }
         } else {
           maxPeaks = 0;
+          maxPeaksCount++;
+          if (maxPeaksCount > 20) {
+            display = $('.tuner div');
+            display.removeClass();
+            display.html('');
+          }
         }
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
@@ -325,11 +322,14 @@
       };
       return setInterval(data, 100);
     };
+    error = function(e) {
+      throw e;
+      console.log('ARE YOU USING CHROME CANARY (23/09/2012) ON A MAC WITH "Web Audio Input" ENABLED IN chrome://flags?');
+      return alert('ERROR: CHECK ERROR CONSOLE');
+    };
     return navigator.getUserMedia({
       audio: true
-    }, success, (function(e) {
-      throw e;
-    }));
+    }, success, error);
   };
 
   $(function() {
