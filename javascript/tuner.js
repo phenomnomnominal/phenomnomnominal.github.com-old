@@ -324,7 +324,7 @@
         maxTime = newMaxTime > maxTime ? newMaxTime : maxTime;
         context.fillStyle = '#EEE';
         timeWidth = (canvas.width - 100) / buffer.length;
-        for (s = _i = 0, _ref = upsampled.length; 0 <= _ref ? _i < _ref : _i > _ref; s = 0 <= _ref ? ++_i : --_i) {
+        for (s = _i = 0, _ref = buffer.length; 0 <= _ref ? _i < _ref : _i > _ref; s = 0 <= _ref ? ++_i : --_i) {
           context.fillRect(timeWidth * s, canvas.height / 2, timeWidth, -(canvas.height / 2) * (buffer[s] / maxTime));
         }
         context.fillStyle = '#F77';
