@@ -11,13 +11,13 @@
         $('.project').removeClass('offLeft');
         return $('.project').addClass('spinLeft');
       });
-      return $('.back').removeClass('offLeft').promise().done(function() {
-        return window.location.href = 'http://phenomnomnominal.github.com/';
-      });
+      return $('.back').removeClass('offLeft');
     },
     displays: function() {
       $('.display').addClass('offRight');
-      return $('.back').addClass('offLeft');
+      return $('.back').addClass('offLeft').promise().done(function() {
+        return window.location.href = 'http://phenomnomnominal.github.com/';
+      });
     }
   };
 
