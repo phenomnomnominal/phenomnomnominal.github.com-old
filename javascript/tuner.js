@@ -279,15 +279,16 @@
             interp = 0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x;
             freq = interp * (sampleRate / fftSize);
             _ref5 = getPitch(freq), note = _ref5[0], diff = _ref5[1];
-            return display.draw(note, diff);
+            display.draw(note, diff);
           }
         } else {
           maxPeaks = 0;
           maxPeakCount++;
           if (maxPeakCount > 20) {
-            return display.clear();
+            display.clear();
           }
         }
+        return render();
       };
       display = {
         draw: function(note, diff) {
@@ -310,7 +311,7 @@
         }
       };
       render = function() {
-        var f, freqWidth, newMaxTime, s, timeWidth, _i, _j, _ref, _ref1;
+        var f, freqWidth, newMaxTime, s, timeWidth, _i, _j, _ref, _ref1, _results;
         context.clearRect(0, 0, canvas.width, canvas.height);
         newMaxTime = _.reduce(buffer, (function(max, next) {
           if (Math.abs(next) > max) {
@@ -327,13 +328,13 @@
         }
         context.fillStyle = '#F77';
         freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
+        _results = [];
         for (f = _j = 10, _ref1 = (fft.spectrum.length / 4) - 10; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; f = 10 <= _ref1 ? ++_j : --_j) {
-          context.fillRect(freqWidth * f, canvas.height / 2, freqWidth, -Math.pow(1e4 * fft.spectrum[f], 2));
+          _results.push(context.fillRect(freqWidth * f, canvas.height / 2, freqWidth, -Math.pow(1e4 * fft.spectrum[f], 2)));
         }
-        return requestAnimFrame(render);
+        return _results;
       };
-      requestAnimFrame(render);
-      return setInterval(data, 200);
+      return setInterval(data, 100);
     };
     error = function(e) {
       throw e;
@@ -354,11 +355,6 @@
     }
     navigator.getUserMedia = (function() {
       return navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia;
-    })();
-    window.requestAnimFrame = (function() {
-      return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
-        return window.setTimeout(callback, 1000 / 60);
-      };
     })();
     return $(window).resize(function() {
       var canvas;
