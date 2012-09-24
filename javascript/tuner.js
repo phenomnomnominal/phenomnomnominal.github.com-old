@@ -96,15 +96,18 @@
 
   Tuner = function() {
     var audioContext, buffer, bufferFillSize, bufferFiller, canvas, context, error, fft, fftSize, gauss, hp, i, lp, sampleRate, success;
+    window.AudioContext = (function() {
+      return navigator.AudioContext || navigator.mozAudioContext || navigator.webkitAudioContext || navigator.msAudioContext || navigator.oAudioContext;
+    })();
     if (!window.AudioContext) {
-      if (!window.webkitAudioContext) {
-        alert('THIS TUNER REQUIRES THE LATEST BUILD OF CHROME CANARY (23/09/2012) ON MAC WITH "Web Audio Input" ENABLED IN chrome://flags.');
-      }
-      window.AudioContext = window.webkitAudioContext;
+      alert('THIS TUNER REQUIRES THE LATEST BUILD OF CHROME CANARY (23/09/2012) ON MAC WITH "Web Audio Input" ENABLED IN chrome://flags.');
     }
     navigator.getUserMedia = (function() {
-      return navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia;
+      return navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
     })();
+    if (!navigator.getUserMedia) {
+      alert('THIS TUNER REQUIRES THE LATEST BUILD OF CHROME CANARY (23/09/2012) ON MAC WITH "Web Audio Input" ENABLED IN chrome://flags.');
+    }
     canvas = $('.tuner canvas')[0];
     $(window).resize(function() {
       canvas.height = $('.tuner').height();
@@ -141,26 +144,26 @@
     gauss = new WindowFunction(DSP.GAUSS);
     lp = audioContext.createBiquadFilter();
     lp.type = lp.LOWPASS;
-    lp.frequency = 20;
+    lp.frequency = 4000;
     lp.Q = 0.1;
     hp = audioContext.createBiquadFilter();
     hp.type = hp.HIGHPASS;
-    hp.frequency = 4000;
+    hp.frequency = 20;
     hp.Q = 0.1;
     success = function(stream) {
-      var data, display, getPitch, maxPeakCount, maxPeaks, maxTime, noiseCount, noiseThreshold, render, src;
+      var display, getPitch, maxPeakCount, maxPeaks, maxTime, noiseCount, noiseThreshold, process, render, src;
+      maxTime = 0;
+      noiseCount = 0;
+      noiseThreshold = -Infinity;
+      maxPeaks = 0;
+      maxPeakCount = 0;
       try {
         src = audioContext.createMediaStreamSource(stream);
         src.connect(lp);
         lp.connect(hp);
         hp.connect(bufferFiller);
         bufferFiller.connect(audioContext.destination);
-        maxTime = 0;
-        noiseCount = 0;
-        noiseThreshold = -Infinity;
-        maxPeaks = 0;
-        maxPeakCount = 0;
-        data = function() {
+        process = function() {
           var b, bufferCopy, diff, downsampled, firstFreq, freq, interp, left, noiseThrehold, note, p, peak, peaks, q, right, s, secondFreq, spectrumPoints, thirdFreq, upsampled, x, _i, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
           bufferCopy = (function() {
             var _i, _len, _results;
@@ -239,14 +242,14 @@
               }
               return _results;
             })();
+            peaks.sort(function(a, b) {
+              return a.x - b.x;
+            });
             maxPeaks = maxPeaks < peaks.length ? peaks.length : maxPeaks;
             if (maxPeaks > 0) {
               maxPeakCount = 0;
             }
             peak = null;
-            peaks.sort(function(a, b) {
-              return a.x - b.x;
-            });
             firstFreq = peaks[0].x * (sampleRate / fftSize);
             if (peaks.length > 1) {
               secondFreq = peaks[1].x * (sampleRate / fftSize);
@@ -266,11 +269,15 @@
               }
               left = {
                 x: peak.x - 1,
-                y: fft.spectrum[peak.x - 1]
+                y: Math.log(fft.spectrum[peak.x - 1])
+              };
+              peak = {
+                x: peak.x,
+                y: Math.log(fft.spectrum[peak.x])
               };
               right = {
                 x: peak.x + 1,
-                y: fft.spectrum[peak.x + 1]
+                y: Math.log(fft.spectrum[peak.x + 1])
               };
               interp = 0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x;
               freq = interp * (sampleRate / fftSize);
@@ -348,7 +355,7 @@
         }
         return [note, diff];
       };
-      return setInterval(data, 100);
+      return setInterval(process, 100);
     };
     error = function(e) {
       console.log(e);
