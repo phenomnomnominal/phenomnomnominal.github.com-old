@@ -287,7 +287,7 @@
           maxPeaks = 0;
           maxPeakCount++;
           if (maxPeakCount > 20) {
-            return diaply.clear();
+            return display.clear();
           }
         }
       };
