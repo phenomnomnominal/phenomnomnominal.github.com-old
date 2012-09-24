@@ -333,7 +333,7 @@
         return requestAnimFrame(render);
       };
       requestAnimFrame(render);
-      return setTimeout(data, 200);
+      return setInterval(data, 200);
     };
     error = function(e) {
       throw e;
