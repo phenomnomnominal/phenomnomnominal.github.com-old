@@ -144,7 +144,7 @@
     gauss = new WindowFunction(DSP.GAUSS);
     lp = audioContext.createBiquadFilter();
     lp.type = lp.LOWPASS;
-    lp.frequency = 4000;
+    lp.frequency = 8000;
     lp.Q = 0.1;
     hp = audioContext.createBiquadFilter();
     hp.type = hp.HIGHPASS;
