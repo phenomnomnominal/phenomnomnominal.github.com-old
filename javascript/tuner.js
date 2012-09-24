@@ -281,15 +281,16 @@
             };
             freq = parabolicInterp(left, peak, right);
             _ref5 = getPitch(freq), note = _ref5[0], diff = _ref5[1];
-            return display.draw(note, diff);
+            display.draw(note, diff);
           }
         } else {
           maxPeaks = 0;
           maxPeakCount++;
           if (maxPeakCount > 20) {
-            return display.clear();
+            display.clear();
           }
         }
+        return requestAnimFrame(data);
       };
       display = {
         draw: function(note, diff) {
@@ -313,7 +314,6 @@
       };
       render = function() {
         var f, freqWidth, newMaxTime, s, timeWidth, _i, _j, _ref, _ref1;
-        data();
         context.clearRect(0, 0, canvas.width, canvas.height);
         newMaxTime = _.reduce(buffer, (function(max, next) {
           if (Math.abs(next) > max) {
@@ -335,7 +335,8 @@
         }
         return requestAnimFrame(render);
       };
-      return requestAnimFrame(render);
+      requestAnimFrame(render);
+      return requestAnimFrame(data);
     };
     error = function(e) {
       throw e;
