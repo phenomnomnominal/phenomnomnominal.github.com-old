@@ -112,6 +112,21 @@
 
   Tuner = function() {
     var audioContext, buffer, bufferFillSize, bufferFiller, canvas, context, error, fft, fftSize, gauss, hp, i, lp, sampleRate, success;
+    if (!window.AudioContext) {
+      if (!window.webkitAudioContext) {
+        alert('THIS TUNER REQUIRES THE LATEST BUILD OF CHROME CANARY (23/09/2012) ON MAC WITH "Web Audio Input" ENABLED IN chrome://flags.');
+      }
+      window.AudioContext = window.webkitAudioContext;
+    }
+    navigator.getUserMedia = (function() {
+      return navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia;
+    })();
+    $(window).resize(function() {
+      var canvas;
+      canvas = $('.tuner canvas')[0];
+      canvas.height = $('.tuner').height();
+      return canvas.width = $('.tuner').width();
+    });
     $('.tuner').removeClass('hidden');
     canvas = $('.tuner canvas')[0];
     canvas.height = $('.tuner').height();
@@ -349,24 +364,6 @@
       audio: true
     }, success, error);
   };
-
-  $(function() {
-    if (!window.AudioContext) {
-      if (!window.webkitAudioContext) {
-        alert('THIS TUNER REQUIRES THE LATEST BUILD OF CHROME CANARY (23/09/2012) ON MAC WITH "Web Audio Input" ENABLED IN chrome://flags.');
-      }
-      window.AudioContext = window.webkitAudioContext;
-    }
-    navigator.getUserMedia = (function() {
-      return navigator.getUserMedia || navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia;
-    })();
-    return $(window).resize(function() {
-      var canvas;
-      canvas = $('.tuner canvas')[0];
-      canvas.height = $('.tuner').height();
-      return canvas.width = $('.tuner').width();
-    });
-  });
 
   root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
