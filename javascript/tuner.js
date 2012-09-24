@@ -97,7 +97,7 @@
   Tuner = function() {
     var audioContext, buffer, bufferFillSize, bufferFiller, canvas, context, error, fft, fftSize, gauss, hp, i, lp, sampleRate, success;
     window.AudioContext = (function() {
-      return navigator.AudioContext || navigator.mozAudioContext || navigator.webkitAudioContext || navigator.msAudioContext || navigator.oAudioContext;
+      return window.AudioContext || window.mozAudioContext || window.webkitAudioContext || window.msAudioContext || window.oAudioContext;
     })();
     if (!window.AudioContext) {
       alert('THIS TUNER REQUIRES THE LATEST BUILD OF CHROME CANARY (23/09/2012) ON MAC WITH "Web Audio Input" ENABLED IN chrome://flags.');
