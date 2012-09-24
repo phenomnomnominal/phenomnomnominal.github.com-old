@@ -162,6 +162,7 @@
       src.connect(lp);
       lp.connect(hp);
       hp.connect(bufferFiller);
+      bufferFiller.connect(audioContext.destination);
       maxTime = 0;
       noiseCount = 0;
       noiseThreshold = -Infinity;
