@@ -158,6 +158,7 @@
         src = audioContext.createMediaStreamSource(stream);
       } catch (e) {
         error(e);
+        break;
       }
       src.connect(lp);
       lp.connect(hp);
