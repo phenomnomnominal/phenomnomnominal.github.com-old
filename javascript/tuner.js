@@ -293,21 +293,22 @@
       };
       display = {
         draw: function(note, diff) {
-          var displayStr, pitch;
+          var displayDiv, displayStr, pitch;
           pitch = note.replace(/[0-9]*/g, '');
-          display = $('.tuner div');
-          display.removeClass();
-          display.addClass((Math.abs(diff) < 0.25 ? 'inTune' : 'outTune'));
+          displayDiv = $('.tuner div');
+          displayDiv.removeClass();
+          displayDiv.addClass((Math.abs(diff) < 0.25 ? 'inTune' : 'outTune'));
           displayStr = '';
           displayStr += diff < -0.25 ? '>&nbsp;' : '&nbsp;&nbsp;';
           displayStr += pitch;
           displayStr += diff > 0.25 ? '&nbsp;<' : '&nbsp;&nbsp;';
-          return display.html(displayStr);
+          return displayDiv.html(displayStr);
         },
         clear: function() {
-          display = $('.tuner div');
-          display.removeClass();
-          return display.html('');
+          var displayDiv;
+          displayDiv = $('.tuner div');
+          displayDiv.removeClass();
+          return displayDiv.html('');
         }
       };
       render = function() {
