@@ -166,7 +166,7 @@
         return (0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x) * (sampleRate / fftSize);
       };
       data = function() {
-        var b, bufferCopy, diff, display, displayStr, downsampled, f, firstFreq, freq, freqWidth, left, maxPeaksCount, newMaxTime, noiseThrehold, note, p, peak, peaks, pitch, q, right, s, secondFreq, spectrumPoints, thirdFreq, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _results;
+        var b, bufferCopy, diff, display, displayStr, downsampled, f, firstFreq, freq, freqWidth, left, newMaxTime, noiseThrehold, note, p, peak, peaks, pitch, q, right, s, secondFreq, spectrumPoints, thirdFreq, timeWidth, upsampled, x, _j, _k, _l, _len, _m, _n, _o, _p, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _results;
         bufferCopy = (function() {
           var _j, _len, _results;
           _results = [];
@@ -260,7 +260,7 @@
           })();
           maxPeaks = maxPeaks < peaks.length ? peaks.length : maxPeaks;
           if (maxPeaks > 0) {
-            maxPeaksCount = 0;
+            maxPeakCount = 0;
           }
           peak = null;
           peaks.sort(function(a, b) {
@@ -305,8 +305,8 @@
           }
         } else {
           maxPeaks = 0;
-          maxPeaksCount++;
-          if (maxPeaksCount > 20) {
+          maxPeakCount++;
+          if (maxPeakCount > 20) {
             display = $('.tuner div');
             display.removeClass();
             display.html('');
