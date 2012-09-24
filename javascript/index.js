@@ -11,7 +11,9 @@
         $('.project').removeClass('offLeft');
         return $('.project').addClass('spinLeft');
       });
-      return $('.back').removeClass('offLeft');
+      return $('.back').removeClass('offLeft').promise().done(function() {
+        return window.location.href = 'http://phenomnomnominal.github.com/';
+      });
     },
     displays: function() {
       $('.display').addClass('offRight');

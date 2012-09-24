@@ -6,7 +6,8 @@ clear =
       callback()
       $('.project').removeClass('offLeft')
       $('.project').addClass('spinLeft')
-    $('.back').removeClass 'offLeft'
+    $('.back').removeClass('offLeft').promise().done ->
+      window.location.href = 'http://phenomnomnominal.github.com/'
   displays: ->
     $('.display').addClass 'offRight'
     $('.back').addClass 'offLeft'
