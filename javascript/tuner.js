@@ -311,7 +311,6 @@
       };
       render = function() {
         var f, freqWidth, newMaxTime, s, timeWidth, _i, _j, _ref, _ref1;
-        data();
         context.clearRect(0, 0, canvas.width, canvas.height);
         newMaxTime = _.reduce(buffer, (function(max, next) {
           if (Math.abs(next) > max) {
@@ -333,7 +332,8 @@
         }
         return requestAnimFrame(render);
       };
-      return requestAnimFrame(render);
+      requestAnimFrame(render);
+      return setTimeout(data, 200);
     };
     error = function(e) {
       throw e;
