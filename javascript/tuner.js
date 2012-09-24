@@ -332,9 +332,9 @@
         for (f = _j = 10, _ref1 = (fft.spectrum.length / 4) - 10; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; f = 10 <= _ref1 ? ++_j : --_j) {
           context.fillRect(freqWidth * f, canvas.height / 2, freqWidth, -Math.pow(1e4 * fft.spectrum[f], 2));
         }
-        return requestAnimationFrame(render);
+        return requestAnimFrame(render);
       };
-      return requestAnimationFrame(render);
+      return requestAnimFrame(render);
     };
     error = function(e) {
       throw e;
