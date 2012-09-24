@@ -18,6 +18,7 @@
 
   load = {
     tuner: function() {
+      $('.tuner').removeClass('offRight');
       return Tuner();
     },
     transcribe: function() {},

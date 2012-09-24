@@ -8,6 +8,7 @@ show =
 
 load = 
   tuner: ->
+    $('.tuner').removeClass 'offRight'
     Tuner()
   transcribe: ->
   quantum: ->
@@ -17,5 +18,3 @@ $ ->
   
   $('.project').click ->
     clear.projects load[$(this).attr 'title']
-      
-      
