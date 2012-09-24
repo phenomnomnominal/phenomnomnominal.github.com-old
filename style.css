@@ -200,6 +200,7 @@
 .blue { background-color: rgba(201, 187, 255, 0.5); }
 
 .project img {
+  border-radius: 0px 0px 0px 10px;
   display: block;
   position: relative;
   -webkit-transition: all 0.2s ease-in;
