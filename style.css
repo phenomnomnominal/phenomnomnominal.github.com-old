@@ -202,6 +202,7 @@
 .project img {
   border-radius: 0px 0px 0px 10px;
   display: block;
+  opacity: 0.7;
   position: relative;
   -webkit-transition: all 0.2s ease-in;
      -moz-transition: all 0.2s ease-in;
@@ -280,6 +281,8 @@
 .display {
   height: 95%;
   left: 5%;
+  min-height: 500px;
+  min-width: 755px;
   position: fixed;
   top: 5%;
   width: 95%;
@@ -288,10 +291,6 @@
 .display.hidden {
   left: auto;
   right: -2000px;
-}
-
-.tuner {
-  min-width: 755px;
 }
 
 .tuner canvas {
