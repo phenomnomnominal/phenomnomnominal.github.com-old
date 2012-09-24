@@ -341,7 +341,7 @@
       return setInterval(data, 100);
     };
     error = function(e) {
-      throw e;
+      console.log(e);
       console.log('ARE YOU USING CHROME CANARY (23/09/2012) ON A MAC WITH "Web Audio Input" ENABLED IN chrome://flags?');
       return alert('ERROR: CHECK ERROR CONSOLE');
     };
