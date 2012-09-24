@@ -156,145 +156,144 @@
       var data, display, maxPeakCount, maxPeaks, maxTime, noiseCount, noiseThreshold, render, src;
       try {
         src = audioContext.createMediaStreamSource(stream);
-      } catch (e) {
-        error(e);
-        break;
-      }
-      src.connect(lp);
-      lp.connect(hp);
-      hp.connect(bufferFiller);
-      bufferFiller.connect(audioContext.destination);
-      maxTime = 0;
-      noiseCount = 0;
-      noiseThreshold = -Infinity;
-      maxPeaks = 0;
-      maxPeakCount = 0;
-      data = function() {
-        var b, bufferCopy, diff, downsampled, firstFreq, freq, interp, left, noiseThrehold, note, p, peak, peaks, q, right, s, secondFreq, spectrumPoints, thirdFreq, upsampled, x, _i, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
-        bufferCopy = (function() {
-          var _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = buffer.length; _i < _len; _i++) {
-            b = buffer[_i];
-            _results.push(b);
-          }
-          return _results;
-        })();
-        gauss.process(bufferCopy);
-        downsampled = [];
-        for (s = _i = 0, _ref = bufferCopy.length; _i < _ref; s = _i += 4) {
-          downsampled.push(bufferCopy[s]);
-        }
-        upsampled = [];
-        for (_j = 0, _len = downsampled.length; _j < _len; _j++) {
-          s = downsampled[_j];
-          upsampled.push(s);
-          upsampled.push(0);
-          upsampled.push(0);
-          upsampled.push(0);
-        }
-        fft.forward(upsampled);
-        if (noiseCount < 10) {
-          noiseThreshold = _.reduce(fft.spectrum, (function(max, next) {
-            if (next > max) {
-              return next;
-            } else {
-              return max;
+        src.connect(lp);
+        lp.connect(hp);
+        hp.connect(bufferFiller);
+        bufferFiller.connect(audioContext.destination);
+        maxTime = 0;
+        noiseCount = 0;
+        noiseThreshold = -Infinity;
+        maxPeaks = 0;
+        maxPeakCount = 0;
+        data = function() {
+          var b, bufferCopy, diff, downsampled, firstFreq, freq, interp, left, noiseThrehold, note, p, peak, peaks, q, right, s, secondFreq, spectrumPoints, thirdFreq, upsampled, x, _i, _j, _k, _l, _len, _m, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+          bufferCopy = (function() {
+            var _i, _len, _results;
+            _results = [];
+            for (_i = 0, _len = buffer.length; _i < _len; _i++) {
+              b = buffer[_i];
+              _results.push(b);
             }
-          }), noiseThreshold);
-          noiseThrehold = noiseThreshold > 0.001 ? 0.001 : noiseThreshold;
-          noiseCount++;
-        }
-        spectrumPoints = (function() {
-          var _k, _ref1, _results;
-          _results = [];
-          for (x = _k = 0, _ref1 = fft.spectrum.length / 4; 0 <= _ref1 ? _k < _ref1 : _k > _ref1; x = 0 <= _ref1 ? ++_k : --_k) {
-            _results.push({
-              x: x,
-              y: fft.spectrum[x]
-            });
+            return _results;
+          })();
+          gauss.process(bufferCopy);
+          downsampled = [];
+          for (s = _i = 0, _ref = bufferCopy.length; _i < _ref; s = _i += 4) {
+            downsampled.push(bufferCopy[s]);
           }
-          return _results;
-        })();
-        spectrumPoints.sort(function(a, b) {
-          return b.y - a.y;
-        });
-        peaks = [];
-        for (p = _k = 0; _k < 8; p = ++_k) {
-          if (spectrumPoints[p].y > noiseThreshold * 5) {
-            peaks.push(spectrumPoints[p]);
+          upsampled = [];
+          for (_j = 0, _len = downsampled.length; _j < _len; _j++) {
+            s = downsampled[_j];
+            upsampled.push(s);
+            upsampled.push(0);
+            upsampled.push(0);
+            upsampled.push(0);
           }
-        }
-        if (peaks.length > 0) {
-          for (p = _l = 0, _ref1 = peaks.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; p = 0 <= _ref1 ? ++_l : --_l) {
-            if (peaks[p] != null) {
-              for (q = _m = 0, _ref2 = peaks.length; 0 <= _ref2 ? _m < _ref2 : _m > _ref2; q = 0 <= _ref2 ? ++_m : --_m) {
-                if (p !== q && (peaks[q] != null)) {
-                  if (Math.abs(peaks[p].x - peaks[q].x) < 5) {
-                    peaks[q] = null;
+          fft.forward(upsampled);
+          if (noiseCount < 10) {
+            noiseThreshold = _.reduce(fft.spectrum, (function(max, next) {
+              if (next > max) {
+                return next;
+              } else {
+                return max;
+              }
+            }), noiseThreshold);
+            noiseThrehold = noiseThreshold > 0.001 ? 0.001 : noiseThreshold;
+            noiseCount++;
+          }
+          spectrumPoints = (function() {
+            var _k, _ref1, _results;
+            _results = [];
+            for (x = _k = 0, _ref1 = fft.spectrum.length / 4; 0 <= _ref1 ? _k < _ref1 : _k > _ref1; x = 0 <= _ref1 ? ++_k : --_k) {
+              _results.push({
+                x: x,
+                y: fft.spectrum[x]
+              });
+            }
+            return _results;
+          })();
+          spectrumPoints.sort(function(a, b) {
+            return b.y - a.y;
+          });
+          peaks = [];
+          for (p = _k = 0; _k < 8; p = ++_k) {
+            if (spectrumPoints[p].y > noiseThreshold * 5) {
+              peaks.push(spectrumPoints[p]);
+            }
+          }
+          if (peaks.length > 0) {
+            for (p = _l = 0, _ref1 = peaks.length; 0 <= _ref1 ? _l < _ref1 : _l > _ref1; p = 0 <= _ref1 ? ++_l : --_l) {
+              if (peaks[p] != null) {
+                for (q = _m = 0, _ref2 = peaks.length; 0 <= _ref2 ? _m < _ref2 : _m > _ref2; q = 0 <= _ref2 ? ++_m : --_m) {
+                  if (p !== q && (peaks[q] != null)) {
+                    if (Math.abs(peaks[p].x - peaks[q].x) < 5) {
+                      peaks[q] = null;
+                    }
                   }
                 }
               }
             }
-          }
-          peaks = (function() {
-            var _len1, _n, _results;
-            _results = [];
-            for (_n = 0, _len1 = peaks.length; _n < _len1; _n++) {
-              p = peaks[_n];
-              if (p != null) {
-                _results.push(p);
+            peaks = (function() {
+              var _len1, _n, _results;
+              _results = [];
+              for (_n = 0, _len1 = peaks.length; _n < _len1; _n++) {
+                p = peaks[_n];
+                if (p != null) {
+                  _results.push(p);
+                }
+              }
+              return _results;
+            })();
+            maxPeaks = maxPeaks < peaks.length ? peaks.length : maxPeaks;
+            if (maxPeaks > 0) {
+              maxPeakCount = 0;
+            }
+            peak = null;
+            peaks.sort(function(a, b) {
+              return a.x - b.x;
+            });
+            firstFreq = peaks[0].x * (sampleRate / fftSize);
+            if (peaks.length > 1) {
+              secondFreq = peaks[1].x * (sampleRate / fftSize);
+              if ((1.4 < (_ref3 = firstFreq / secondFreq) && _ref3 < 1.6)) {
+                peak = peaks[1];
               }
             }
-            return _results;
-          })();
-          maxPeaks = maxPeaks < peaks.length ? peaks.length : maxPeaks;
-          if (maxPeaks > 0) {
-            maxPeakCount = 0;
-          }
-          peak = null;
-          peaks.sort(function(a, b) {
-            return a.x - b.x;
-          });
-          firstFreq = peaks[0].x * (sampleRate / fftSize);
-          if (peaks.length > 1) {
-            secondFreq = peaks[1].x * (sampleRate / fftSize);
-            if ((1.4 < (_ref3 = firstFreq / secondFreq) && _ref3 < 1.6)) {
-              peak = peaks[1];
+            if (peaks.length > 2) {
+              thirdFreq = peaks[2].x * (sampleRate / fftSize);
+              if ((1.4 < (_ref4 = firstFreq / thirdFreq) && _ref4 < 1.6)) {
+                peak = peaks[2];
+              }
+            }
+            if (peaks.length > 1 || maxPeaks === 1) {
+              if (!(peak != null)) {
+                peak = peaks[0];
+              }
+              left = {
+                x: peak.x - 1,
+                y: fft.spectrum[peak.x - 1]
+              };
+              right = {
+                x: peak.x + 1,
+                y: fft.spectrum[peak.x + 1]
+              };
+              interp = 0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x;
+              freq = interp * (sampleRate / fftSize);
+              _ref5 = getPitch(freq), note = _ref5[0], diff = _ref5[1];
+              display.draw(note, diff);
+            }
+          } else {
+            maxPeaks = 0;
+            maxPeakCount++;
+            if (maxPeakCount > 20) {
+              display.clear();
             }
           }
-          if (peaks.length > 2) {
-            thirdFreq = peaks[2].x * (sampleRate / fftSize);
-            if ((1.4 < (_ref4 = firstFreq / thirdFreq) && _ref4 < 1.6)) {
-              peak = peaks[2];
-            }
-          }
-          if (peaks.length > 1 || maxPeaks === 1) {
-            if (!(peak != null)) {
-              peak = peaks[0];
-            }
-            left = {
-              x: peak.x - 1,
-              y: fft.spectrum[peak.x - 1]
-            };
-            right = {
-              x: peak.x + 1,
-              y: fft.spectrum[peak.x + 1]
-            };
-            interp = 0.5 * ((left.y - right.y) / (left.y - (2 * peak.y) + right.y)) + peak.x;
-            freq = interp * (sampleRate / fftSize);
-            _ref5 = getPitch(freq), note = _ref5[0], diff = _ref5[1];
-            display.draw(note, diff);
-          }
-        } else {
-          maxPeaks = 0;
-          maxPeakCount++;
-          if (maxPeakCount > 20) {
-            display.clear();
-          }
-        }
-        return render();
-      };
+          return render();
+        };
+      } catch (e) {
+        error(e);
+      }
       display = {
         draw: function(note, diff) {
           var displayDiv, displayStr, pitch;
