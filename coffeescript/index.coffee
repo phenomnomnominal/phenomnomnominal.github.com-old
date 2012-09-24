@@ -1,10 +1,19 @@
+projects = ['tuner']
+
 clear = 
   projects: (callback) ->
-    $('.project').animate(left: -2000).promise().done callback
+    $('.project').addClass('offLeft').promise().done ->
+      callback()
+      $('.project').removeClass('offLeft')
+      $('.project').addClass('spinLeft')
+    $('.back').removeClass 'offLeft'
+  displays: ->
+    $('.display').addClass 'offRight'
+    $('.back').addClass 'offLeft'
 
 show =
   projects: ->
-    $('.project').removeClass 'offLeft'
+    $('.project').removeClass 'spinLeft'
 
 load = 
   tuner: ->
@@ -18,3 +27,7 @@ $ ->
   
   $('.project').click ->
     clear.projects load[$(this).attr 'title']
+    
+  $('.back').click ->
+    clear.displays()
+    show.projects()
