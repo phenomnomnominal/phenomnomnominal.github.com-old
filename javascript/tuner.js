@@ -4,14 +4,13 @@
     __hasProp = {}.hasOwnProperty;
 
   Tuner = function() {
-    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, downsampleRate, error, fft, fftSize, frequencies, gauss, getPitch, hp, i, lp, sampleRate, success, _i;
+    var analyser, audioContext, buffer, bufferFillSize, bufferFiller, error, fft, fftSize, frequencies, gauss, getPitch, hp, i, lp, sampleRate, success, _i;
     navigator.getUserMedia || (navigator.getUserMedia = navigator.mozGetUserMedia || navigator.webkitGetUserMedia || navigator.msGetUserMedia);
     audioContext = new AudioContext();
     analyser = audioContext.createAnalyser();
     sampleRate = audioContext.sampleRate;
-    downsampleRate = sampleRate / 4;
     fftSize = 8192;
-    fft = new FFT(fftSize, downsampleRate);
+    fft = new FFT(fftSize, sampleRate);
     gauss = new WindowFunction(DSP.GAUSS);
     lp = audioContext.createBiquadFilter();
     lp.type = lp.LOWPASS;
