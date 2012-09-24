@@ -310,7 +310,7 @@
             displayStr += diff < -0.25 ? '>&nbsp;' : '&nbsp;&nbsp;';
             displayStr += pitch;
             displayStr += diff > 0.25 ? '&nbsp;<' : '&nbsp;&nbsp;';
-            display.text(displayStr);
+            display.html(displayStr);
           }
         } else {
           maxPeaks = 0;
