@@ -154,7 +154,7 @@
 
 .projects {
   height: 50%;
-  position: absolute;
+  position: fixed;
   top: 250px;
   width: 95%;
 }
