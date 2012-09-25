@@ -120,7 +120,7 @@
   left: 5%;
   line-height: 25px;
   padding: 2px 22px 2px 22px;
-  position: absolute;
+  position: fixed;
   top: 80px;
   z-index: 10;
   -webkit-transition: all 0.5s;
