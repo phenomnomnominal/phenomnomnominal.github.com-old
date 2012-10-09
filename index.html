@@ -40,7 +40,7 @@
 					</div>
 				</div>
 				<div class='project spinLeft animate' id='clouds'>
-					<img src='images/clouds.jpg'/>
+					<!--<img src='images/clouds.jpg'/>-->
 					<div class='mask blue'>
 			    		<h2>DYNAMIC CLOUDS</h2>
 		    			<p>3D simulation of clouds, using cellular automata.</p>
@@ -89,23 +89,21 @@
 			</div>
 		</div>
 		<script id="vs" type="x-shader/x-vertex">
-		varying vec2 vUv;
-
-		void main() {
-		    vUv = uv;
-		    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-		}
-		</script>
-		<script id="fs" type="x-shader/x-fragment">
-		uniform sampler2D map;
-
-		varying vec2 vUv;
-
-		void main() {
-		    float depth = gl_FragCoord.z / gl_FragCoord.w;
-		    gl_FragColor = texture2D( map, vUv );
-		    gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
-		}
-		</script>
+		    varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+            }
+        </script>
+        <script id="fs" type="x-shader/x-fragment">
+            uniform sampler2D map;
+            varying vec2 vUv;
+            void main() {
+                float depth = gl_FragCoord.z / gl_FragCoord.w;
+                
+				gl_FragColor = texture2D( map, vUv );
+                gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
+            }
+        </script>
 	</body>
 </html>
