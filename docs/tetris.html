@@ -1,0 +1,336 @@
+<!DOCTYPE html>  <html> <head>   <title>tetris.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="tetris.html">                 tetris.coffee               </a>                                           <a class="source" href="tetrominoes.html">                 tetrominoes.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               tetris.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nv">CANVAS = </span><span class="kc">null</span>
+<span class="nv">CONTEXT = </span><span class="kc">null</span>
+
+<span class="nv">colours = </span><span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="s">&#39;rgb(247,155,50)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(244,50,251)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(50,50,255)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(246,75,50)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(255,255,50)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(163,253,255)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(137,255,50)&#39;</span><span class="p">]</span>
+
+<span class="nv">Tetris = </span><span class="o">-&gt;</span>
+  <span class="nv">CANVAS = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.tetris canvas&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+  <span class="nv">CONTEXT = </span><span class="nx">CANVAS</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s">&#39;2d&#39;</span><span class="p">)</span>
+  
+  <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span> <span class="o">-&gt;</span>
+    <span class="nv">CANVAS.height = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.tetris&#39;</span><span class="p">).</span><span class="nx">height</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.8</span>
+    <span class="nv">CANVAS.width = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.tetris&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">()</span>
+  <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">trigger</span> <span class="s">&#39;resize&#39;</span>
+  
+  <span class="nv">root = </span><span class="nx">exports</span> <span class="o">?</span> <span class="k">this</span>
+  <span class="nv">root.TetrisGame = </span><span class="k">new</span> <span class="nx">TetrisAI</span><span class="p">()</span>
+  
+  <span class="nv">update = </span><span class="o">-&gt;</span>
+    <span class="nx">TetrisGame</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
+    <span class="nx">TetrisGame</span><span class="p">.</span><span class="nx">update</span><span class="p">()</span>
+  <span class="nx">setInterval</span> <span class="nx">update</span><span class="p">,</span> <span class="mi">250</span>
+
+<span class="k">class</span> <span class="nx">TetrisAI</span>
+  <span class="nv">constructor: </span><span class="nf">() -&gt;</span>
+    <span class="vi">@PreviousTetromino = </span><span class="kc">undefined</span>
+    <span class="vi">@MoveScores = </span><span class="p">[]</span>
+    <span class="vi">@Bag = </span><span class="k">new</span> <span class="nx">TetriminoBag</span><span class="p">()</span>
+    
+    <span class="vi">@Lines = </span><span class="mi">0</span>
+    <span class="vi">@TotalLines = </span><span class="mi">0</span>
+    <span class="vi">@Level = </span><span class="mi">0</span>
+    <span class="vi">@Matrix = </span><span class="p">[]</span>
+    <span class="vi">@MoveCount = </span><span class="mi">1</span>
+    <span class="vi">@Points = </span><span class="mi">0</span>
+    <span class="vi">@GameOver = </span><span class="kc">false</span>
+    
+    <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="mi">21</span><span class="p">]</span>
+      <span class="nx">@Matrix</span><span class="p">[</span><span class="nx">x</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span> 
+      <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="mi">11</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nx">y</span> <span class="o">is</span> <span class="mi">0</span> <span class="o">or</span> <span class="nx">y</span> <span class="o">is</span> <span class="mi">11</span>
+          <span class="nx">@Matrix</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="nx">x</span> <span class="o">is</span> <span class="mi">21</span>
+          <span class="nx">@Matrix</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span>
+        <span class="k">else</span> 
+          <span class="nx">@Matrix</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="vi">@CurrentTetromino = </span><span class="nx">@Bag</span><span class="p">.</span><span class="nx">getNext</span><span class="p">()</span>
+    <span class="vi">@NextTetromino = </span><span class="nx">@Bag</span><span class="p">.</span><span class="nx">getNext</span><span class="p">()</span>
+    <span class="k">return</span>
+  
+  <span class="nv">getHighestRow: </span><span class="o">-&gt;</span>
+    <span class="k">for</span> <span class="nx">row</span> <span class="k">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="mi">20</span><span class="p">]</span>
+      <span class="k">for</span> <span class="nx">column</span> <span class="k">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="mi">10</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nx">@Matrix</span><span class="p">[</span><span class="nx">row</span><span class="p">][</span><span class="nx">column</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+          <span class="k">return</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nx">row</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span>
+  
+  <span class="nv">update: </span><span class="o">-&gt;</span>
+    <span class="k">if</span> <span class="o">not</span> <span class="k">this</span><span class="p">.</span><span class="nx">checkLoss</span><span class="p">()</span>
+      <span class="nv">currentDomain = </span><span class="nx">@CurrentTetromino</span><span class="p">.</span><span class="nx">getDomain</span><span class="p">(</span><span class="nx">@Matrix</span><span class="p">)</span>
+      <span class="nv">move = </span><span class="nx">@getBestMove</span><span class="p">(</span><span class="nx">currentDomain</span><span class="p">)</span>
+      <span class="nx">@addDomainValue</span><span class="p">(</span><span class="nx">@CurrentTetromino</span><span class="p">,</span> <span class="nx">move</span><span class="p">.</span><span class="nx">valA</span><span class="p">,</span> <span class="nx">@Matrix</span><span class="p">)</span>
+      <span class="nx">@score</span><span class="p">(</span><span class="nx">@removeLines</span><span class="p">(</span><span class="nx">@Matrix</span><span class="p">))</span>
+      <span class="nx">@Points</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+      <span class="vi">@PreviousTetromino = </span><span class="nx">@CurrentTetromino</span>
+      <span class="vi">@CurrentTetromino = </span><span class="nx">@NextTetromino</span>
+      <span class="vi">@NextTetromino = </span><span class="nx">@Bag</span><span class="p">.</span><span class="nx">getNext</span><span class="p">()</span>
+      <span class="nx">@MoveCount</span><span class="o">++</span>
+      <span class="vi">@LastMove = </span><span class="nx">move</span>
+    <span class="k">return</span>
+  
+  <span class="nv">getBestMove: </span><span class="nf">(domainA) -&gt;</span>
+    <span class="nv">combinedBest = </span><span class="kc">undefined</span>
+    <span class="k">for</span> <span class="nx">domainValueA</span> <span class="k">in</span> <span class="nx">domainA</span>
+      <span class="nv">currentState = </span><span class="nx">@copyMatrix</span><span class="p">(</span><span class="nx">@Matrix</span><span class="p">)</span>
+      <span class="k">if</span> <span class="nx">@addDomainValue</span><span class="p">(</span><span class="nx">@CurrentTetromino</span><span class="p">,</span> <span class="nx">domainValueA</span><span class="p">,</span> <span class="nx">currentState</span><span class="p">)</span>
+        <span class="nv">linesScoreA = </span><span class="mi">12</span> <span class="o">*</span> <span class="nx">@removeLines</span><span class="p">(</span><span class="nx">currentState</span><span class="p">)</span>
+        <span class="nv">domainB = </span><span class="nx">@NextTetromino</span><span class="p">.</span><span class="nx">getDomain</span><span class="p">(</span><span class="nx">currentState</span><span class="p">)</span>
+        <span class="k">for</span> <span class="nx">domainValueB</span> <span class="k">in</span> <span class="nx">domainB</span>
+          <span class="nv">oneAddedState = </span><span class="nx">@copyMatrix</span><span class="p">(</span><span class="nx">currentState</span><span class="p">)</span>
+          <span class="k">if</span> <span class="nx">@addDomainValue</span><span class="p">(</span><span class="nx">@NextTetromino</span><span class="p">,</span> <span class="nx">domainValueB</span><span class="p">,</span> <span class="nx">oneAddedState</span><span class="p">)</span>
+            <span class="nv">obj = </span>
+              <span class="nv">moveCount: </span><span class="nx">@MoveCount</span>
+              <span class="nv">valA: </span><span class="nx">domainValueA</span>
+              <span class="nv">valB: </span><span class="nx">domainValueB</span>
+              <span class="nv">score: </span><span class="nx">@getCombinedScore</span><span class="p">(</span><span class="nx">linesScoreA</span><span class="p">,</span> <span class="nx">domainValueA</span><span class="p">,</span> <span class="nx">domainValueB</span><span class="p">,</span> <span class="nx">currentState</span><span class="p">,</span> <span class="nx">oneAddedState</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>score: @getCombinedScore(linesScoreA, domainValueA, null, currentState, null)</p>             </td>             <td class="code">               <div class="highlight"><pre>              <span class="nv">total: </span><span class="mi">0</span>
+            <span class="nv">obj.total = </span><span class="nx">obj</span><span class="p">.</span><span class="nx">score</span><span class="p">.</span><span class="nx">total</span>
+            <span class="k">if</span> <span class="nx">combinedBest</span> <span class="o">isnt</span> <span class="kc">undefined</span>
+              <span class="k">if</span> <span class="nx">obj</span><span class="p">.</span><span class="nx">total</span> <span class="o">&gt;</span> <span class="nx">combinedBest</span><span class="p">.</span><span class="nx">total</span>
+                <span class="nv">combinedBest = </span><span class="nx">obj</span>
+            <span class="k">else</span> 
+              <span class="nv">combinedBest = </span><span class="nx">obj</span>
+    <span class="nx">@MoveScores</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">combinedBest</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">combinedBest</span>
+    
+  <span class="nv">getCombinedScore: </span><span class="nf">(linesScoreA, domainValueA, domainValueB, oneAddedMatrix, bothAddedMatrix) -&gt;</span>
+    <span class="nv">score = </span><span class="mi">0</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>linesScoreA = 10 * @removeLines(oneAddedMatrix)</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">score</span> <span class="o">+=</span> <span class="nx">linesScoreA</span>
+    <span class="nv">linesScoreB = </span><span class="mi">12</span> <span class="o">*</span> <span class="nx">@removeLines</span><span class="p">(</span><span class="nx">bothAddedMatrix</span><span class="p">)</span>
+    <span class="nx">score</span> <span class="o">+=</span> <span class="nx">linesScoreB</span>
+    <span class="nv">heightScoreA = </span><span class="nx">@getHeightScore</span><span class="p">(</span><span class="nx">oneAddedMatrix</span><span class="p">)</span>
+    <span class="nx">score</span> <span class="o">+=</span> <span class="nx">heightScoreA</span>
+    <span class="nv">heightScoreB = </span><span class="nx">@getHeightScore</span><span class="p">(</span><span class="nx">bothAddedMatrix</span><span class="p">)</span>
+    <span class="nx">score</span> <span class="o">+=</span> <span class="nx">heightScoreB</span>
+    <span class="nv">holesScoreA = </span><span class="nx">@getHolesScore</span><span class="p">(</span><span class="nx">domainValueA</span><span class="p">,</span> <span class="nx">oneAddedMatrix</span><span class="p">)</span>
+    <span class="nx">score</span> <span class="o">+=</span> <span class="nx">holesScoreA</span>
+    <span class="nv">holesScoreB = </span><span class="nx">@getHolesScore</span><span class="p">(</span><span class="nx">domainValueB</span><span class="p">,</span> <span class="nx">bothAddedMatrix</span><span class="p">)</span>
+    <span class="nx">score</span> <span class="o">+=</span> <span class="nx">holesScoreB</span>
+    <span class="nv">touchingScoreA = </span><span class="nx">@getTouchingScore</span><span class="p">(</span><span class="nx">domainValueA</span><span class="p">,</span> <span class="nx">oneAddedMatrix</span><span class="p">)</span>
+    <span class="nx">score</span> <span class="o">+=</span> <span class="nx">touchingScoreA</span>
+    <span class="nv">touchingScoreB = </span><span class="nx">@getTouchingScore</span><span class="p">(</span><span class="nx">domainValueB</span><span class="p">,</span> <span class="nx">bothAddedMatrix</span><span class="p">)</span>
+    <span class="nx">score</span> <span class="o">+=</span> <span class="nx">touchingScoreB</span>
+    <span class="nv">scoreObj = </span>
+      <span class="nv">heightA: </span><span class="nx">heightScoreA</span>
+      <span class="nv">heightB: </span><span class="nx">heightScoreB</span>
+      <span class="nv">holesA: </span><span class="nx">holesScoreA</span>
+      <span class="nv">holesB: </span><span class="nx">holesScoreB</span>
+      <span class="nv">touchingA: </span><span class="nx">touchingScoreA</span>
+      <span class="nv">touchingB: </span><span class="nx">touchingScoreB</span>
+      <span class="nv">linesA: </span><span class="nx">linesScoreA</span>
+      <span class="nv">linesB: </span><span class="nx">linesScoreB</span>
+      <span class="nv">total: </span><span class="nx">score</span>
+    <span class="k">return</span> <span class="nx">scoreObj</span>
+    
+  <span class="nv">removeLines: </span><span class="nf">(matrix) -&gt;</span>
+    <span class="nv">completeLines = </span><span class="mi">0</span>
+    <span class="k">for</span> <span class="nx">row</span> <span class="k">in</span> <span class="p">[</span><span class="mi">20</span><span class="p">..</span><span class="mi">1</span><span class="p">]</span>
+      <span class="nv">ones = </span><span class="mi">0</span>
+      <span class="k">for</span> <span class="nx">column</span> <span class="k">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="mi">10</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nx">matrix</span><span class="p">[</span><span class="nx">row</span><span class="p">][</span><span class="nx">column</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+          <span class="nx">ones</span><span class="o">++</span>
+      <span class="k">if</span> <span class="nx">ones</span> <span class="o">is</span> <span class="mi">10</span>
+        <span class="k">for</span> <span class="nx">rowUp</span> <span class="k">in</span> <span class="p">[</span><span class="nx">row</span><span class="p">..</span><span class="mi">1</span><span class="p">]</span>
+          <span class="k">if</span> <span class="nx">rowUp</span> <span class="o">&gt;</span> <span class="mi">1</span>
+            <span class="nx">matrix</span><span class="p">[</span><span class="nx">rowUp</span><span class="p">]</span> <span class="o">=</span> <span class="nx">matrix</span><span class="p">[</span><span class="nx">rowUp</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="nx">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+        <span class="nx">completeLines</span><span class="o">++</span>
+        <span class="nx">row</span><span class="o">++</span>
+    <span class="k">return</span> <span class="nx">completeLines</span>
+    
+  <span class="nv">getHeightScore: </span><span class="nf">(matrix)-&gt;</span>
+    <span class="nv">score = </span><span class="mi">0</span>
+    <span class="k">for</span> <span class="nx">row</span> <span class="k">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="mi">20</span><span class="p">]</span>
+      <span class="k">for</span> <span class="nx">column</span> <span class="k">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">..</span><span class="mi">10</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nx">matrix</span><span class="p">[</span><span class="nx">row</span><span class="p">][</span><span class="nx">column</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+          <span class="nx">score</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">21</span> <span class="o">-</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">row</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mf">0.14</span> <span class="o">*</span> <span class="nx">score</span><span class="p">)</span>
+    
+  <span class="nv">getHolesScore: </span><span class="nf">(domainValue, matrix)-&gt;</span>
+    <span class="nv">holes = </span><span class="mi">0</span>
+    <span class="nv">blockades = </span><span class="mi">0</span>
+    <span class="k">for</span> <span class="nx">own</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">xVal</span> <span class="k">of</span> <span class="nx">domainValue</span><span class="p">.</span><span class="nx">matrix</span>
+      <span class="k">for</span> <span class="nx">own</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">yVal</span> <span class="k">of</span> <span class="nx">xVal</span>
+        <span class="nv">blocks = </span><span class="mi">0</span>
+        <span class="k">if</span> <span class="nx">matrix</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">is</span> <span class="nx">domainValue</span><span class="p">.</span><span class="nx">Tetrimino</span><span class="p">.</span><span class="nx">Colour</span>
+          <span class="nx">blocks</span><span class="o">++</span>
+        <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">x</span><span class="p">)..</span><span class="mi">20</span><span class="p">]</span>
+          <span class="k">if</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">21</span>
+            <span class="nv">val = </span><span class="nx">matrix</span><span class="p">[</span><span class="nx">i</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nx">val</span> <span class="o">is</span> <span class="mi">0</span> <span class="o">and</span> <span class="nx">blocks</span> <span class="o">&gt;</span> <span class="mi">0</span>
+              <span class="nx">blockades</span> <span class="o">+=</span> <span class="nx">blocks</span>
+              <span class="nv">blocks = </span><span class="mi">0</span>
+              <span class="nx">holes</span><span class="o">++</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="nx">val</span> <span class="o">&gt;</span> <span class="mi">0</span>
+              <span class="nx">blocks</span><span class="o">++</span>
+      <span class="k">break</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">8</span> <span class="o">*</span> <span class="nx">holes</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mf">2.5</span> <span class="o">*</span> <span class="nx">blockades</span><span class="p">)</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">function</span> <span class="nv">getScore:</span>
+      <span class="nx">For</span> <span class="nx">each</span> <span class="nx">block</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">shape</span><span class="p">,</span> <span class="nx">sum</span> <span class="nx">the</span> <span class="nx">touching</span> <span class="nx">scores</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">blocks</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">shape</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">Shape</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">current</span> <span class="nx">domain</span> <span class="nx">value</span> <span class="nx">to</span> <span class="nx">score</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">localMatrix</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">local</span> <span class="nx">area</span> <span class="k">in</span> <span class="nx">which</span> <span class="nx">the</span> <span class="nx">shape</span> <span class="nx">will</span> <span class="nx">be</span> <span class="nx">placed</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">globalMatrix</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">global</span> <span class="nx">Tetris</span> <span class="nx">matrix</span><span class="p">.</span>
+  <span class="nx">@</span><span class="k">return</span> <span class="nx">score</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">total</span> <span class="nx">score</span> <span class="k">for</span> <span class="k">this</span> <span class="nx">shape</span><span class="p">.</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">getTouchingScore: </span><span class="nf">(domainValue, globalMatrix) -&gt;</span>
+    <span class="nv">localMatrix = </span><span class="nx">domainValue</span><span class="p">.</span><span class="nx">matrix</span>
+    <span class="nv">shape = </span><span class="nx">domainValue</span><span class="p">.</span><span class="nx">Shape</span>
+    <span class="nv">downScore = </span><span class="mi">0</span>
+    <span class="nv">sideScore = </span><span class="mi">0</span>
+    <span class="nv">shapeRow = </span><span class="mi">0</span>
+    <span class="k">for</span> <span class="nx">own</span> <span class="nx">row</span><span class="p">,</span> <span class="nx">rowValues</span> <span class="k">of</span> <span class="nx">localMatrix</span>
+      <span class="nv">shapeColumn = </span><span class="mi">0</span>
+      <span class="k">for</span> <span class="nx">own</span> <span class="nx">column</span><span class="p">,</span> <span class="nx">columnValue</span> <span class="k">of</span> <span class="nx">rowValues</span>
+        <span class="k">if</span> <span class="nx">columnValue</span> <span class="o">is</span> <span class="nx">domainValue</span><span class="p">.</span><span class="nx">Tetrimino</span><span class="p">.</span><span class="nx">Colour</span> <span class="o">and</span> <span class="nx">shape</span><span class="p">[</span><span class="nx">shapeRow</span><span class="p">][</span><span class="nx">shapeColumn</span><span class="p">]</span> <span class="o">is</span> <span class="mi">1</span>
+          <span class="nx">downScore</span> <span class="o">+=</span> <span class="nx">@getDownTouchingScore</span><span class="p">(</span><span class="nx">globalMatrix</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">row</span><span class="p">),</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">column</span><span class="p">),</span> <span class="nx">shape</span><span class="p">,</span> <span class="nx">shapeRow</span><span class="p">,</span> <span class="nx">shapeColumn</span><span class="p">)</span>
+          <span class="nx">sideScore</span> <span class="o">+=</span> <span class="nx">@getSideTouchingScore</span><span class="p">(</span><span class="nx">globalMatrix</span><span class="p">,</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">row</span><span class="p">),</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">column</span><span class="p">),</span> <span class="nx">shape</span><span class="p">,</span> <span class="nx">shapeRow</span><span class="p">,</span> <span class="nx">shapeColumn</span><span class="p">)</span>
+        <span class="nx">shapeColumn</span><span class="o">++</span>
+      <span class="nx">shapeRow</span><span class="o">++</span>
+    <span class="k">if</span> <span class="nx">downScore</span> <span class="o">&gt;</span> <span class="mi">0</span>
+      <span class="k">return</span> <span class="nx">sideScore</span> <span class="o">+</span> <span class="nx">downScore</span>
+    <span class="k">return</span> <span class="mi">0</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">function</span> <span class="nv">getDownTouchingScore:</span>
+      <span class="nx">Get</span> <span class="nx">the</span> <span class="nx">Down</span> <span class="nx">Touching</span> <span class="nx">Score</span> <span class="k">for</span> <span class="nx">a</span> <span class="nx">block</span><span class="p">.</span> <span class="nx">For</span> <span class="nx">each</span> <span class="nx">floor</span> <span class="o">or</span> <span class="nx">other</span> <span class="nx">block</span>
+      <span class="nx">below</span> <span class="nx">the</span> <span class="nx">block</span><span class="p">,</span> <span class="nx">add</span> <span class="nx">one</span> <span class="nx">point</span> <span class="nx">to</span> <span class="nx">the</span> <span class="nx">score</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">globalMatrix</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">global</span> <span class="nx">Tetris</span> <span class="nx">matrix</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">row</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">row</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">current</span> <span class="nx">block</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">globalMatrix</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">column</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">column</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">current</span> <span class="nx">block</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">globalMatirx</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">shape</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">Shape</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">current</span> <span class="nx">domain</span> <span class="nx">value</span> <span class="nx">to</span> <span class="nx">score</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">shapeRow</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">row</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">current</span> <span class="nx">block</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">shape</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">shapeColumn</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">column</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">current</span> <span class="nx">block</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">shape</span><span class="p">.</span>
+  <span class="nx">@</span><span class="k">return</span> <span class="nx">score</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">total</span> <span class="nx">touching</span> <span class="nx">score</span> <span class="k">for</span> <span class="k">this</span> <span class="nx">block</span><span class="p">.</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">getDownTouchingScore: </span><span class="nf">(globalMatrix, row, column, shape, shapeRow, shapeColumn) -&gt;</span>
+    <span class="nv">score = </span><span class="mi">0</span>
+    <span class="k">if</span> <span class="nx">row</span> <span class="o">&lt;</span> <span class="mi">21</span>
+      <span class="nv">blockUnder = </span><span class="nx">globalMatrix</span><span class="p">[</span><span class="nx">row</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="nx">column</span><span class="p">]</span>
+      <span class="k">if</span> <span class="nx">shape</span><span class="p">[</span><span class="nx">shapeRow</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">isnt</span> <span class="kc">undefined</span> <span class="o">and</span> <span class="nx">shape</span><span class="p">[</span><span class="nx">shapeRow</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="nx">shapeColumn</span><span class="p">]</span> <span class="o">isnt</span> <span class="nx">shape</span><span class="p">[</span><span class="nx">shapeRow</span><span class="p">][</span><span class="nx">shapeColumn</span><span class="p">]</span> <span class="o">and</span> <span class="nx">blockUnder</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="nx">score</span> <span class="o">+=</span> <span class="mi">3</span>
+      <span class="k">else</span> <span class="k">if</span> <span class="nx">shape</span><span class="p">[</span><span class="nx">shapeRow</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">is</span> <span class="kc">undefined</span> <span class="o">and</span> <span class="nx">blockUnder</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="nx">score</span> <span class="o">+=</span> <span class="mi">3</span>
+      <span class="k">if</span> <span class="nx">blockUnder</span> <span class="o">is</span> <span class="o">-</span><span class="mi">2</span>
+        <span class="nx">score</span> <span class="o">+=</span> <span class="mi">5</span>
+    <span class="k">return</span> <span class="nx">score</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">function</span> <span class="nv">getSideTouchingScore:</span>
+      <span class="nx">Get</span> <span class="nx">the</span> <span class="nx">Side</span> <span class="nx">Touching</span> <span class="nx">Score</span> <span class="k">for</span> <span class="nx">a</span> <span class="nx">block</span><span class="p">.</span> <span class="nx">For</span> <span class="nx">each</span> <span class="nx">wall</span> <span class="o">or</span> <span class="nx">other</span> <span class="nx">block</span>
+      <span class="nx">below</span> <span class="nx">the</span> <span class="nx">block</span><span class="p">,</span> <span class="nx">add</span> <span class="nx">one</span> <span class="nx">point</span> <span class="nx">to</span> <span class="nx">the</span> <span class="nx">score</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">globalMatrix</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">global</span> <span class="nx">Tetris</span> <span class="nx">matrix</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">row</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">row</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">current</span> <span class="nx">block</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">globalMatrix</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">column</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">column</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">current</span> <span class="nx">block</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">globalMatirx</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">shape</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">Shape</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">current</span> <span class="nx">domain</span> <span class="nx">value</span> <span class="nx">to</span> <span class="nx">score</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">shapeRow</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">row</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">current</span> <span class="nx">block</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">shape</span><span class="p">.</span>
+  <span class="nx">@param</span> <span class="nx">shapeColumn</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">column</span> <span class="nx">value</span> <span class="k">of</span> <span class="nx">the</span> <span class="nx">current</span> <span class="nx">block</span> <span class="k">in</span> <span class="nx">the</span> <span class="nx">shape</span><span class="p">.</span>
+  <span class="nx">@</span><span class="k">return</span> <span class="nx">score</span> <span class="o">-</span> <span class="nx">the</span> <span class="nx">total</span> <span class="nx">touching</span> <span class="nx">score</span> <span class="k">for</span> <span class="k">this</span> <span class="nx">block</span><span class="p">.</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <h1>#</h1>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">getSideTouchingScore: </span><span class="nf">(globalMatrix, row, column, shape, shapeRow, shapeColumn) -&gt;</span>
+    <span class="nv">score = </span><span class="mi">0</span>
+    <span class="k">if</span> <span class="nx">row</span> <span class="o">&lt;</span> <span class="mi">21</span>
+      <span class="k">if</span> <span class="nx">column</span> <span class="o">&lt;</span> <span class="mi">11</span> <span class="o">and</span> <span class="nx">column</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="nv">blockLeft = </span><span class="nx">globalMatrix</span><span class="p">[</span><span class="nx">row</span><span class="p">][</span><span class="nx">column</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nx">shape</span><span class="p">[</span><span class="nx">shapeRow</span><span class="p">][</span><span class="nx">shapeColumn</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">isnt</span> <span class="nx">shape</span><span class="p">[</span><span class="nx">shapeRow</span><span class="p">][</span><span class="nx">shapeColumn</span><span class="p">]</span>
+          <span class="k">if</span> <span class="nx">blockLeft</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="nx">score</span> <span class="o">+=</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="nx">blockLeft</span> <span class="o">is</span> <span class="o">-</span><span class="mi">3</span>
+          <span class="nx">score</span> <span class="o">+=</span> <span class="mf">2.5</span>
+        <span class="nv">blockRight = </span><span class="nx">globalMatrix</span><span class="p">[</span><span class="nx">row</span><span class="p">][</span><span class="nx">column</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nx">shape</span><span class="p">[</span><span class="nx">shapeRow</span><span class="p">][</span><span class="nx">shapeColumn</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">isnt</span> <span class="nx">shape</span><span class="p">[</span><span class="nx">shapeRow</span><span class="p">][</span><span class="nx">shapeColumn</span><span class="p">]</span>
+          <span class="k">if</span> <span class="nx">blockRight</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="nx">score</span> <span class="o">+=</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="nx">blockRight</span> <span class="o">is</span> <span class="o">-</span><span class="mi">3</span>
+          <span class="nx">score</span> <span class="o">+=</span> <span class="mf">2.5</span>
+    <span class="k">return</span> <span class="nx">score</span>
+    
+  <span class="nv">checkLoss: </span><span class="o">-&gt;</span>
+    <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="mi">11</span><span class="p">]</span>
+      <span class="k">if</span> <span class="nx">@Matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="nx">clearInterval</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">GameClock</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="k">return</span> <span class="kc">false</span>
+    
+  <span class="nv">addDomainValue: </span><span class="nf">(tetromino, domainValue, matrix)-&gt;</span>
+    <span class="nv">constraintFit = </span><span class="k">this</span><span class="p">.</span><span class="nx">checkGivenDomainValue</span><span class="p">(</span><span class="nx">domainValue</span><span class="p">,</span> <span class="nx">matrix</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nx">constraintFit</span> <span class="o">is</span> <span class="kc">true</span>
+      <span class="k">for</span> <span class="nx">own</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">valX</span> <span class="k">of</span> <span class="nx">domainValue</span><span class="p">.</span><span class="nx">matrix</span>
+        <span class="k">if</span> <span class="nx">x</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+          <span class="k">for</span> <span class="nx">own</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">valY</span> <span class="k">of</span> <span class="nx">valX</span>
+            <span class="k">if</span> <span class="nx">y</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">valY</span> <span class="o">&gt;</span> <span class="mi">0</span>
+              <span class="nx">matrix</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">=</span> <span class="nx">valY</span>
+    <span class="k">return</span> <span class="nx">constraintFit</span>
+    
+  <span class="nv">checkGivenDomainValue: </span><span class="nf">(domainValue, matrix) -&gt;</span>
+    <span class="nv">shapeRow = </span><span class="mi">0</span>
+    <span class="k">for</span> <span class="nx">own</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">valX</span> <span class="k">of</span> <span class="nx">domainValue</span><span class="p">.</span><span class="nx">matrix</span>
+      <span class="nv">shapeColumn = </span><span class="mi">0</span>
+      <span class="k">for</span> <span class="nx">own</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">valY</span> <span class="k">of</span> <span class="nx">valX</span>
+        <span class="k">if</span> <span class="nx">valY</span> <span class="o">is</span> <span class="nx">domainValue</span><span class="p">.</span><span class="nx">Tetrimino</span><span class="p">.</span><span class="nx">Colour</span> <span class="o">and</span> <span class="nx">domainValue</span><span class="p">.</span><span class="nx">Shape</span><span class="p">[</span><span class="nx">shapeRow</span><span class="p">][</span><span class="nx">shapeColumn</span><span class="p">]</span> <span class="o">is</span> <span class="mi">1</span>
+          <span class="k">if</span> <span class="nx">matrix</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">isnt</span> <span class="mi">0</span>
+            <span class="k">return</span> <span class="kc">false</span>
+        <span class="nx">shapeColumn</span><span class="o">++</span>
+      <span class="nx">shapeRow</span><span class="o">++</span>
+    <span class="nv">shapeRow = </span><span class="mi">0</span>
+    <span class="k">for</span> <span class="nx">own</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">valX</span> <span class="k">of</span> <span class="nx">domainValue</span><span class="p">.</span><span class="nx">matrix</span>
+      <span class="nv">shapeColumn = </span><span class="mi">0</span>
+      <span class="k">for</span> <span class="nx">own</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">valY</span> <span class="k">of</span> <span class="nx">valX</span>
+        <span class="k">if</span> <span class="nx">valY</span> <span class="o">is</span> <span class="nx">domainValue</span><span class="p">.</span><span class="nx">Tetrimino</span><span class="p">.</span><span class="nx">Colour</span> <span class="o">and</span> <span class="nx">domainValue</span><span class="p">.</span><span class="nx">Shape</span><span class="p">[</span><span class="nx">shapeRow</span><span class="p">][</span><span class="nx">shapeColumn</span><span class="p">]</span> <span class="o">is</span> <span class="mi">1</span>
+          <span class="k">for</span> <span class="nx">row</span> <span class="k">in</span> <span class="p">[</span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">x</span><span class="p">)...</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nx">matrix</span><span class="p">[</span><span class="nx">row</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">isnt</span> <span class="mi">0</span>
+              <span class="k">return</span> <span class="kc">false</span>
+        <span class="nx">shapeColumn</span><span class="o">++</span>
+      <span class="nx">shapeRow</span><span class="o">++</span>
+    <span class="k">return</span> <span class="kc">true</span>
+    
+  <span class="nv">score: </span><span class="nf">(linesCleared) -&gt;</span>
+    <span class="k">switch</span> <span class="nx">linesCleared</span>
+      <span class="k">when</span> <span class="mi">1</span>
+        <span class="nx">@Points</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">40</span> <span class="o">*</span> <span class="p">(</span><span class="nx">@Level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="nx">@Lines</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="nx">@TotalLines</span> <span class="o">+=</span> <span class="mi">1</span>
+      <span class="k">when</span> <span class="mi">2</span>
+        <span class="nx">@Points</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="p">(</span><span class="nx">@Level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="nx">@Lines</span> <span class="o">+=</span> <span class="mi">2</span>
+        <span class="nx">@TotalLines</span> <span class="o">+=</span> <span class="mi">2</span>
+      <span class="k">when</span> <span class="mi">3</span>
+        <span class="nx">@Points</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">300</span> <span class="o">*</span> <span class="p">(</span><span class="nx">@Level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="nx">@Lines</span> <span class="o">+=</span> <span class="mi">3</span>
+        <span class="nx">@TotalLines</span> <span class="o">+=</span> <span class="mi">3</span>
+      <span class="k">when</span> <span class="mi">4</span> 
+        <span class="nx">@Points</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">1200</span> <span class="o">*</span> <span class="p">(</span><span class="nx">@Level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="nx">@Lines</span> <span class="o">+=</span> <span class="mi">4</span>
+        <span class="nx">@TotalLines</span> <span class="o">+=</span> <span class="mi">4</span>
+    <span class="k">if</span> <span class="nx">@Lines</span> <span class="o">&gt;</span> <span class="mi">10</span>
+      <span class="vi">@Lines = </span><span class="nx">@Lines</span> <span class="o">%</span> <span class="mi">10</span>
+      <span class="k">if</span> <span class="nx">@Level</span> <span class="o">&lt;</span> <span class="mi">10</span>
+        <span class="nx">@Level</span><span class="o">++</span>
+    <span class="k">return</span> <span class="nx">linesCleared</span>
+    
+  <span class="nv">copyMatrix: </span><span class="nf">(matrix) -&gt;</span>
+    <span class="nv">copy = </span><span class="p">[]</span>
+    <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">matrix</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
+      <span class="nx">copy</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">matrix</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">copy</span>
+    
+  <span class="nv">draw: </span><span class="nf">(tetris) -&gt;</span>
+    <span class="nv">cellSize = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span> <span class="nx">CANVAS</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">20</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">clearRect</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">CANVAS</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">CANVAS</span><span class="p">.</span><span class="nx">height</span>
+    <span class="nv">CONTEXT.fillStyle = </span><span class="s">&#39;rgba(0, 0, 0, 0.3)&#39;</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillRect</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">cellSize</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">CANVAS</span><span class="p">.</span><span class="nx">height</span>
+    <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="mi">10</span><span class="p">]</span>
+      <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="mi">20</span><span class="p">]</span>
+        <span class="nv">value = </span><span class="nx">@Matrix</span><span class="p">[</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="nx">unless</span> <span class="nx">value</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+          <span class="nv">CONTEXT.fillStyle = </span><span class="nx">colours</span><span class="p">[</span><span class="nx">value</span><span class="p">]</span>
+          <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">cellSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">cellSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cellSize</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">cellSize</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="nv">nextShape = </span><span class="nx">@NextTetromino</span><span class="p">.</span><span class="nx">Shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="nv">colour = </span><span class="nx">@NextTetromino</span><span class="p">.</span><span class="nx">Colour</span>
+    <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">nextShape</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
+      <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">nextShape</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
+        <span class="nx">unless</span> <span class="nx">nextShape</span><span class="p">[</span><span class="nx">y</span><span class="p">][</span><span class="nx">x</span><span class="p">]</span> <span class="o">is</span> <span class="mi">0</span> <span class="o">or</span> <span class="nx">nextShape</span><span class="p">[</span><span class="nx">y</span><span class="p">][</span><span class="nx">x</span><span class="p">]</span> <span class="o">is</span> <span class="o">-</span><span class="mi">2</span> <span class="o">or</span> <span class="nx">nextShape</span><span class="p">[</span><span class="nx">y</span><span class="p">][</span><span class="nx">x</span><span class="p">]</span> <span class="o">is</span> <span class="o">-</span><span class="mi">3</span>
+          <span class="nv">CONTEXT.fillStyle = </span><span class="nx">colours</span><span class="p">[</span><span class="nx">colour</span><span class="p">]</span>
+          <span class="nv">xPos = </span><span class="mi">520</span> <span class="o">+</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">cellSize</span> <span class="o">+</span> <span class="p">(</span><span class="nx">cellSize</span> <span class="o">*</span> <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="nx">nextShape</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span>
+          <span class="nv">yPos = </span><span class="mi">70</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">cellSize</span> <span class="o">+</span> <span class="p">(</span><span class="nx">cellSize</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">/</span> <span class="nx">nextShape</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span>
+          <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillRect</span> <span class="nx">xPos</span><span class="p">,</span> <span class="nx">yPos</span><span class="p">,</span> <span class="nx">cellSize</span><span class="p">,</span> <span class="nx">cellSize</span>
+    <span class="nv">CONTEXT.font = </span><span class="s">&#39;bold 40px Ostrich&#39;</span>
+    <span class="nv">CONTEXT.fillStyle = </span><span class="s">&#39;rgb(255,255,119)&#39;</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="s">&#39;Total Moves:&#39;</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">40</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="s">&#39;Lines Cleared:&#39;</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">75</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="s">&#39;Total Score:&#39;</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">110</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="s">&#39;Next Piece:&#39;</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">145</span>
+    <span class="nv">CONTEXT.fillStyle = </span><span class="s">&#39;rgb(255,255,255)&#39;</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="nx">@MoveCount</span><span class="p">,</span> <span class="mi">584</span><span class="p">,</span> <span class="mi">40</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="nx">@TotalLines</span><span class="p">,</span> <span class="mi">584</span><span class="p">,</span> <span class="mi">75</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="nx">@Points</span><span class="p">,</span> <span class="mi">584</span><span class="p">,</span> <span class="mi">110</span>
+    
+<span class="nv">root = </span><span class="nx">exports</span> <span class="o">?</span> <span class="k">this</span>
+<span class="nv">root.Tetris = </span><span class="nx">Tetris</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

@@ -9,34 +9,66 @@
 <script type='text/javascript' src='libraries/underscore.js'></script>
 <script type='text/javascript' src='javascript/index.js'></script>
 <script type='text/javascript' src='javascript/tuner.js'></script>
+<script type='text/javascript' src='javascript/tetris.js'></script>
 </head>
 <body>
 	<div class='background'></div>
 	<div class='wrapper'>
-		<div class='back offLeft'>&larr;Back to projects</div>
-		<div class='content title fixed'><a href='http://phenomnomnominal.github.com'>Craig Spence</a></div>
-		<div class='content subtitle fixed'>
+		<div class='headings title'><a href='http://phenomnomnominal.github.com'>Craig Spence</a></div>
+		<div class='headings subtitle'>
 			<span class='italic'>Bachelor of Engineering</span> with 
 			<span class='italic'>Honours - Multimedia Systems Engineering</span>
 			<hr/>
 		</div>
+		<div class='scrollAnchor'></div>
+		<div class='back offLeft animate'>&larr;Back</div>
 		<div class='content projects'>
-			<div class='project spinLeft' title='tuner'>
+			<div class='project spinLeft animate' id='tuner'>
 				<img src='images/tuner.jpg'/>
 				<div class='mask red'>
 		    		<h2>PURE JAVASCRIPT GUITAR TUNER</h2>
 	    			<p>Experimental JS Chromatic Tuner, using the Web Audio API</p>
 				</div>
 			</div>
+			<div class='project spinLeft animate' id='tetris'>
+				<img src='images/tetris.jpg'/>
+				<div class='mask green'>
+		    		<h2>TETRIS AI</h2>
+	    			<p>Simple Tetris playing artificial intelligence, using constraint satisfaction techniques.</p>
+				</div>
+			</div>
 		</div>
-		<div class='display offRight tuner'>
-			<h2>PURE JAVASCRIPT GUITAR TUNER</h2>
-			<span>ANOTATED CODE:</span>
-			<ul>
-				<li class='code'><a href='docs/tuner.html' target='_blank'>tuner.coffee</a></li>
-			</ul>
+		<div class='display offRight tuner animate'>
+			<header>
+  				<h2>PURE JAVASCRIPT GUITAR TUNER</h2>
+ 				<span>ANOTATED CODE:</span>
+				<ul>
+					<li><a href='docs/tuner.html' target='_blank'>tuner.coffee</a></li>
+				</ul>
+			</header>
 			<canvas></canvas>
 			<div></div>
+		</div>
+		<div class='display offRight tetris animate'>
+			<header>
+				<h2>TETRIS AI</h2>
+				<span>ANOTATED CODE:</span>
+				<ul>
+					<li><a href='docs/tetris.html' target='_blank'>tetris.coffee</a></li>
+					<li><a href='docs/tetrominoes.html' target='_blank'>tetrominoes.coffee</a></li>
+				</ul>
+			</header>
+			<div class='info'>
+			</div>
+			<div>
+				<form>
+					<input class='start' type='button' value='Start'/>
+					<input class='stop' type='button' value='Stop'/>
+					<h4>SPEED:</h4>
+	  			    <input type='range' min='0' max='100' value='50' />
+				</form>
+			</div>
+			<canvas></canvas>			
 		</div>
 	</div>
 </body>

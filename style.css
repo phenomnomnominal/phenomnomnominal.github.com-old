@@ -1,3 +1,5 @@
+/** * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) * http://cssreset.com */html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video {	margin: 0;	padding: 0;	border: 0;	font-size: 100%;	font: inherit;	vertical-align: baseline;}/* HTML5 display-role reset for older browsers */article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {	display: block;}body {	line-height: 1;}ol, ul {	list-style: none;}blockquote, q {	quotes: none;}blockquote:before, blockquote:after,q:before, q:after {	content: '';	content: none;}table {	border-collapse: collapse;	border-spacing: 0;}
+
 /*------------------------------- Fonts --------------------------------------*/
 @font-face {
     font-family: 'Lekton';
@@ -87,8 +89,6 @@
     font-style: normal;
 }
 
-/** * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) * http://cssreset.com */html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video {	margin: 0;	padding: 0;	border: 0;	font-size: 100%;	font: inherit;	vertical-align: baseline;}/* HTML5 display-role reset for older browsers */article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {	display: block;}body {	line-height: 1;}ol, ul {	list-style: none;}blockquote, q {	quotes: none;}blockquote:before, blockquote:after,q:before, q:after {	content: '';	content: none;}table {	border-collapse: collapse;	border-spacing: 0;}
-
 .background {
   background-image: url('images/home.jpg');
   background-size: 100% 100%;
@@ -101,13 +101,42 @@
 
 .wrapper {
   height:100%;
-  min-width: 755px;
+  min-width: 800px;
   position: absolute;
   width: 100%;
 }
 
-.fixed {
-  position: fixed;
+.headings {
+  left: 150px;
+  position: inherit;
+  text-align: justify;
+}
+
+.title {
+  color: #FFF;
+  font-size: 110px;
+  font-family: Ostrich;
+  font-weight: lighter;
+  top: 50px;
+  z-index: 10;
+}
+
+.subtitle {
+  color: #CBF;
+  font-family: Lekton;
+  top: 145px;
+}
+
+.headings span {
+  font-style: italic;
+}
+
+.scrollAnchor {
+  height:0px; 
+  margin:0; 
+  padding:0;
+  position: absolute;
+  top: 170px;
 }
 
 .back {
@@ -117,46 +146,35 @@
   font-family: Ostrich;
   font-size: 25px;
   height: 25px;
-  left: 5%;
+  left: 45px;
   line-height: 25px;
   padding: 2px 22px 2px 22px;
-  position: fixed;
-  top: 80px;
+  position: absolute;
+  top: 170px;
   z-index: 10;
+}
+
+.animate {
   -webkit-transition: all 0.5s;
      -moz-transition: all 0.5s;
        -o-transition: all 0.5s;
           transition: all 0.5s;
+  -webkit-transition-delay: 0.5s;
+     -moz-transition-delay: 0.5s;
+      -ms-transition-delay: 0.5s;
+       -o-transition-delay: 0.5s;
+          transition-delay: 0.5s;
 }
 
 .content {
-  left: 5%;
-  min-width: 555px;
+  left: 150px;
+  min-width: 750px;
   text-align: justify;
 }
 
-.title {
-  color: #FFF;
-  font-size: 110px;
-  font-family: Ostrich;
-  font-weight: lighter;
-  top: 100px;
-  z-index: 10;
-}
-
-.subtitle {
-  color: #CBF;
-  font-family: Lekton;
-  top: 195px;
-}
-
-.italic { font-style: italic; }
-
 .projects {
-  height: 50%;
-  position: fixed;
-  top: 250px;
-  width: 95%;
+  position: absolute;
+  margin-top: 200px;
 }
 
 .project {
@@ -169,19 +187,10 @@
   font-size: 200%;
   font-weight: lighter;
   height: 180px;
-  margin-left: 40px;
+  margin-right: 40px;
   margin-bottom: 40px;
   overflow: hidden;
-  position: relative;
-  -webkit-transition: 0.5s;
-     -moz-transition: 0.5s;
-       -o-transition: 0.5s;
-          transition: 0.5s;
-  -webkit-transition-delay: 0.5s;
-     -moz-transition-delay: 0.5s;
-      -ms-transition-delay: 0.5s;
-       -o-transition-delay: 0.5s;
-          transition-delay: 0.5s;          
+  position: relative;   
   width: 280px;
 }
 
@@ -206,6 +215,7 @@
 }
 
 .red { background-color: rgba(255, 187, 201, 0.5); }
+.green { background-color: rgba(187, 255, 201, 0.5); }
 
 .project img {
   border-radius: 0px 0px 0px 10px;
@@ -286,25 +296,8 @@
           transition-delay: 0.5s;
 }
 
-.display {
-  height: 95%;
-  left: 5%;
-  min-height: 500px;
-  min-width: 755px;
-  position: fixed;
-  width: 95%;
-  -webkit-transition: all 0.5s;
-     -moz-transition: all 0.5s;
-       -o-transition: all 0.5s;
-          transition: all 0.5s;
-  -webkit-transition-delay: 0.8s;
-     -moz-transition-delay: 0.8s;
-      -ms-transition-delay: 0.8s;
-       -o-transition-delay: 0.8s;
-          transition-delay: 0.8s;
-}
-
 .spinLeft {
+  display: none;
   -webkit-transform: translate(-2000px, 0px) rotate(80deg);
      -moz-transform: translate(-2000px, 0px) rotate(80deg);
       -ms-transform: translate(-2000px, 0px) rotate(80deg);
@@ -313,6 +306,7 @@
 }
 
 .offLeft {
+  display: none;
   -webkit-transform: translate(-2000px, 0px);
      -moz-transform: translate(-2000px, 0px);
       -ms-transform: translate(-2000px, 0px);
@@ -321,6 +315,7 @@
 }
 
 .offRight {
+  display: none;
   -webkit-transform: translate(4000px, 0px);
      -moz-transform: translate(4000px, 0px);
       -ms-transform: translate(4000px, 0px);
@@ -328,31 +323,48 @@
           transform: translate(4000px, 0px);
 }
 
-.display h2, .display span, .display ul {
+.display {
+  height: 95%;
+  left: 150px;
+  min-height: 800px;
+  min-width: 720px;
+  position: absolute;
+  top: 170px;
+}
+
+header {
   background: #F77;
-  color: #111;
-  font-family: OSTRICH;
   font-size: 25px;
-  float: left;
+  font-family: OSTRICH;
   height: 25px;
   letter-spacing: 2px;
   line-height: 25px;
-  margin-top: 220px;
-  padding: 2px 22px 2px 22px;
+  padding: 2px 0px 2px 0px;
 }
 
-.display h2 {
+header * {
+  float: left;
+  padding: 1px 23.5px 1px 23px;
+  top: 0px;
+}
+
+header h2 {
   color: #FF7;
 }
 
-.display ul {
+header span {
+  color: #111; 
+}
+
+header ul {
+  margin: -2px 0px;
   padding: 0px;
 }
 
 .display li {
   background: #7F7;
   cursor: pointer;
-  padding: 2px 22px 2px 22px;
+  padding: 1px 0px 1px 0px;
   -webkit-transition: all 0.5s;
      -moz-transition: all 0.5s;
        -o-transition: all 0.5s;
@@ -368,6 +380,15 @@ a {
   text-decoration: none;
 }
 
+.topHeader {
+  position: fixed;
+  top: 0px;
+  -webkit-transition: none;
+     -moz-transition: none;
+       -o-transition: none;
+          transition: none;
+}
+
 .tuner div {
   color: #EEE;
   font-family: Lekton;
@@ -377,7 +398,7 @@ a {
   line-height: 100px;
   position: absolute;
   text-align: center;
-  top: 250px;
+  top: 30px;
   width: 20%;
 }
 
@@ -387,4 +408,53 @@ a {
 
 .tuner .outTune {
   color: #F77;
+}
+
+.tetris canvas {
+  float: left;
+}
+
+.tetris.info {
+  
+}
+
+.tetris form {
+  background: #77F;
+  bottom: 20%;
+  position: absolute;
+  width: 320px;
+}
+
+.tetris form * {
+  color: #111;
+  font-size: 25px;
+  font-family: OSTRICH;
+  letter-spacing: 2px;
+  line-height: 25px;
+  min-height: 25px;
+  padding: 3px 0px;
+  text-align: center;
+  width: 100%;
+}
+
+.tetris input {
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  -webkit-transition: all 0.5s;
+     -moz-transition: all 0.5s;
+       -o-transition: all 0.5s;
+          transition: all 0.5s;
+}
+
+.tetris input.start {
+  background: #7F7;
+}
+
+.tetris input.stop {
+  background: #F77;
+}
+
+.tetris input:hover {
+  background: #FFF;
 }
