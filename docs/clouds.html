@@ -1,0 +1,218 @@
+<!DOCTYPE html>  <html> <head>   <title>clouds.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               clouds.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nv">pExt = </span><span class="mf">0.1</span>
+<span class="nv">pAct = </span><span class="mf">0.001</span>
+<span class="nv">pHum = </span><span class="mf">0.1</span>
+<span class="nv">windSpeed = </span><span class="mi">1</span>
+
+<span class="nv">xSmooth = </span><span class="mi">2</span>
+<span class="nv">ySmooth = </span><span class="mi">2</span>
+<span class="nv">zSmooth = </span><span class="mi">2</span>
+
+<span class="nv">start_time = </span><span class="kc">null</span>
+
+<span class="nv">RENDERER = </span><span class="kc">null</span>
+<span class="nv">SCENE = </span><span class="kc">null</span>
+<span class="nv">CAMERA = </span><span class="kc">null</span>
+
+<span class="nv">Clouds = </span><span class="o">-&gt;</span>
+  <span class="nv">width = </span><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">innerWidth</span><span class="p">()</span>
+  <span class="nv">height = </span><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">innerHeight</span><span class="p">()</span>
+  
+  <span class="nv">start_time = </span><span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span>
+  <span class="nv">$container = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.clouds div&#39;</span><span class="p">)</span>
+
+  <span class="nv">RENDERER = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">WebGLRenderer</span><span class="p">(</span><span class="nv">antialias: </span><span class="kc">false</span><span class="p">)</span>
+  <span class="nx">RENDERER</span><span class="p">.</span><span class="nx">setSize</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span>
+  <span class="nx">$container</span><span class="p">.</span><span class="nx">append</span> <span class="nx">RENDERER</span><span class="p">.</span><span class="nx">domElement</span>
+  
+  <span class="nv">SCENE = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Scene</span><span class="p">()</span>
+
+  <span class="nv">CAMERA = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PerspectiveCamera</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="nx">width</span> <span class="o">/</span> <span class="nx">height</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+  <span class="nv">CAMERA.position.z = </span><span class="mi">6000</span>  
+  <span class="nx">SCENE</span><span class="p">.</span><span class="nx">add</span> <span class="nx">CAMERA</span>
+  
+  <span class="nv">texture = </span><span class="nx">THREE</span><span class="p">.</span><span class="nx">ImageUtils</span><span class="p">.</span><span class="nx">loadTexture</span> <span class="s">&#39;images/cloudTexture.png&#39;</span>
+  <span class="nv">texture.magFilter = </span><span class="nx">THREE</span><span class="p">.</span><span class="nx">LinearMipMapLinearFilter</span>
+  <span class="nv">texture.minFilter = </span><span class="nx">THREE</span><span class="p">.</span><span class="nx">LinearMipMapLinearFilter</span>
+  
+  <span class="nv">fog = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Fog</span><span class="p">(</span><span class="mh">0x4584b4</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">5000</span><span class="p">)</span>
+  
+  <span class="nv">material = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">ShaderMaterial</span><span class="p">(</span>
+    <span class="nv">uniforms:</span>
+      <span class="s">&#39;map&#39;</span><span class="o">:</span>
+        <span class="nv">type: </span><span class="s">&#39;t&#39;</span>
+        <span class="nv">value: </span><span class="nx">texture</span>
+        
+      <span class="s">&#39;fogColor&#39;</span><span class="o">:</span>
+        <span class="nv">type: </span><span class="s">&#39;c&#39;</span>
+        <span class="nv">value: </span><span class="nx">fog</span><span class="p">.</span><span class="nx">color</span>
+        
+      <span class="s">&#39;fogNear&#39;</span><span class="o">:</span>
+        <span class="nv">type: </span><span class="s">&#39;f&#39;</span>
+        <span class="nv">value: </span><span class="nx">fog</span><span class="p">.</span><span class="nx">near</span>
+        
+      <span class="s">&#39;fogFar&#39;</span><span class="o">:</span>
+        <span class="nv">type: </span><span class="s">&#39;f&#39;</span>
+        <span class="nv">value: </span><span class="nx">fog</span><span class="p">.</span><span class="nx">far</span>
+
+    <span class="nv">vertexShader: </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;#vs&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">()</span>
+    <span class="nv">fragmentShader: </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;#fs&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">()</span>
+    <span class="nv">depthTest: </span><span class="kc">false</span>
+  <span class="p">)</span>
+  
+  <span class="nv">clouds = </span><span class="k">new</span> <span class="nx">Clouds</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>
+
+  <span class="nv">plane = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">PlaneGeometry</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">))</span>
+  
+  <span class="nv">geometry = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Geometry</span><span class="p">()</span>
+  <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="mi">8000</span><span class="p">]</span>
+    <span class="nv">plane.position.x = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">-</span> <span class="mi">500</span>
+    <span class="nv">plane.position.y = </span><span class="o">-</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">200</span> <span class="o">-</span> <span class="mi">15</span>
+    <span class="nv">plane.position.z = </span><span class="nx">i</span>
+    <span class="nv">plane.rotation.z = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span>
+    <span class="nv">plane.scale.x = plane.scale.y = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mf">1.5</span> <span class="o">+</span> <span class="mf">0.5</span>
+    <span class="nx">THREE</span><span class="p">.</span><span class="nx">GeometryUtils</span><span class="p">.</span><span class="nx">merge</span> <span class="nx">geometry</span><span class="p">,</span> <span class="nx">plane</span>
+    
+  <span class="nv">mesh = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Mesh</span><span class="p">(</span><span class="nx">geometry</span><span class="p">,</span> <span class="nx">material</span><span class="p">)</span>
+  <span class="nx">SCENE</span><span class="p">.</span><span class="nx">add</span> <span class="nx">mesh</span>
+  
+  <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span> <span class="o">-&gt;</span>
+    <span class="nv">width = </span><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">innerWidth</span><span class="p">()</span>
+    <span class="nv">height = </span><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">innerHeight</span><span class="p">()</span>
+    <span class="nv">CAMERA.aspect = </span><span class="nx">width</span> <span class="o">/</span> <span class="nx">height</span>
+    <span class="nx">CAMERA</span><span class="p">.</span><span class="nx">updateProjectionMatrix</span><span class="p">()</span>
+    <span class="nx">RENDERER</span><span class="p">.</span><span class="nx">setSize</span> <span class="nx">width</span><span class="p">,</span> <span class="nx">height</span>
+    
+  <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">trigger</span> <span class="s">&#39;resize&#39;</span>
+  
+  <span class="nv">animate = </span><span class="o">-&gt;</span>
+    <span class="nx">requestAnimFrame</span> <span class="nx">animate</span>
+    <span class="nx">render</span><span class="p">()</span>
+
+  <span class="nv">render = </span><span class="o">-&gt;</span>
+    <span class="nv">position = </span><span class="p">(</span> <span class="p">(</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start_time</span> <span class="p">)</span> <span class="o">*</span> <span class="mf">0.03</span> <span class="p">)</span> <span class="o">%</span> <span class="mi">4000</span>
+    <span class="nv">CAMERA.position.z = </span><span class="o">-</span> <span class="nx">position</span> <span class="o">+</span> <span class="mi">8000</span>
+    <span class="nx">RENDERER</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">SCENE</span><span class="p">,</span> <span class="nx">CAMERA</span><span class="p">)</span>
+  
+  <span class="nx">animate</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nx">Clouds</span>
+  <span class="nv">constructor: </span><span class="nf">(@x, @y, @z, @t = 0) -&gt;</span>
+    <span class="vi">@size = </span><span class="nx">@x</span> <span class="o">*</span> <span class="nx">@y</span> <span class="o">*</span> <span class="nx">@z</span>
+    <span class="vi">@currentGen = </span><span class="nv">hum: </span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="nv">act: </span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="nv">cld: </span><span class="s">&#39;&#39;</span>
+    <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@size</span><span class="p">]</span>
+      <span class="nx">@currentGen</span><span class="p">.</span><span class="nx">hum</span> <span class="o">+=</span> <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">then</span> <span class="s">&#39;1&#39;</span> <span class="k">else</span> <span class="s">&#39;0&#39;</span>
+      <span class="nx">@currentGen</span><span class="p">.</span><span class="nx">act</span> <span class="o">+=</span> <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">then</span> <span class="s">&#39;1&#39;</span> <span class="k">else</span> <span class="s">&#39;0&#39;</span>
+      <span class="nx">@currentGen</span><span class="p">.</span><span class="nx">cld</span> <span class="o">+=</span> <span class="mi">0</span>
+    <span class="vi">@clouds =</span>
+      <span class="nv">current: </span><span class="nx">clouds</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span>
+    <span class="vi">@density =</span>
+      <span class="nv">current: </span><span class="nx">density</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="nx">@clouds</span><span class="p">.</span><span class="nx">current</span>
+  
+  <span class="nv">nextGeneration: </span><span class="o">-&gt;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">time</span> <span class="s">&#39;growthTime&#39;</span>
+    <span class="nx">@process</span> <span class="nx">growth</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">timeEnd</span> <span class="s">&#39;growthTime&#39;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">time</span> <span class="s">&#39;extinctionTime&#39;</span>
+    <span class="nx">@process</span> <span class="nx">extinction</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">timeEnd</span> <span class="s">&#39;extinctionTime&#39;</span>
+    <span class="nv">prevCld = </span><span class="nx">@clouds</span><span class="p">.</span><span class="nx">current</span>
+    <span class="nv">prevDen = </span><span class="nx">@density</span><span class="p">.</span><span class="nx">current</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">time</span> <span class="s">&#39;cloudsTime&#39;</span>
+    <span class="vi">@clouds =</span>
+      <span class="nv">previous: </span><span class="nx">prevCld</span>
+      <span class="nv">current: </span><span class="nx">clouds</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">timeEnd</span> <span class="s">&#39;cloudsTime&#39;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">time</span> <span class="s">&#39;densityTime&#39;</span>
+    <span class="vi">@density = </span>
+      <span class="nv">previous: </span><span class="nx">prevDen</span>
+      <span class="nv">current: </span><span class="nx">density</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="nx">@clouds</span><span class="p">.</span><span class="nx">current</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">timeEnd</span> <span class="s">&#39;densityTime&#39;</span>
+    
+  <span class="nv">logic = </span>
+    <span class="o">and:</span> <span class="nf">(str1, str2, res = &#39;&#39;) -&gt;</span>
+      <span class="p">(</span><span class="nx">res</span> <span class="o">+=</span> <span class="nx">str1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">and</span> <span class="nx">str2</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">str1</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
+      <span class="nx">res</span>
+    <span class="o">or:</span> <span class="nf">(str1, str2, res = &#39;&#39;) -&gt;</span>
+      <span class="p">(</span><span class="nx">res</span> <span class="o">+=</span> <span class="nx">str1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">or</span> <span class="nx">str2</span><span class="p">[</span><span class="nx">i</span><span class="p">])</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">str1</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
+      <span class="nx">res</span>
+    <span class="o">not:</span> <span class="nf">(str) -&gt;</span>
+      <span class="nx">str</span><span class="p">.</span><span class="nx">replace</span> <span class="sr">/0|1/g</span><span class="p">,</span> <span class="p">(</span><span class="nf">(a, m) -&gt;</span> <span class="k">if</span> <span class="nx">m</span> <span class="o">is</span> <span class="s">&#39;0&#39;</span> <span class="k">then</span> <span class="s">&#39;1&#39;</span> <span class="k">else</span> <span class="s">&#39;0&#39;</span><span class="p">)</span>
+      
+  <span class="nv">process: </span><span class="nf">(func, newHum = &#39;&#39;, newAct = &#39;&#39;, newCld = &#39;&#39;) -&gt;</span>
+    <span class="vi">@previousGen = </span><span class="nx">World</span><span class="p">.</span><span class="nx">Clone</span> <span class="nx">@currentGen</span>
+    <span class="p">[</span><span class="nx">newHum</span><span class="p">,</span> <span class="nx">newAct</span><span class="p">,</span> <span class="nx">newCld</span><span class="p">]</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+    <span class="vi">@currentGen =</span>
+      <span class="nv">hum: </span><span class="nx">newHum</span>
+      <span class="nv">act: </span><span class="nx">newAct</span>
+      <span class="nv">cld: </span><span class="nx">newCld</span>
+      
+  <span class="nv">getCurrentState = </span><span class="o">-&gt;</span>
+    <span class="p">[</span><span class="nx">@previousGen</span><span class="p">.</span><span class="nx">hum</span><span class="p">,</span> <span class="nx">@previousGen</span><span class="p">.</span><span class="nx">act</span><span class="p">,</span> <span class="nx">@previousGen</span><span class="p">.</span><span class="nx">cld</span><span class="p">]</span>
+    
+  <span class="nv">growth = </span><span class="nf">(nAct = &#39;&#39;) -&gt;</span>
+    <span class="p">[</span><span class="nx">hum</span><span class="p">,</span> <span class="nx">act</span><span class="p">,</span> <span class="nx">cld</span><span class="p">]</span> <span class="o">=</span> <span class="nx">getCurrentState</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span>
+    <span class="p">(</span><span class="nx">nAct</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="si">#{</span><span class="k">if</span> <span class="nx">neighboursAct</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="k">then</span> <span class="mi">1</span> <span class="k">else</span> <span class="mi">0</span><span class="si">}</span><span class="s">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@size</span><span class="p">]</span>
+    <span class="nv">newHum = </span><span class="nx">logic</span><span class="p">.</span><span class="o">and</span> <span class="nx">hum</span><span class="p">,</span> <span class="nx">logic</span><span class="p">.</span><span class="o">not</span><span class="p">(</span><span class="nx">act</span><span class="p">)</span>
+    <span class="nv">newAct = </span><span class="nx">logic</span><span class="p">.</span><span class="o">and</span> <span class="nx">logic</span><span class="p">.</span><span class="o">and</span><span class="p">(</span><span class="nx">logic</span><span class="p">.</span><span class="o">not</span><span class="p">(</span><span class="nx">act</span><span class="p">),</span> <span class="nx">hum</span><span class="p">),</span> <span class="nx">nAct</span>
+    <span class="nv">newCld = </span><span class="nx">logic</span><span class="p">.</span><span class="o">or</span> <span class="nx">hum</span><span class="p">,</span> <span class="nx">act</span>
+    <span class="p">[</span><span class="nx">newHum</span><span class="p">,</span> <span class="nx">newAct</span><span class="p">,</span> <span class="nx">newCld</span><span class="p">]</span>
+
+  <span class="nv">neighboursAct = </span><span class="nf">(i) -&gt;</span>
+    <span class="nv">prev = </span><span class="nx">@previousGen</span><span class="p">.</span><span class="nx">act</span>
+    <span class="nv">x = </span><span class="nx">@y</span> <span class="o">*</span> <span class="nx">@z</span>
+    <span class="nv">y = </span><span class="nx">@z</span>
+    <span class="nx">prev</span><span class="p">[</span><span class="nx">i</span> <span class="o">+</span> <span class="nx">x</span><span class="p">]</span> <span class="o">||</span> <span class="nx">prev</span><span class="p">[</span><span class="nx">i</span> <span class="o">+</span> <span class="nx">y</span><span class="p">]</span> <span class="o">||</span> <span class="nx">prev</span><span class="p">[</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">||</span> <span class="nx">prev</span><span class="p">[</span><span class="nx">i</span> <span class="o">-</span> <span class="nx">x</span><span class="p">]</span> <span class="o">||</span>
+    <span class="nx">prev</span><span class="p">[</span><span class="nx">i</span> <span class="o">-</span> <span class="nx">y</span><span class="p">]</span> <span class="o">||</span> <span class="nx">prev</span><span class="p">[</span><span class="nx">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">||</span> <span class="nx">prev</span><span class="p">[</span><span class="nx">i</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="nx">x</span><span class="p">]</span> <span class="o">||</span> <span class="nx">prev</span><span class="p">[</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="nx">x</span><span class="p">]</span> <span class="o">||</span>
+    <span class="nx">prev</span><span class="p">[</span><span class="nx">i</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="nx">y</span><span class="p">]</span> <span class="o">||</span> <span class="nx">prev</span><span class="p">[</span><span class="nx">i</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="nx">y</span><span class="p">]</span> <span class="o">||</span> <span class="nx">prev</span><span class="p">[</span><span class="nx">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">]</span>
+
+  <span class="nv">extinction = </span><span class="o">-&gt;</span>
+    <span class="p">[</span><span class="nx">hum</span><span class="p">,</span> <span class="nx">act</span><span class="p">,</span> <span class="nx">cld</span><span class="p">]</span> <span class="o">=</span> <span class="nx">getCurrentState</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span> 
+    <span class="nv">randHum = </span><span class="nx">@getRandom</span> <span class="nx">@size</span><span class="p">,</span> <span class="nx">pHum</span>
+    <span class="nv">randAct = </span><span class="nx">@getRandom</span> <span class="nx">@size</span><span class="p">,</span> <span class="nx">pAct</span>
+    <span class="nv">randCld = </span><span class="nx">@getRandom</span> <span class="nx">@size</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="nx">pExt</span>
+    <span class="nv">newHum = </span><span class="nx">logic</span><span class="p">.</span><span class="o">or</span> <span class="nx">hum</span><span class="p">,</span> <span class="nx">randHum</span>
+    <span class="nv">newAct = </span><span class="nx">logic</span><span class="p">.</span><span class="o">or</span> <span class="nx">act</span><span class="p">,</span> <span class="nx">randAct</span>
+    <span class="nv">newCld = </span><span class="nx">logic</span><span class="p">.</span><span class="o">and</span> <span class="nx">cld</span><span class="p">,</span> <span class="nx">randCld</span>
+    <span class="p">[</span><span class="nx">newHum</span><span class="p">,</span> <span class="nx">newAct</span><span class="p">,</span> <span class="nx">newCld</span><span class="p">]</span>
+    
+  <span class="nv">clouds = </span><span class="o">-&gt;</span>
+    <span class="nv">cld = </span><span class="nx">@currentGen</span><span class="p">.</span><span class="nx">cld</span>
+    <span class="nv">c = </span><span class="p">[]</span>
+    <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@x</span><span class="p">]</span>
+      <span class="nx">c</span><span class="p">[</span><span class="nx">x</span><span class="p">]</span> <span class="o">?=</span> <span class="p">[]</span>
+      <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@y</span><span class="p">]</span>
+        <span class="nx">c</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">?=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="nx">z</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@z</span><span class="p">]</span>
+          <span class="nx">c</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">][</span><span class="nx">z</span><span class="p">]</span> <span class="o">=</span> <span class="o">+</span><span class="nx">cld</span><span class="p">[</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">@x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">@y</span> <span class="o">+</span> <span class="nx">z</span><span class="p">]</span>
+    <span class="nx">c</span>
+  
+  <span class="nv">density = </span><span class="nf">(clouds) -&gt;</span>
+    <span class="nv">d = </span><span class="p">[]</span>
+    <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@x</span><span class="p">]</span>
+      <span class="nx">d</span><span class="p">[</span><span class="nx">x</span><span class="p">]</span> <span class="o">?=</span> <span class="p">[]</span>
+      <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@y</span><span class="p">]</span>
+        <span class="nx">d</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">]</span> <span class="o">?=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="nx">z</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@z</span><span class="p">]</span>
+          <span class="nx">d</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">][</span><span class="nx">z</span><span class="p">]</span> <span class="o">=</span> <span class="nx">getDensity</span> <span class="nx">clouds</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span>
+          
+  <span class="nv">getDensity = </span><span class="nf">(clouds, x, y, z) -&gt;</span>
+    <span class="nv">weight = </span><span class="nf">(dx, dy, dz) -&gt;</span>
+      <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">((</span><span class="nx">dx</span> <span class="o">*</span> <span class="nx">dx</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">dy</span> <span class="o">*</span> <span class="nx">dy</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">dz</span> <span class="o">*</span> <span class="nx">dz</span><span class="p">))</span>
+    <span class="nv">d = </span><span class="mi">0</span>
+    <span class="k">for</span> <span class="nx">xs</span> <span class="k">in</span> <span class="p">[</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">xSmooth</span><span class="p">..</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">xSmooth</span><span class="p">]</span>
+      <span class="k">for</span> <span class="nx">ys</span> <span class="k">in</span> <span class="p">[</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">ySmooth</span><span class="p">..</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">ySmooth</span><span class="p">]</span>
+        <span class="k">for</span> <span class="nx">zs</span> <span class="k">in</span> <span class="p">[</span><span class="nx">z</span> <span class="o">-</span> <span class="nx">zSmooth</span><span class="p">..</span><span class="nx">z</span> <span class="o">+</span> <span class="nx">zSmooth</span><span class="p">]</span>
+          <span class="nv">exists = </span><span class="nx">clouds</span><span class="p">[</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">xs</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">ys</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">zs</span><span class="p">]</span><span class="o">?</span>
+          <span class="nx">d</span> <span class="o">+=</span> <span class="p">(</span><span class="k">if</span> <span class="nx">exists</span> <span class="o">and</span> <span class="nx">clouds</span><span class="p">[</span><span class="nx">x</span> <span class="o">+</span> <span class="nx">xs</span><span class="p">][</span><span class="nx">y</span> <span class="o">+</span> <span class="nx">ys</span><span class="p">][</span><span class="nx">z</span> <span class="o">+</span> <span class="nx">zs</span><span class="p">]</span> <span class="o">is</span> <span class="mi">1</span> <span class="k">then</span> <span class="nx">weight</span><span class="p">(</span><span class="nx">xs</span><span class="p">,</span> <span class="nx">ys</span><span class="p">,</span> <span class="nx">zs</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="nx">d</span> <span class="o">/</span> <span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">xSmooth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">ySmooth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nx">zSmooth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+  <span class="vi">@Clone: </span><span class="nf">(world) -&gt;</span>
+    <span class="nv">clone =</span>
+      <span class="nv">hum: </span><span class="nx">world</span><span class="p">.</span><span class="nx">hum</span>
+      <span class="nv">act: </span><span class="nx">world</span><span class="p">.</span><span class="nx">act</span>
+      <span class="nv">cld: </span><span class="nx">world</span><span class="p">.</span><span class="nx">cld</span>
+
+<span class="nv">root = </span><span class="nx">exports</span> <span class="o">?</span> <span class="k">this</span>
+<span class="nv">root.Clouds = </span><span class="nx">Clouds</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 
