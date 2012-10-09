@@ -31,11 +31,11 @@
   };
 
   load = {
-    tuner: function() {
-      return $('.tuner').show(function() {
-        $('.tuner').removeClass('offRight');
-        $('.tuner header').addClass('active');
-        return Tuner();
+    clouds: function() {
+      return $('.clouds').show(function() {
+        $('.clouds').removeClass('offRight');
+        $('.clouds header').addClass('active');
+        return Clouds();
       });
     },
     tetris: function() {
@@ -44,11 +44,23 @@
         $('.tetris header').addClass('active');
         return Tetris();
       });
+    },
+    tuner: function() {
+      return $('.tuner').show(function() {
+        $('.tuner').removeClass('offRight');
+        $('.tuner header').addClass('active');
+        return Tuner();
+      });
     }
   };
 
   $(function() {
     show.projects();
+    window.requestAnimFrame = (function() {
+      return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(callback) {
+        return window.setTimeout(callback, 1000 / 60);
+      };
+    })();
     $(window).scroll(function() {
       var scrollAnchor;
       scrollAnchor = $('.scrollAnchor').offset().top;

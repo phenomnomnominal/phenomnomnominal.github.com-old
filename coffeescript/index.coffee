@@ -18,19 +18,32 @@ show =
       $('.project').removeClass 'spinLeft'
 
 load = 
-  tuner: ->
-    $('.tuner').show ->
-      $('.tuner').removeClass 'offRight'
-      $('.tuner header').addClass 'active'
-      Tuner()
+  clouds: ->
+    $('.clouds').show ->
+      $('.clouds').removeClass 'offRight'
+      $('.clouds header').addClass 'active'
+      Clouds()
   tetris: ->
     $('.tetris').show ->
       $('.tetris').removeClass 'offRight'
       $('.tetris header').addClass 'active'
       Tetris()
+  tuner: ->
+    $('.tuner').show ->
+      $('.tuner').removeClass 'offRight'
+      $('.tuner header').addClass 'active'
+      Tuner()
     
 $ ->
   show.projects()
+  
+  window.requestAnimFrame = (->
+    window.requestAnimationFrame or
+    window.webkitRequestAnimationFrame or
+    window.mozRequestAnimationFrame or
+    window.oRequestAnimationFrame or
+    window.msRequestAnimationFrame or
+    (callback) -> window.setTimeout(callback, 1000 / 60))()
   
   $(window).scroll ->
     scrollAnchor = $('.scrollAnchor').offset().top

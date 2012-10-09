@@ -216,6 +216,7 @@
 
 .red { background-color: rgba(255, 187, 201, 0.5); }
 .green { background-color: rgba(187, 255, 201, 0.5); }
+.blue { background-color: rgba(187, 201, 255, 0.5); }
 
 .project img {
   border-radius: 0px 0px 0px 10px;
@@ -457,4 +458,10 @@ a {
 
 .tetris input:hover {
   background: #FFF;
+}
+
+.clouds div {
+  position: fixed;
+  width: 100%;
+  left: 0px;
 }
