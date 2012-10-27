@@ -1,77 +1,77 @@
 /*------------------------------- Fonts --------------------------------------*/
 @font-face {
     font-family: 'Lekton';
-    src: url('../fonts/lekton-bold-webfont.eot');
-    src: url('../fonts/lekton-bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/lekton-bold-webfont.woff') format('woff'),
-         url('../fonts/lekton-bold-webfont.ttf') format('truetype'),
-         url('../fonts/lekton-bold-webfont.svg#LektonBold') format('svg');
+    src: url('fonts/lekton-bold-webfont.eot');
+    src: url('fonts/lekton-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lekton-bold-webfont.woff') format('woff'),
+         url('fonts/lekton-bold-webfont.ttf') format('truetype'),
+         url('fonts/lekton-bold-webfont.svg#LektonBold') format('svg');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Lekton';
-    src: url('../fonts/lekton-italic-webfont.eot');
-    src: url('../fonts/lekton-italic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/lekton-italic-webfont.woff') format('woff'),
-         url('../fonts/lekton-italic-webfont.ttf') format('truetype'),
-         url('../fonts/lekton-italic-webfont.svg#LektonItalic') format('svg');
+    src: url('fonts/lekton-italic-webfont.eot');
+    src: url('fonts/lekton-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lekton-italic-webfont.woff') format('woff'),
+         url('fonts/lekton-italic-webfont.ttf') format('truetype'),
+         url('fonts/lekton-italic-webfont.svg#LektonItalic') format('svg');
     font-weight: normal;
     font-style: italic;
 }
 
 @font-face {
     font-family: 'Lekton';
-    src: url('../fonts/lekton-regular-webfont.eot');
-    src: url('../fonts/lekton-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/lekton-regular-webfont.woff') format('woff'),
-         url('../fonts/lekton-regular-webfont.ttf') format('truetype'),
-         url('../fonts/lekton-regular-webfont.svg#LektonRegular') format('svg');
+    src: url('fonts/lekton-regular-webfont.eot');
+    src: url('fonts/lekton-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lekton-regular-webfont.woff') format('woff'),
+         url('fonts/lekton-regular-webfont.ttf') format('truetype'),
+         url('fonts/lekton-regular-webfont.svg#LektonRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Ostrich';
-    src: url('../fonts/ostrich-rounded-webfont.eot');
-    src: url('../fonts/ostrich-rounded-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/ostrich-rounded-webfont.woff') format('woff'),
-         url('../fonts/ostrich-rounded-webfont.ttf') format('truetype'),
-         url('../fonts/ostrich-rounded-webfont.svg#OstrichSansRoundedMedium') format('svg');
+    src: url('fonts/ostrich-rounded-webfont.eot');
+    src: url('fonts/ostrich-rounded-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/ostrich-rounded-webfont.woff') format('woff'),
+         url('fonts/ostrich-rounded-webfont.ttf') format('truetype'),
+         url('fonts/ostrich-rounded-webfont.svg#OstrichSansRoundedMedium') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Glasgow';
-    src: url('../fonts/glasgow-regular-webfont.eot');
-    src: url('../fonts/glasgow-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/glasgow-regular-webfont.woff') format('woff'),
-         url('../fonts/glasgow-regular-webfont.ttf') format('truetype'),
-         url('../fonts/glasgow-regular-webfont.svg#Glasgow-RegularRegular') format('svg');
+    src: url('fonts/glasgow-regular-webfont.eot');
+    src: url('fonts/glasgow-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/glasgow-regular-webfont.woff') format('woff'),
+         url('fonts/glasgow-regular-webfont.ttf') format('truetype'),
+         url('fonts/glasgow-regular-webfont.svg#Glasgow-RegularRegular') format('svg');
     font-weight: bold;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Glasgow';
-    src: url('../fonts/glasgow-light-webfont.eot');
-    src: url('../fonts/glasgow-light-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/glasgow-light-webfont.woff') format('woff'),
-         url('../fonts/glasgow-light-webfont.ttf') format('truetype'),
-         url('../fonts/glasgow-light-webfont.svg#Glasgow-LightRegular') format('svg');
+    src: url('fonts/glasgow-light-webfont.eot');
+    src: url('fonts/glasgow-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/glasgow-light-webfont.woff') format('woff'),
+         url('fonts/glasgow-light-webfont.ttf') format('truetype'),
+         url('fonts/glasgow-light-webfont.svg#Glasgow-LightRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Glasgow';
-    src: url('../fonts/glasgow-lightita-webfont.eot');
-    src: url('../fonts/glasgow-lightita-webfont.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/glasgow-lightita-webfont.woff') format('woff'),
-         url('../fonts/glasgow-lightita-webfont.ttf') format('truetype'),
-         url('../fonts/glasgow-lightita-webfont.svg#Glasgow-LightItaRegular') format('svg');
+    src: url('fonts/glasgow-lightita-webfont.eot');
+    src: url('fonts/glasgow-lightita-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/glasgow-lightita-webfont.woff') format('woff'),
+         url('fonts/glasgow-lightita-webfont.ttf') format('truetype'),
+         url('fonts/glasgow-lightita-webfont.svg#Glasgow-LightItaRegular') format('svg');
     font-weight: normal;
     font-style: italic;
 }
@@ -120,10 +120,10 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
 }
 #background {
+  background: #009;
+  background-image: url('images/background.png');
   position: fixed;
   top: 0; left: 0px; right: 0; bottom: 0;
-  background-image:url('../images/background.gif');
-  border-left: 1px solid #3CFEAD;
   z-index: -1;
 }
 #jump_to, #jump_page {
@@ -181,8 +181,8 @@ table td {
       padding-left: 15px;
     }
     .docs p tt, .docs p code, .docs li code {
-      background: #F0F0F0;
-      border: 1px solid #C6C6C5;
+      background: #FFF;
+      border: 1px solid #DDD;
       border-radius: 3px;
       font-size: 15px;
       letter-spacing: 0px;
@@ -208,8 +208,7 @@ table td {
     padding: 14px 15px 16px 25px;
     width: 100%;
     vertical-align: top;
-    border-left: 1px solid #3CFEAD;
-    color: #ddd;
+    color: #444;
   }
     pre, tt, code {
       font-size: 14px; line-height: 20px;
@@ -217,15 +216,14 @@ table td {
       margin: 0; padding: 0;
     }
 
-
 /*---------------------- Syntax Highlighting -----------------------------*/
 td.linenos { background-color: #f0f0f0; padding-right: 10px; }
 span.lineno { background-color: #f0f0f0; padding: 0 5px 0 5px; }
 body .hll { background-color: #ffffcc }
 body .c { color: #408080; font-style: italic }  /* Comment */
 body .err { border: 1px solid #FF0000 }         /* Error */
-body .k { color: #FF3924 }                      /* Keyword */
-body .o { color: #FC6F3D }                      /* Operator */
+body .k { color: #DD1111 }                      /* Keyword */
+body .o { color: #DD1111 }                      /* Operator */
 body .cm { color: #408080; font-style: italic } /* Comment.Multiline */
 body .cp { color: #BC7A00 }                     /* Comment.Preproc */
 body .c1 { color: #408080; font-style: italic } /* Comment.Single */
@@ -240,45 +238,45 @@ body .gp { color: #000080; font-weight: bold }  /* Generic.Prompt */
 body .gs { font-weight: bold }                  /* Generic.Strong */
 body .gu { color: #800080; font-weight: bold }  /* Generic.Subheading */
 body .gt { color: #0040D0 }                     /* Generic.Traceback */
-body .kc { color: #FF3924 }                     /* Keyword.Constant */
-body .kd { color: #FF3924; font-weight: bold }  /* Keyword.Declaration */
-body .kn { color: #FF3924; font-weight: bold }  /* Keyword.Namespace */
-body .kp { color: #FF3924 }                     /* Keyword.Pseudo */
-body .kr { color: #FF3924; font-weight: bold }  /* Keyword.Reserved */
+body .kc { color: #2121BB }                     /* Keyword.Constant */
+body .kd { color: #DD1111; font-weight: bold }  /* Keyword.Declaration */
+body .kn { color: #DD1111; font-weight: bold }  /* Keyword.Namespace */
+body .kp { color: #DD1111 }                     /* Keyword.Pseudo */
+body .kr { color: #DD1111; font-weight: bold }  /* Keyword.Reserved */
 body .kt { color: #B00040 }                     /* Keyword.Type */
-body .m { color: #777777 }                      /* Literal.Number */
-body .s { color: #00FF44 }                      /* Literal.String */
+body .m { color: #8055AF }                      /* Literal.Number */
+body .s { color: #21A121 }                      /* Literal.String */
 body .na { color: #7D9029 }                     /* Name.Attribute */
-body .nb { color: #FFAB24 }                     /* Name.Builtin */
-body .nc { color: #4466FF; font-weight: bold }  /* Name.Class */
+body .nb { color: #DD11DD; }                     /* Name.Builtin */
+body .nc { color: #CA8A45; font-weight: bold }  /* Name.Class */
 body .no { color: #880000 }                     /* Name.Constant */
 body .nd { color: #AA22FF }                     /* Name.Decorator */
 body .ni { color: #999999; font-weight: bold }  /* Name.Entity */
 body .ne { color: #D2413A; font-weight: bold }  /* Name.Exception */
-body .nf { color: #4466FF }                     /* Name.Function */
+body .nf { color: #CA8A45 }                     /* Name.Function */
 body .nl { color: #A0A000 }                     /* Name.Label */
-body .nn { color: #4466FF; font-weight: bold }  /* Name.Namespace */
-body .nt { color: #FF3924; font-weight: bold }  /* Name.Tag */
-body .nv { color: #1946FD }                     /* Name.Variable */
+body .nn { color: #CA8A45; font-weight: bold }  /* Name.Namespace */
+body .nt { color: #DD1111; font-weight: bold }  /* Name.Tag */
+body .nv { color: #1946AD }                     /* Name.Variable */
 body .ow { color: #AA22FF; font-weight: bold }  /* Operator.Word */
-body .w { color: #BBBBBB }                      /* Text.Whitespace */
-body .mf { color: #777777 }                     /* Literal.Number.Float */
-body .mh { color: #777777 }                     /* Literal.Number.Hex */
-body .mi { color: #777777 }                     /* Literal.Number.Integer */
-body .mo { color: #777777 }                     /* Literal.Number.Oct */
-body .sb { color: #00FF44 }                     /* Literal.String.Backtick */
-body .sc { color: #00FF44 }                     /* Literal.String.Char */
-body .sd { color: #00FF44; font-style: italic } /* Literal.String.Doc */
-body .s2 { color: #00FF44 }                     /* Literal.String.Double */
-body .se { color: #DD8844; font-weight: bold }  /* Literal.String.Escape */
-body .sh { color: #00FF44 }                     /* Literal.String.Heredoc */
-body .si { color: #DD88AA; font-weight: bold }  /* Literal.String.Interpol */
-body .sx { color: #9F4121 }                     /* Literal.String.Other */
-body .sr { color: #DD88AA }                     /* Literal.String.Regex */
-body .s1 { color: #00FF44 }                     /* Literal.String.Single */
+body .w { color: #bbbbbb }                      /* Text.Whitespace */
+body .mf { color: #8055AF }                     /* Literal.Number.Float */
+body .mh { color: #8055AF }                     /* Literal.Number.Hex */
+body .mi { color: #8055AF }                     /* Literal.Number.Integer */
+body .mo { color: #8055AF }                     /* Literal.Number.Oct */
+body .sb { color: #219161 }                     /* Literal.String.Backtick */
+body .sc { color: #219161 }                     /* Literal.String.Char */
+body .sd { color: #219161; font-style: italic } /* Literal.String.Doc */
+body .s2 { color: #219161 }                     /* Literal.String.Double */
+body .se { color: #BB6622; font-weight: bold }  /* Literal.String.Escape */
+body .sh { color: #219161 }                     /* Literal.String.Heredoc */
+body .si { color: #BB6688; font-weight: bold }  /* Literal.String.Interpol */
+body .sx { color: #954121 }                     /* Literal.String.Other */
+body .sr { color: #BB6688 }                     /* Literal.String.Regex */
+body .s1 { color: #219161 }                     /* Literal.String.Single */
 body .ss { color: #19469D }                     /* Literal.String.Symbol */
-body .bp { color: #FF3924 }                     /* Name.Builtin.Pseudo */
+body .bp { color: #DD1111 }                     /* Name.Builtin.Pseudo */
 body .vc { color: #19469D }                     /* Name.Variable.Class */
 body .vg { color: #19469D }                     /* Name.Variable.Global */
 body .vi { color: #19469D }                     /* Name.Variable.Instance */
-body .il { color: #777777 }                     /* Literal.Number.Integer.Long */Long */
+body .il { color: #8055AF }                     /* Literal.Number.Integer.Long */

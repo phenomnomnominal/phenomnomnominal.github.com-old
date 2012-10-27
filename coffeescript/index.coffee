@@ -1,38 +1,67 @@
+load =
+  project: (title) ->
+    project = projects[title]
+    $('header div').fadeOut()
+    $('nav').fadeIn()
+    $('nav h2').text project.title
+    for doc in project.docs
+      listItem = $ '<li>'
+        class: 'animate'
+      listItem.append $ '<a>'
+        href: doc.link
+        target: '_blank'
+        text: doc.title
+      $('nav ul').append listItem
+    $('nav *').removeClass('offRight offLeft')
+    $('nav div').hover (-> $('nav ul').show()), (-> $('nav ul').hide())
+    project.init()
+
 clear = 
-  projects: (callback) ->
-    $('header').removeClass 'active'
-    $('.project').addClass('offLeft').promise().done ->
-      callback()
-      $('.project').removeClass('offLeft').addClass 'spinLeft'
-      $('.back').show ->
-        $('.back').removeClass 'offLeft'
+  projects: ->
+    $('.project-list').addClass 'offLeft'
+      
   displays: ->
+    $('header div').fadeIn()
+    $('nav').fadeOut()
     $('.display').addClass 'offRight'
     $('.back').addClass('offLeft').promise().done ->
-      $('.back').hide()
+      $('nav *').addClass 'offRight'
       window.location.href = 'http://phenomnomnominal.github.com/'
 
 show =
   projects: ->
-    $('.project').show ->
-      $('.project').removeClass 'spinLeft'
+    $('.project').show().delay(1000).promise().done ->
+      $('.project').removeClass 'offLeft'
 
-load = 
-  clouds: ->
-    $('.clouds').show ->
-      $('.clouds').removeClass 'offRight'
-      $('.clouds header').addClass 'active'
-      Clouds()
-  tetris: ->
-    $('.tetris').show ->
-      $('.tetris').removeClass 'offRight'
-      $('.tetris header').addClass 'active'
-      Tetris()
-  tuner: ->
-    $('.tuner').show ->
-      $('.tuner').removeClass 'offRight'
-      $('.tuner header').addClass 'active'
-      Tuner()
+projects = 
+  clouds: 
+    init: ->
+      $('.clouds').show().delay(1000).promise().done ->
+        $('.clouds').removeClass 'offRight'
+        Clouds()
+    docs: [
+        link: 'docs/clouds.html', title: 'clouds.coffee'
+      ]
+    title: 'DYNAMIC CLOUDS'
+  tetris: 
+    init: ->
+      $('.tetris').show().delay(1000).promise().done ->
+        $('.tetris').removeClass 'offRight'
+        Tetris()
+    docs: [
+        {link: 'docs/tetris.html', title: 'tetris.coffee'}
+        {link: 'docs/tetrominoes.html', title: 'tetrominoes.coffee'}
+      ]
+    title: 'TETRIS AI'
+  tuner:
+    init: ->
+      $('.tuner').show().delay(1000).promise().done ->
+        $('.tuner').removeClass 'offRight'
+        Tuner()
+    docs: [
+        link: 'docs/tuner.html', title: 'tuner.coffee'
+      ]
+    title: 'PURE JAVASCRIPT GUITAR TUNER'  
     
 $ ->
   show.projects()
@@ -46,18 +75,15 @@ $ ->
     (callback) -> window.setTimeout(callback, 1000 / 60))()
   
   $(window).scroll ->
-    scrollAnchor = $('.scrollAnchor').offset().top
-    if $(this).scrollTop() >= scrollAnchor and $('.active').css('position') isnt 'fixed'
-      $('.scrollAnchor').css 'height', $('.active h2').outerHeight()
-      $('.back').removeClass('animate').addClass 'topHeader'
-      $('.active').addClass 'topHeader'
-    else if $(this).scrollTop() < scrollAnchor and $('.active').css('position') isnt 'relative'
-      $('.scrollAnchor').css 'height', '0px'
-      $('.back').removeClass 'topHeader'
-      $('.active').removeClass 'topHeader'
+    navAnchorTop = $('.nav-anchor').offset().top
+    if $(this).scrollTop() >= navAnchorTop and $('nav').css('position') isnt 'fixed'
+      $('nav').addClass 'stick'
+    else if $(this).scrollTop() < navAnchorTop and $('nav').css('position') is 'fixed'
+      $('nav').removeClass 'stick'
 
   $('.project').click ->
-    clear.projects load[$(this).attr 'id']
+    clear.projects()
+    load.project $(this).attr 'id'
 
   $('.back').click ->
     clear.displays()

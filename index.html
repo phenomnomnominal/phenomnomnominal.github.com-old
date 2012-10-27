@@ -6,87 +6,86 @@
 	<script type='text/javascript' src='libraries/dsp.js'></script>
 	<script type='text/javascript' src='libraries/jquery.js'></script>
 	<script type='text/javascript' src='libraries/jquery-ui.js'></script>
+	<script type='text/javascript' src='libraries/modernizr.js'></script>
 	<script type='text/javascript' src='libraries/three.js'></script>
 	<script type='text/javascript' src='libraries/underscore.js'></script>
 	<script type='text/javascript' src='javascript/index.js'></script>
 	<script type='text/javascript' src='javascript/tuner.js'></script>
 	<script type='text/javascript' src='javascript/tetris.js'></script>
 	<script type='text/javascript' src='javascript/clouds.js'></script>
+	<script type="text/javascript">
+
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-35865678-1']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+
+	</script>
 	</head>
 	<body>
 		<div class='background'></div>
 		<div class='wrapper'>
-			<div class='headings title'><a href='http://phenomnomnominal.github.com'>Craig Spence</a></div>
-			<div class='headings subtitle'>
-				<span class='italic'>Bachelor of Engineering</span> with 
-				<span class='italic'>Honours - Multimedia Systems Engineering</span>
-				<hr/>
-			</div>
-			<div class='scrollAnchor'></div>
-			<div class='back offLeft animate'>&larr;Back</div>
-			<div class='content projects'>
-				<div class='project spinLeft animate' id='tuner'>
+			<header>
+				<h1>
+					Craig Spence
+				</h1>
+				<div>
+					<span>Bachelor of Engineering</span>
+					 with 
+					<span>Honours - Multimedia Systems Engineering</span>
+					<hr/>
+				</div>
+			</header>
+			<span class='nav-anchor'></span>
+			<nav>
+				<span class='back offLeft animate'>&larr;&nbsp;Back</span>
+				<h2 class='offRight animate'></h2>
+ 				<div class='offRight animate'>
+	                <span>VIEW SOURCE&nbsp;&rarr;</span>
+	 				<ul class='offRight animate'></ul>
+				</div>
+			</nav>
+			<section class='project-list'>
+				<div class='project offLeft animate' id='clouds'>
+					<img src='images/clouds.jpg'/>
+					<div class='mask blue'>
+			    		<h2>DYNAMIC CLOUDS</h2>
+		    			<p>3D simulation of clouds, using cellular automata.</p>
+					</div>
+				</div>
+				<div class='project offLeft animate' id='tuner'>
 					<img src='images/tuner.jpg'/>
 					<div class='mask red'>
 			    		<h2>PURE JAVASCRIPT GUITAR TUNER</h2>
-		    			<p>Experimental JS Chromatic Tuner, using the Web Audio API</p>
+		    			<p>Experimental JS Chromatic Tuner, using the Web Audio API & getUserMedia()</p>
 					</div>
 				</div>
-				<div class='project spinLeft animate' id='tetris'>
+				<div class='project offLeft animate' id='tetris'>
 					<img src='images/tetris.jpg'/>
 					<div class='mask green'>
 			    		<h2>TETRIS AI</h2>
 		    			<p>Simple Tetris playing artificial intelligence, using constraint satisfaction techniques.</p>
 					</div>
 				</div>
-				<div class='project spinLeft animate' id='clouds'>
-					<!--<img src='images/clouds.jpg'/>-->
-					<div class='mask blue'>
-			    		<h2>DYNAMIC CLOUDS</h2>
-		    			<p>3D simulation of clouds, using cellular automata.</p>
-					</div>
+			</section>
+			<section class='project-displays'>
+				<div class='offRight tuner animate'>
+					<canvas></canvas>
+					<div></div>
 				</div>
-			</div>
-			<div class='display offRight tuner animate'>
-				<header>
-	  				<h2>PURE JAVASCRIPT GUITAR TUNER</h2>
-	 				<span>ANOTATED CODE:</span>
-					<ul>
-						<li><a href='docs/tuner.html' target='_blank'>tuner.coffee</a></li>
-					</ul>
-				</header>
-				<canvas></canvas>
-				<div></div>
-			</div>
-			<div class='display offRight tetris animate'>
-				<header>
-					<h2>TETRIS AI</h2>
-					<span>ANOTATED CODE:</span>
-					<ul>
-						<li><a href='docs/tetris.html' target='_blank'>tetris.coffee</a></li>
-						<li><a href='docs/tetrominoes.html' target='_blank'>tetrominoes.coffee</a></li>
-					</ul>
-				</header>
-				<div>
-					<form>
-						<input class='start' type='button' value='Start'/>
-						<input class='stop' type='button' value='Stop'/>
-						<h4>SPEED:</h4>
-		  			    <input type='range' min='0' max='100' value='50'/>
-					</form>
+				<div class='offRight tetris animate'>
+					<canvas></canvas>
 				</div>
-				<canvas></canvas>
-			</div>
-			<div class='display offRight clouds animate'>
-				<header>
-					<h2>DYNAMIC CLOUDS</h2>
-					<span>ANOTATED CODE:</span>
-					<ul>
-						<li><a href='docs/clouds.html' target='_blank'>clouds.coffee</a></li>
-					</ul>
-				</header>
-				<div></div>
-			</div>
+				<div class='offRight clouds animate'>
+					<div></div>
+				</div>
+			</section>
+			
 		</div>
 		<script id="vs" type="x-shader/x-vertex">
 		    varying vec2 vUv;
@@ -97,13 +96,23 @@
         </script>
         <script id="fs" type="x-shader/x-fragment">
             uniform sampler2D map;
-            varying vec2 vUv;
-            void main() {
-                float depth = gl_FragCoord.z / gl_FragCoord.w;
-                
+
+			uniform vec3 fogColor;
+			uniform float fogNear;
+			uniform float fogFar;
+
+			varying vec2 vUv;
+
+			void main() {
+
+				float depth = gl_FragCoord.z / gl_FragCoord.w;
+				float fogFactor = smoothstep( fogNear, fogFar, depth );
+
 				gl_FragColor = texture2D( map, vUv );
-                gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
-            }
+				gl_FragColor.w *= pow( gl_FragCoord.z, 20.0 );
+				gl_FragColor = mix( gl_FragColor, vec4( fogColor, gl_FragColor.w ), fogFactor );
+
+			}
         </script>
 	</body>
 </html>

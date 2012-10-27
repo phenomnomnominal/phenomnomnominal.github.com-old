@@ -1,27 +1,29 @@
 <!DOCTYPE html>  <html> <head>   <title>tetris.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="tetris.html">                 tetris.coffee               </a>                                           <a class="source" href="tetrominoes.html">                 tetrominoes.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               tetris.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>                            </td>             <td class="code">               <div class="highlight"><pre><span class="nv">CANVAS = </span><span class="kc">null</span>
 <span class="nv">CONTEXT = </span><span class="kc">null</span>
 
+<span class="nv">CELL_SIZE = </span><span class="mf">41.5</span>
+
 <span class="nv">colours = </span><span class="p">[</span><span class="kc">null</span><span class="p">,</span> <span class="s">&#39;rgb(247,155,50)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(244,50,251)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(50,50,255)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(246,75,50)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(255,255,50)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(163,253,255)&#39;</span><span class="p">,</span> <span class="s">&#39;rgb(137,255,50)&#39;</span><span class="p">]</span>
 
 <span class="nv">Tetris = </span><span class="o">-&gt;</span>
   <span class="nv">CANVAS = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.tetris canvas&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
   <span class="nv">CONTEXT = </span><span class="nx">CANVAS</span><span class="p">.</span><span class="nx">getContext</span><span class="p">(</span><span class="s">&#39;2d&#39;</span><span class="p">)</span>
   
-  <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span> <span class="o">-&gt;</span>
-    <span class="nv">CANVAS.height = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.tetris&#39;</span><span class="p">).</span><span class="nx">height</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.8</span>
-    <span class="nv">CANVAS.width = </span><span class="nx">$</span><span class="p">(</span><span class="s">&#39;.tetris&#39;</span><span class="p">).</span><span class="nx">width</span><span class="p">()</span>
-  <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">trigger</span> <span class="s">&#39;resize&#39;</span>
+  <span class="nv">CANVAS.height = </span><span class="nx">CELL_SIZE</span> <span class="o">*</span> <span class="mi">20</span>
+  <span class="nv">CANVAS.width = </span><span class="nx">CELL_SIZE</span> <span class="o">*</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">250</span>
   
   <span class="nv">root = </span><span class="nx">exports</span> <span class="o">?</span> <span class="k">this</span>
   <span class="nv">root.TetrisGame = </span><span class="k">new</span> <span class="nx">TetrisAI</span><span class="p">()</span>
+  <span class="nx">TetrisGame</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
   
   <span class="nv">update = </span><span class="o">-&gt;</span>
     <span class="nx">TetrisGame</span><span class="p">.</span><span class="nx">draw</span><span class="p">()</span>
     <span class="nx">TetrisGame</span><span class="p">.</span><span class="nx">update</span><span class="p">()</span>
+  
   <span class="nx">setInterval</span> <span class="nx">update</span><span class="p">,</span> <span class="mi">250</span>
-
+  
 <span class="k">class</span> <span class="nx">TetrisAI</span>
-  <span class="nv">constructor: </span><span class="nf">() -&gt;</span>
+  <span class="nv">constructor: </span><span class="o">-&gt;</span>
     <span class="vi">@PreviousTetromino = </span><span class="kc">undefined</span>
     <span class="vi">@MoveScores = </span><span class="p">[]</span>
     <span class="vi">@Bag = </span><span class="k">new</span> <span class="nx">TetriminoBag</span><span class="p">()</span>
@@ -300,35 +302,25 @@
     <span class="k">return</span> <span class="nx">copy</span>
     
   <span class="nv">draw: </span><span class="nf">(tetris) -&gt;</span>
-    <span class="nv">cellSize = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span> <span class="nx">CANVAS</span><span class="p">.</span><span class="nx">height</span> <span class="o">/</span> <span class="mi">20</span>
     <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">clearRect</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">CANVAS</span><span class="p">.</span><span class="nx">width</span><span class="p">,</span> <span class="nx">CANVAS</span><span class="p">.</span><span class="nx">height</span>
     <span class="nv">CONTEXT.fillStyle = </span><span class="s">&#39;rgba(0, 0, 0, 0.3)&#39;</span>
-    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillRect</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">cellSize</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">CANVAS</span><span class="p">.</span><span class="nx">height</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillRect</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">CELL_SIZE</span> <span class="o">*</span> <span class="mi">10</span><span class="p">,</span> <span class="nx">CELL_SIZE</span> <span class="o">*</span> <span class="mi">20</span>
     <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="mi">10</span><span class="p">]</span>
       <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="mi">20</span><span class="p">]</span>
         <span class="nv">value = </span><span class="nx">@Matrix</span><span class="p">[</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
         <span class="nx">unless</span> <span class="nx">value</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">]</span>
           <span class="nv">CONTEXT.fillStyle = </span><span class="nx">colours</span><span class="p">[</span><span class="nx">value</span><span class="p">]</span>
-          <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillRect</span><span class="p">(</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">cellSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">cellSize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">cellSize</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">cellSize</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
-    <span class="nv">nextShape = </span><span class="nx">@NextTetromino</span><span class="p">.</span><span class="nx">Shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="nv">colour = </span><span class="nx">@NextTetromino</span><span class="p">.</span><span class="nx">Colour</span>
-    <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">nextShape</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
-      <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">nextShape</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
-        <span class="nx">unless</span> <span class="nx">nextShape</span><span class="p">[</span><span class="nx">y</span><span class="p">][</span><span class="nx">x</span><span class="p">]</span> <span class="o">is</span> <span class="mi">0</span> <span class="o">or</span> <span class="nx">nextShape</span><span class="p">[</span><span class="nx">y</span><span class="p">][</span><span class="nx">x</span><span class="p">]</span> <span class="o">is</span> <span class="o">-</span><span class="mi">2</span> <span class="o">or</span> <span class="nx">nextShape</span><span class="p">[</span><span class="nx">y</span><span class="p">][</span><span class="nx">x</span><span class="p">]</span> <span class="o">is</span> <span class="o">-</span><span class="mi">3</span>
-          <span class="nv">CONTEXT.fillStyle = </span><span class="nx">colours</span><span class="p">[</span><span class="nx">colour</span><span class="p">]</span>
-          <span class="nv">xPos = </span><span class="mi">520</span> <span class="o">+</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">cellSize</span> <span class="o">+</span> <span class="p">(</span><span class="nx">cellSize</span> <span class="o">*</span> <span class="p">(</span><span class="mi">4</span> <span class="o">/</span> <span class="nx">nextShape</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span>
-          <span class="nv">yPos = </span><span class="mi">70</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">cellSize</span> <span class="o">+</span> <span class="p">(</span><span class="nx">cellSize</span> <span class="o">*</span> <span class="p">(</span><span class="mi">3</span> <span class="o">/</span> <span class="nx">nextShape</span><span class="p">.</span><span class="nx">length</span><span class="p">))</span>
-          <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillRect</span> <span class="nx">xPos</span><span class="p">,</span> <span class="nx">yPos</span><span class="p">,</span> <span class="nx">cellSize</span><span class="p">,</span> <span class="nx">cellSize</span>
-    <span class="nv">CONTEXT.font = </span><span class="s">&#39;bold 40px Ostrich&#39;</span>
+          <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillRect</span> <span class="nx">x</span> <span class="o">*</span> <span class="nx">CELL_SIZE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">CELL_SIZE</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nx">CELL_SIZE</span> <span class="o">-</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">CELL_SIZE</span> <span class="o">-</span> <span class="mi">2</span>
+    <span class="nv">CONTEXT.font = </span><span class="s">&#39;bold 30px Ostrich&#39;</span>
     <span class="nv">CONTEXT.fillStyle = </span><span class="s">&#39;rgb(255,255,119)&#39;</span>
-    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="s">&#39;Total Moves:&#39;</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">40</span>
-    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="s">&#39;Lines Cleared:&#39;</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">75</span>
-    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="s">&#39;Total Score:&#39;</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">110</span>
-    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="s">&#39;Next Piece:&#39;</span><span class="p">,</span> <span class="mi">384</span><span class="p">,</span> <span class="mi">145</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="s">&#39;Total Moves:&#39;</span><span class="p">,</span> <span class="mi">424</span><span class="p">,</span> <span class="mi">140</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="s">&#39;Lines Cleared:&#39;</span><span class="p">,</span> <span class="mi">424</span><span class="p">,</span> <span class="mi">175</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="s">&#39;Total Score:&#39;</span><span class="p">,</span> <span class="mi">424</span><span class="p">,</span> <span class="mi">210</span>
     <span class="nv">CONTEXT.fillStyle = </span><span class="s">&#39;rgb(255,255,255)&#39;</span>
-    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="nx">@MoveCount</span><span class="p">,</span> <span class="mi">584</span><span class="p">,</span> <span class="mi">40</span>
-    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="nx">@TotalLines</span><span class="p">,</span> <span class="mi">584</span><span class="p">,</span> <span class="mi">75</span>
-    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="nx">@Points</span><span class="p">,</span> <span class="mi">584</span><span class="p">,</span> <span class="mi">110</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="nx">@MoveCount</span><span class="p">,</span> <span class="mi">574</span><span class="p">,</span> <span class="mi">140</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="nx">@TotalLines</span><span class="p">,</span> <span class="mi">574</span><span class="p">,</span> <span class="mi">175</span>
+    <span class="nx">CONTEXT</span><span class="p">.</span><span class="nx">fillText</span> <span class="nx">@Points</span><span class="p">,</span> <span class="mi">574</span><span class="p">,</span> <span class="mi">210</span>
+    
     
 <span class="nv">root = </span><span class="nx">exports</span> <span class="o">?</span> <span class="k">this</span>
 <span class="nv">root.Tetris = </span><span class="nx">Tetris</span>

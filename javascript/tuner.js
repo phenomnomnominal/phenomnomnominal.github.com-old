@@ -296,17 +296,47 @@
       } catch (e) {
         error(e);
       }
+      getPitch = function(freq) {
+        var diff, key, minDiff, note, val;
+        minDiff = Infinity;
+        diff = Infinity;
+        for (key in frequencies) {
+          if (!__hasProp.call(frequencies, key)) continue;
+          val = frequencies[key];
+          if (Math.abs(freq - val) < minDiff) {
+            minDiff = Math.abs(freq - val);
+            diff = freq - val;
+            note = key;
+          }
+        }
+        return [note, diff];
+      };
       display = {
         draw: function(note, diff) {
-          var displayDiv, displayStr, pitch;
-          pitch = note.replace(/[0-9]*/g, '');
+          var displayDiv, displayStr;
           displayDiv = $('.tuner div');
           displayDiv.removeClass();
           displayDiv.addClass((Math.abs(diff) < 0.25 ? 'inTune' : 'outTune'));
-          displayStr = '';
-          displayStr += diff < -0.25 ? '>&nbsp;' : '&nbsp;&nbsp;';
-          displayStr += pitch;
-          displayStr += diff > 0.25 ? '&nbsp;<' : '&nbsp;&nbsp;';
+          note = note.replace(/[0-9]*/g, '');
+          if (Math.abs(diff) < 0.25) {
+            if (note.length === 2) {
+              displayStr = "<&nbsp;&nbsp;" + note + "&nbsp;>";
+            } else {
+              displayStr = "<&nbsp;&nbsp;" + note + "&nbsp;&nbsp;>";
+            }
+          } else {
+            if (note.length === 2) {
+              displayStr = '';
+              displayStr += diff > 0.25 ? '<&nbsp;&nbsp;' : '&nbsp;&nbsp;&nbsp;';
+              displayStr += note;
+              displayStr += diff < -0.25 ? '&nbsp;>' : '&nbsp;&nbsp;';
+            } else {
+              displayStr = '';
+              displayStr += diff > 0.25 ? '<&nbsp;&nbsp;' : '&nbsp;&nbsp;&nbsp;';
+              displayStr += note;
+              displayStr += diff < -0.25 ? '&nbsp;&nbsp;>' : '&nbsp;&nbsp;&nbsp;';
+            }
+          }
           return displayDiv.html(displayStr);
         },
         clear: function() {
@@ -327,33 +357,18 @@
           }
         }), -Infinity);
         maxTime = newMaxTime > maxTime ? newMaxTime : maxTime;
-        context.fillStyle = '#EEE';
-        timeWidth = (canvas.width - 100) / buffer.length;
+        timeWidth = canvas.width / buffer.length;
         for (s = _i = 0, _ref = buffer.length; 0 <= _ref ? _i < _ref : _i > _ref; s = 0 <= _ref ? ++_i : --_i) {
-          context.fillRect(timeWidth * s, canvas.height / 2, timeWidth, -(canvas.height / 2) * (buffer[s] / maxTime));
+          context.fillStyle = '#7F7';
+          context.fillRect(timeWidth * s, 250, timeWidth, -(canvas.height / 4) * (buffer[s] / maxTime));
         }
-        context.fillStyle = '#F77';
-        freqWidth = (canvas.width - 100) / (fft.spectrum.length / 4);
+        freqWidth = canvas.width / (fft.spectrum.length / 8);
         _results = [];
-        for (f = _j = 10, _ref1 = (fft.spectrum.length / 4) - 10; 10 <= _ref1 ? _j < _ref1 : _j > _ref1; f = 10 <= _ref1 ? ++_j : --_j) {
-          _results.push(context.fillRect(freqWidth * f, canvas.height / 2, freqWidth, -Math.pow(1e4 * fft.spectrum[f], 2)));
+        for (f = _j = 0, _ref1 = fft.spectrum.length / 8; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; f = 0 <= _ref1 ? ++_j : --_j) {
+          context.fillStyle = '#77F';
+          _results.push(context.fillRect(freqWidth * f, canvas.height - 50, freqWidth, -Math.pow(5e3 * fft.spectrum[f], 1.75)));
         }
         return _results;
-      };
-      getPitch = function(freq) {
-        var diff, key, minDiff, note, val;
-        minDiff = Infinity;
-        diff = Infinity;
-        for (key in frequencies) {
-          if (!__hasProp.call(frequencies, key)) continue;
-          val = frequencies[key];
-          if (Math.abs(freq - val) < minDiff) {
-            minDiff = Math.abs(freq - val);
-            diff = freq - val;
-            note = key;
-          }
-        }
-        return [note, diff];
       };
       return setInterval(process, 100);
     };
