@@ -30,13 +30,11 @@
     }
   }
 
-  RENDERER = new THREE.WebGLRenderer({
-    antialias: false
-  });
+  RENDERER = null;
 
-  SCENE = new THREE.Scene();
+  SCENE = null;
 
-  CAMERA = new THREE.PerspectiveCamera(45, $(window).innerWidth() / $(window).innerHeight(), 1, 2450);
+  CAMERA = null;
 
   Z_POS = 3000;
 
@@ -46,6 +44,11 @@
 
   Clouds = function() {
     var clouds, groupBack, groupFront, materials, positions, rotations, simulate;
+    RENDERER = new THREE.WebGLRenderer({
+      antialias: false
+    });
+    SCENE = new THREE.Scene();
+    CAMERA = new THREE.PerspectiveCamera(45, $(window).innerWidth() / $(window).innerHeight(), 1, 2450);
     RENDERER.setSize($(window).innerWidth(), $(window).innerHeight());
     $('.clouds div').append(RENDERER.domElement);
     $(window).resize(function() {
