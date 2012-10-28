@@ -39,13 +39,17 @@
 
 <hr />             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <blockquote>
   <h2>Lerp:</h2>
+  
+  <hr />
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <blockquote>
-  <p><strong><code>Lerp</code></strong> performs linear interpolation by a factor <code>s</code> between two values: <code>x</code> and <code>y</code></p>
+  <blockquote>
+    <p><strong><code>Lerp</code></strong> performs linear interpolation by a factor <code>s</code> between two values: <code>x</code> and <code>y</code></p>
+  </blockquote>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">Lerp = </span><span class="nf">(x, y, s) -&gt;</span>
   <span class="nx">x</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">s</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">y</span> <span class="o">*</span> <span class="nx">s</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <h1><section id='c'>Clouds:</section></h1>
 
 <hr />             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <blockquote>
-  <p>The main <strong><code>Clouds</code></strong> function initialises the running of the simulation.</p>
+  <p>The main <strong><code>Clouds</code></strong> function initialises the running of the simulation and the rendering of the clouds.</p>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">Clouds = </span><span class="o">-&gt;</span>
   </pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <blockquote>
   <h2>Renderer Initialisation:</h2>
@@ -66,7 +70,7 @@
   <span class="nx">$</span><span class="p">(</span><span class="s">&#39;.clouds div&#39;</span><span class="p">).</span><span class="nx">append</span> <span class="nx">RENDERER</span><span class="p">.</span><span class="nx">domElement</span>
   </pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <blockquote>
   <blockquote>
-    <p>Then a <code>window</code> resize handler is added which updates the <strong><code>RENDERER</code></strong> and the <strong><code>CAMERA</code></strong> to the <code>window</code> size.</p>
+    <p>Next, a <code>resize</code> event handler is added to update the <strong><code>RENDERER</code></strong> and the <strong><code>CAMERA</code></strong> when the <code>window</code> size changes.</p>
   </blockquote>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">resize</span> <span class="o">-&gt;</span>
     <span class="nv">CAMERA.aspect = </span><span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">innerWidth</span><span class="p">()</span> <span class="o">/</span> <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">innerHeight</span><span class="p">()</span>
@@ -75,7 +79,7 @@
   <span class="nx">$</span><span class="p">(</span><span class="nb">window</span><span class="p">).</span><span class="nx">trigger</span> <span class="s">&#39;resize&#39;</span>
   </pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <blockquote>
   <blockquote>
-    <p>Then the <strong><code>CAMERA</code></strong> position in the <strong><code>SCENE</code></strong> is set, and the <strong><code>CAMERA</code></strong> object is added to the <strong><code>SCENE</code></strong>.</p>
+    <p>The <strong><code>CAMERA</code></strong> position in the <strong><code>SCENE</code></strong> is set, and the <strong><code>CAMERA</code></strong> object is added to the <strong><code>SCENE</code></strong>.</p>
   </blockquote>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">CAMERA.position.y = </span><span class="mi">190</span>
   <span class="nv">CAMERA.position.z = </span><span class="nx">Z_POS</span>
@@ -108,31 +112,24 @@
   <hr />
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <blockquote>
   <blockquote>
-    <p>A new <strong><a href="#ca"><code>CloudCA</code></a></strong> is created with <code>4096</code> cells,</p>
+    <p>A new <strong><a href="#ca"><code>CloudCA</code></a></strong> is created with <code>4096</code> cells, some placeholder variables are initialised and the simulation is started!</p>
   </blockquote>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">clouds = </span><span class="k">new</span> <span class="nx">CloudCA</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <blockquote>
-  <blockquote>
-    <p>some placeholder variables are initialised,</p>
-  </blockquote>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">groupFront = </span><span class="kc">null</span>
+  
+  <span class="nv">groupFront = </span><span class="kc">null</span>
   <span class="nv">groupBack = </span><span class="kc">null</span>
   <span class="nv">positions = </span><span class="p">[]</span>
   <span class="nv">rotations = </span><span class="p">[]</span>
-  </pre></div>             </td>           </tr>                               <tr id="section-30">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-30">&#182;</a>               </div>               <blockquote>
-  <blockquote>
-    <p>and the simulation is started!</p>
-  </blockquote>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <blockquote>
+  </pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <blockquote>
   <h2>simulate:</h2>
   
   <hr />
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-32">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-32">&#182;</a>               </div>               <blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-30">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-30">&#182;</a>               </div>               <blockquote>
   <blockquote>
     <p>The <strong><code>simulate</code></strong> function performs the majority of the work. It is responsible for requesting the next generation from the CA and then interpolating between the values from the generations. It is also responsible for initialising and updating the <strong><a href="http://mrdoob.github.com/three.js/">three.js</a></strong> geometry for the drawn clouds.</p>
   </blockquote>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="p">(</span><span class="nv">simulate = </span><span class="o">-&gt;</span>
-    </pre></div>             </td>           </tr>                               <tr id="section-33">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-33">&#182;</a>               </div>               <blockquote>
+    </pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <blockquote>
   <blockquote>
     <p>The first time simulate is called, the geometric objects which hold the clouds must be initialised. Two identical sets of geometry are maintained, one with a negative <em>Z</em> axis offset. This allows there to be a continuous stream of clouds with no gaps. The two objects <strong><code>groupFront</code></strong> and <strong><code>groupBack</code></strong> are added to the <strong><code>SCENE</code></strong>.</p>
   </blockquote>
@@ -140,12 +137,12 @@
       <span class="nv">groupFront = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Object3D</span><span class="p">()</span>
       <span class="nv">groupBack = </span><span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Object3D</span><span class="p">()</span>
       <span class="nx">SCENE</span><span class="p">.</span><span class="nx">add</span> <span class="nx">groupFront</span>
-      <span class="nx">SCENE</span><span class="p">.</span><span class="nx">add</span> <span class="nx">groupBack</span></pre></div>             </td>           </tr>                               <tr id="section-34">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-34">&#182;</a>               </div>               <blockquote>
+      <span class="nx">SCENE</span><span class="p">.</span><span class="nx">add</span> <span class="nx">groupBack</span></pre></div>             </td>           </tr>                               <tr id="section-32">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-32">&#182;</a>               </div>               <blockquote>
   <blockquote>
     <p>The 3D Cellular Automata that generates the cloud structure is reasonably expensive to generate. To balance this, a new generation of the CA is only created after a number of frames have passed.</p>
   </blockquote>
 </blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span> <span class="nx">clouds</span><span class="p">.</span><span class="nx">gen</span> <span class="o">%</span> <span class="nx">GENERATION_LENGTH</span> <span class="o">is</span> <span class="mi">0</span>
-      <span class="nv">cloudDensity = </span><span class="nx">clouds</span><span class="p">.</span><span class="nx">getGeneration</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-35">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-35">&#182;</a>               </div>               <blockquote>
+      <span class="nv">cloudDensity = </span><span class="nx">clouds</span><span class="p">.</span><span class="nx">getGeneration</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-33">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-33">&#182;</a>               </div>               <blockquote>
   <blockquote>
     <p>However, on every single frame, each cell in the 3D <strong><code>SCENE</code></strong> can be updated smootly, by interpolating between the data provided by subsequent generations of the CA.</p>
   </blockquote>
@@ -153,7 +150,7 @@
     <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...(</span><span class="nx">clouds</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">clouds</span><span class="p">.</span><span class="nx">interpolate</span><span class="p">]</span>
       <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...(</span><span class="nx">clouds</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">clouds</span><span class="p">.</span><span class="nx">interpolate</span><span class="p">]</span>
         <span class="k">for</span> <span class="nx">z</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...(</span><span class="nx">clouds</span><span class="p">.</span><span class="nx">z</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">clouds</span><span class="p">.</span><span class="nx">interpolate</span><span class="p">]</span>
-          </pre></div>             </td>           </tr>                               <tr id="section-36">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-36">&#182;</a>               </div>               <blockquote>
+          </pre></div>             </td>           </tr>                               <tr id="section-34">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-34">&#182;</a>               </div>               <blockquote>
   <blockquote>
     <p>The first time through, all the individual <strong><code>PlaneGeometry</code></strong> which form the cloud billboards must be initialised, and added to the <strong><code>groupFront</code></strong> and <strong><code>groupBack</code></strong>. Their positions and rotations are slightly randomised to increase the realism of the result.</p>
   </blockquote>
@@ -168,11 +165,11 @@
               <span class="nv">increment: </span><span class="p">((</span><span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">PI</span> <span class="o">/</span> <span class="mi">2000</span>
             <span class="nx">groupFront</span><span class="p">.</span><span class="nx">add</span> <span class="nx">planeFront</span>
             <span class="nx">groupBack</span><span class="p">.</span><span class="nx">add</span> <span class="nx">planeBack</span>
-          </pre></div>             </td>           </tr>                               <tr id="section-37">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-37">&#182;</a>               </div>               <blockquote>
+          </pre></div>             </td>           </tr>                               <tr id="section-35">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-35">&#182;</a>               </div>               <blockquote>
   <blockquote>
     <p>Then the size of each <strong><code>PlaneGeometry</code></strong> is generated by performing a linear interpolation between the generations of the CA.</p>
   </blockquote>
-</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="nv">scale = </span><span class="nx">Lerp</span><span class="p">(</span><span class="nx">clouds</span><span class="p">.</span><span class="nx">density</span><span class="p">.</span><span class="nx">current</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">][</span><span class="nx">z</span><span class="p">],</span> <span class="nx">clouds</span><span class="p">.</span><span class="nx">density</span><span class="p">.</span><span class="nx">next</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">][</span><span class="nx">z</span><span class="p">],</span> <span class="p">(</span><span class="nx">clouds</span><span class="p">.</span><span class="nx">gen</span> <span class="o">%</span> <span class="nx">GENERATION_LENGTH</span><span class="p">)</span> <span class="o">/</span> <span class="nx">GENERATION_LENGTH</span><span class="p">)</span> <span class="o">*</span> <span class="mi">20</span></pre></div>             </td>           </tr>                               <tr id="section-38">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-38">&#182;</a>               </div>               <blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>          <span class="nv">scale = </span><span class="nx">Lerp</span><span class="p">(</span><span class="nx">clouds</span><span class="p">.</span><span class="nx">density</span><span class="p">.</span><span class="nx">current</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">][</span><span class="nx">z</span><span class="p">],</span> <span class="nx">clouds</span><span class="p">.</span><span class="nx">density</span><span class="p">.</span><span class="nx">next</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">][</span><span class="nx">z</span><span class="p">],</span> <span class="p">(</span><span class="nx">clouds</span><span class="p">.</span><span class="nx">gen</span> <span class="o">%</span> <span class="nx">GENERATION_LENGTH</span><span class="p">)</span> <span class="o">/</span> <span class="nx">GENERATION_LENGTH</span><span class="p">)</span> <span class="o">*</span> <span class="mi">20</span></pre></div>             </td>           </tr>                               <tr id="section-36">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-36">&#182;</a>               </div>               <blockquote>
   <blockquote>
     <p>If the part of the cloud will be visible, the corresponding <strong><code>PlaneGeometry</code></strong> in both the <strong><code>groupFront</code></strong> and <strong><code>groupBack</code></strong> are updated.</p>
   </blockquote>
@@ -189,7 +186,7 @@
             <span class="nv">planeFront.scale.x = planeFront.scale.y = </span><span class="nx">scale</span>
             <span class="nv">planeBack.scale.x = planeBack.scale.y = </span><span class="nx">scale</span>
           <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span>
-    </pre></div>             </td>           </tr>                               <tr id="section-39">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-39">&#182;</a>               </div>               <blockquote>
+    </pre></div>             </td>           </tr>                               <tr id="section-37">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-37">&#182;</a>               </div>               <blockquote>
   <blockquote>
     <p>The generation count is incremented, the <strong><code>CAMERA</code></strong> position is updated, the <strong><code>RENDERER</code></strong> renders the <strong><code>SCENE</code></strong> and the <strong><code>simulate</code></strong> function is called again</p>
   </blockquote>
@@ -197,33 +194,86 @@
     <span class="nv">CAMERA.position.z = </span><span class="o">-</span><span class="p">(((</span><span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">()</span> <span class="o">-</span> <span class="nx">START_TIME</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.03</span><span class="p">)</span> <span class="o">%</span> <span class="nx">Z_POS</span><span class="p">)</span> <span class="o">+</span> <span class="nx">Z_POS</span>
     <span class="nx">RENDERER</span><span class="p">.</span><span class="nx">render</span> <span class="nx">SCENE</span><span class="p">,</span> <span class="nx">CAMERA</span>
     <span class="nx">requestAnimFrame</span> <span class="nx">simulate</span>
-  <span class="p">)()</span>
+  <span class="p">)()</span></pre></div>             </td>           </tr>                               <tr id="section-38">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-38">&#182;</a>               </div>               <h1><section id='ca'>CloudCA:</section></h1>
 
-<span class="k">class</span> <span class="nx">CloudCA</span>
-  <span class="nv">constructor: </span><span class="nf">(@x, @y, @z, @interpolate = 1, @gen = 0) -&gt;</span>
-    
-    <span class="vi">@positions = </span><span class="nx">createPositions</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span>
-    <span class="vi">@density = </span><span class="nv">curr: </span><span class="kc">null</span><span class="p">,</span> <span class="nv">next: </span><span class="kc">null</span>
-    <span class="vi">@size = </span><span class="nx">@x</span> <span class="o">*</span> <span class="nx">@y</span> <span class="o">*</span> <span class="nx">@z</span>
-
-    <span class="vi">@_ =</span>
+<hr />             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-39">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-39">&#182;</a>               </div>               <p>The <strong><code>CloudCA</code></strong> class performs the cellular automation. It holds a 3D grid where each cell contains a binary value for <code>hum</code> (humidity), <code>act</code> (activation) and <code>cld</code> (cloud). These values are updated based upon a set of CA rules each generation in three stages: <strong>growth</strong>, <strong>extinction</strong> and <strong>advection</strong> (wind). The resulting binary distribution of <code>cld</code> values is then converted into a 3D continuous distribution, which is used to create the clouds in WebGL.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">CloudCA</span>
+  </pre></div>             </td>           </tr>                               <tr id="section-40">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-40">&#182;</a>               </div>               <blockquote>
+  <h2>Constructor:</h2>
+  
+  <hr />
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  </pre></div>             </td>           </tr>                               <tr id="section-41">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-41">&#182;</a>               </div>               <blockquote>
+  <blockquote>
+    <p>The <strong><code>CloudCA</code></strong> constructor requires <code>3</code> parameters (<code>x</code>, <code>y</code> &amp; <code>z</code>), with <code>1</code> optional parameter (<code>interpolate</code>). The first three declare the size of the simulation grid. The <code>interpolate</code> paramter specifies how many additional values should be interpolated in the 3D space between the simulated values.</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">constructor: </span><span class="nf">(@x, @y, @z, @interpolate = 1, @gen = 0) -&gt;</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-42">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-42">&#182;</a>               </div>               <blockquote>
+  <blockquote>
+    <p>Additionally, several other important properties are set:</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    </pre></div>             </td>           </tr>                               <tr id="section-43">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-43">&#182;</a>               </div>               <blockquote>
+  <blockquote>
+    <ul>
+    <li>The total number of cells in the 3D CA is found</li>
+    </ul>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="vi">@size = </span><span class="nx">@x</span> <span class="o">*</span> <span class="nx">@y</span> <span class="o">*</span> <span class="nx">@z</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-44">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-44">&#182;</a>               </div>               <blockquote>
+  <blockquote>
+    <ul>
+    <li>The centre positions for each cell are evaluated</li>
+    </ul>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="vi">@positions = </span><span class="nx">createPositions</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-45">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-45">&#182;</a>               </div>               <blockquote>
+  <blockquote>
+    <ul>
+    <li>The initial conditions for <code>hum</code>, <code>act</code> and <code>cld</code> are generated</li>
+    </ul>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="vi">@_ =</span>
       <span class="nv">gen:</span>
         <span class="nv">hum: </span><span class="p">((</span><span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">then</span> <span class="s">&#39;1&#39;</span> <span class="k">else</span> <span class="s">&#39;0&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@size</span><span class="p">]).</span><span class="nx">join</span> <span class="s">&#39;&#39;</span>
         <span class="nv">act: </span><span class="p">((</span><span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="k">then</span> <span class="s">&#39;1&#39;</span> <span class="k">else</span> <span class="s">&#39;0&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@size</span><span class="p">]).</span><span class="nx">join</span> <span class="s">&#39;&#39;</span>
         <span class="nv">cld: </span><span class="p">(</span><span class="s">&#39;0&#39;</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@size</span><span class="p">]).</span><span class="nx">join</span> <span class="s">&#39;&#39;</span>
-    
-    <span class="vi">@_.clouds = </span><span class="nx">toGrid</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="nf">(x, y, z) -&gt;</span> <span class="o">+</span><span class="nx">@_</span><span class="p">.</span><span class="nx">gen</span><span class="p">.</span><span class="nx">cld</span><span class="p">[</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">@x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">@y</span> <span class="o">+</span> <span class="nx">z</span><span class="p">])</span>
-    <span class="vi">@density.next = </span><span class="nx">toGrid</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="nf">(x, y, z) -&gt;</span> <span class="nx">getDensity</span><span class="p">(</span><span class="nx">@_</span><span class="p">.</span><span class="nx">clouds</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">))</span>
-    <span class="nx">@getGeneration</span><span class="p">()</span>
-
-  <span class="nv">createPositions = </span><span class="o">-&gt;</span>
-    <span class="nv">min = x: </span><span class="o">-</span><span class="mi">500</span><span class="p">,</span> <span class="nv">y: </span><span class="mi">50</span><span class="p">,</span> <span class="nv">z: </span><span class="mi">0</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-46">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-46">&#182;</a>               </div>               <blockquote>
+  <blockquote>
+    <ul>
+    <li>The initial conditions of the cloud <code>density</code> (The continuous distribution) are also generated.    </li>
+    </ul>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="vi">@_.clouds = </span><span class="nx">toGrid</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="nf">(x, y, z) -&gt;</span> <span class="o">+</span><span class="nx">@_</span><span class="p">.</span><span class="nx">gen</span><span class="p">.</span><span class="nx">cld</span><span class="p">[</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">@x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">@y</span> <span class="o">+</span> <span class="nx">z</span><span class="p">])</span>
+    <span class="vi">@density =</span>
+      <span class="nv">current: </span><span class="kc">null</span>
+      <span class="nv">next: </span><span class="nx">toGrid</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="nf">(x, y, z) -&gt;</span> <span class="nx">getDensity</span><span class="p">(</span><span class="nx">@_</span><span class="p">.</span><span class="nx">clouds</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">)))</span>
+      </pre></div>             </td>           </tr>                               <tr id="section-47">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-47">&#182;</a>               </div>               <blockquote>
+  <blockquote>
+    <p>Once everything has been initialised, the first generation of the CA is created.</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">@getGeneration</span><span class="p">()</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-48">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-48">&#182;</a>               </div>               <blockquote>
+  <h2>Private Functions:</h2>
+  
+  <hr />
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-49">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-49">&#182;</a>               </div>               <blockquote>
+  <h3>createPositions:</h3>
+  
+  <blockquote>
+    <p><strong><code>createPositions</code></strong> generates the set of grid positions for the 3D space.</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">createPositions = </span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-50">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-50">&#182;</a>               </div>               <blockquote>
+  <blockquote>
+    <p>A hard-coded (for now) area of 3D space is evenly divided by the number of cells in each the <em>X</em>, <em>Y</em> &amp; <em>Z</em> directions (with the <code>interpolate</code> factor taken into account)</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">min = x: </span><span class="o">-</span><span class="mi">500</span><span class="p">,</span> <span class="nv">y: </span><span class="mi">50</span><span class="p">,</span> <span class="nv">z: </span><span class="mi">0</span>
     <span class="nv">max = x: </span><span class="mi">500</span><span class="p">,</span> <span class="nv">y: </span><span class="mi">200</span><span class="p">,</span> <span class="nv">z: </span><span class="mi">3000</span>
     <span class="nv">d =</span>
       <span class="nv">x: </span><span class="p">(</span><span class="nx">max</span><span class="p">.</span><span class="nx">x</span> <span class="o">-</span> <span class="nx">min</span><span class="p">.</span><span class="nx">x</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="nx">@x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">@interpolate</span><span class="p">)</span>
       <span class="nv">y: </span><span class="p">(</span><span class="nx">max</span><span class="p">.</span><span class="nx">y</span> <span class="o">-</span> <span class="nx">min</span><span class="p">.</span><span class="nx">y</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="nx">@y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">@interpolate</span><span class="p">)</span>
-      <span class="nv">z: </span><span class="p">(</span><span class="nx">max</span><span class="p">.</span><span class="nx">z</span> <span class="o">-</span> <span class="nx">min</span><span class="p">.</span><span class="nx">z</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="nx">@z</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">@interpolate</span><span class="p">)</span>
-    <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...(</span><span class="nx">@x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">@interpolate</span><span class="p">]</span>
+      <span class="nv">z: </span><span class="p">(</span><span class="nx">max</span><span class="p">.</span><span class="nx">z</span> <span class="o">-</span> <span class="nx">min</span><span class="p">.</span><span class="nx">z</span><span class="p">)</span> <span class="o">/</span> <span class="p">((</span><span class="nx">@z</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">@interpolate</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-51">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-51">&#182;</a>               </div>               <blockquote>
+  <blockquote>
+    <p>The spacings between the even divisions is taken and varied by a random amount. This creates a more natural looking cloud, rather than all the parts being in lines.</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...(</span><span class="nx">@x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">@interpolate</span><span class="p">]</span>
       <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...(</span><span class="nx">@y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">@interpolate</span><span class="p">]</span>
         <span class="k">for</span> <span class="nx">z</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...(</span><span class="nx">@z</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">@interpolate</span><span class="p">]</span>
           <span class="nv">rand = </span><span class="p">{}</span>
@@ -232,21 +282,13 @@
             <span class="nv">x: </span><span class="nx">min</span><span class="p">.</span><span class="nx">x</span> <span class="o">+</span> <span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">x</span> <span class="o">*</span> <span class="p">(</span><span class="nx">x</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">))</span> <span class="o">+</span> <span class="nx">rand</span><span class="p">.</span><span class="nx">x</span>
             <span class="nv">y: </span><span class="nx">min</span><span class="p">.</span><span class="nx">y</span> <span class="o">+</span> <span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">y</span> <span class="o">*</span> <span class="p">(</span><span class="nx">y</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">))</span> <span class="o">+</span> <span class="nx">rand</span><span class="p">.</span><span class="nx">y</span>
             <span class="nv">z: </span><span class="nx">min</span><span class="p">.</span><span class="nx">z</span> <span class="o">+</span> <span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">z</span> <span class="o">*</span> <span class="p">(</span><span class="nx">z</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">))</span> <span class="o">+</span> <span class="nx">rand</span><span class="p">.</span><span class="nx">z</span>
-          <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(</span><span class="nx">pos</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pos</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">pos</span><span class="p">.</span><span class="nx">z</span><span class="p">)</span>
-
-  <span class="nv">getGeneration: </span><span class="o">-&gt;</span>
-    <span class="vi">@_.gen = </span><span class="nx">process</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">@_</span><span class="p">.</span><span class="nx">gen</span><span class="p">,</span> <span class="nx">growth</span><span class="p">)</span>
-    <span class="vi">@_.gen = </span><span class="nx">process</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">@_</span><span class="p">.</span><span class="nx">gen</span><span class="p">,</span> <span class="nx">extinction</span><span class="p">)</span>
-    <span class="vi">@_.gen = </span><span class="nx">process</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">@_</span><span class="p">.</span><span class="nx">gen</span><span class="p">,</span> <span class="nx">wind</span><span class="p">)</span>
-    <span class="vi">@_.clouds = </span><span class="nx">toGrid</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="nf">(x, y, z) -&gt;</span> <span class="o">+</span><span class="nx">@_</span><span class="p">.</span><span class="nx">gen</span><span class="p">.</span><span class="nx">cld</span><span class="p">[</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">@x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">@y</span> <span class="o">+</span> <span class="nx">z</span><span class="p">]))</span>
-    <span class="vi">@density =</span>
-      <span class="nv">current: </span><span class="nx">@density</span><span class="p">.</span><span class="nx">next</span>
-      <span class="nv">next: </span><span class="nx">toGrid</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="nf">(x, y, z) -&gt;</span> <span class="nx">getDensity</span><span class="p">(</span><span class="nx">@_</span><span class="p">.</span><span class="nx">clouds</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">)))</span>
-    <span class="k">if</span> <span class="nx">@interpolate</span> <span class="o">isnt</span> <span class="mi">1</span>
-      <span class="vi">@density.next = </span><span class="nx">trilinear</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="nx">@density</span><span class="p">.</span><span class="nx">next</span>
-    <span class="nx">@density</span>
-
-  <span class="nv">logic =</span>
+          <span class="k">new</span> <span class="nx">THREE</span><span class="p">.</span><span class="nx">Vector3</span><span class="p">(</span><span class="nx">pos</span><span class="p">.</span><span class="nx">x</span><span class="p">,</span> <span class="nx">pos</span><span class="p">.</span><span class="nx">y</span><span class="p">,</span> <span class="nx">pos</span><span class="p">.</span><span class="nx">z</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-52">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-52">&#182;</a>               </div>               <blockquote>
+  <h3>logic:</h3>
+  
+  <blockquote>
+    <p><strong><code>logic</code></strong> provides a better mechanism for performing bitwise operations. In the <strong><code>CloudCA</code></strong>, all the cell values for <code>hum</code>, <code>act</code> and <code>cld</code> are stored as <code>3</code> <strong><code>Strings</code></strong>. These standard logic operators (<strong><code>and</code></strong>, <strong><code>or</code></strong> and <strong><code>not</code></strong>) provide mechanisms for performing bitwise operations on arbitrarily long JavaScript <strong><code>Strings</code></strong>.</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">logic =</span>
     <span class="o">and:</span> <span class="nf">(str1, str2, res = &#39;&#39;) -&gt;</span>
       <span class="p">(</span><span class="nx">res</span> <span class="o">+=</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">str1</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">&amp;</span> <span class="nx">str2</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="si">}</span><span class="s">&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">str1</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
       <span class="nx">res</span>
@@ -255,15 +297,24 @@
       <span class="nx">res</span>
     <span class="o">not:</span> <span class="nf">(str, res = &#39;&#39;) -&gt;</span>
       <span class="p">(</span><span class="nx">res</span> <span class="o">+=</span> <span class="k">if</span> <span class="nx">str</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">is</span> <span class="s">&#39;0&#39;</span> <span class="k">then</span> <span class="s">&#39;1&#39;</span> <span class="k">else</span> <span class="s">&#39;0&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">str</span><span class="p">.</span><span class="nx">length</span><span class="p">]</span>
-      <span class="nx">res</span>
-
-  <span class="nv">toGrid = </span><span class="nf">(func) -&gt;</span>
+      <span class="nx">res</span></pre></div>             </td>           </tr>                               <tr id="section-53">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-53">&#182;</a>               </div>               <blockquote>
+  <h3>toGrid:</h3>
+  
+  <blockquote>
+    <p><strong><code>toGrid</code></strong> takes one of the <strong><code>Strings</code></strong> from <code>hum</code>, <code>act</code> or <code>cld</code> and turns it into a 3D <strong><code>Array</code></strong> by calling an arbitrary function on the value from the <strong><code>String</code></strong></p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">toGrid = </span><span class="nf">(func) -&gt;</span>
     <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@x</span><span class="p">]</span>
       <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@y</span><span class="p">]</span>
         <span class="k">for</span> <span class="nx">z</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@z</span><span class="p">]</span>
           <span class="nx">func</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">)</span>
-          
-  <span class="nv">trilinear = </span><span class="nf">(grid) -&gt;</span>
+          </pre></div>             </td>           </tr>                               <tr id="section-54">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-54">&#182;</a>               </div>               <blockquote>
+  <h3>trilinear:</h3>
+  
+  <blockquote>
+    <p><strong><code>trilinear</code></strong> performs <a href="http://en.wikipedia.org/wiki/Trilinear_interpolation">Trilinear Interpolation</a> on the values in the CA to increase the spatial resolution.</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">trilinear = </span><span class="nf">(grid) -&gt;</span>
     <span class="nv">interpolated = </span><span class="p">[]</span>
     <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">..(</span><span class="nx">@x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">@interpolate</span><span class="p">]</span>
       <span class="nx">interpolated</span><span class="p">[</span><span class="nx">x</span><span class="p">]</span> <span class="o">?=</span> <span class="p">[]</span>
@@ -296,23 +347,34 @@
             <span class="nv">c1 = </span><span class="k">if</span> <span class="o">not</span> <span class="nb">isNaN</span><span class="p">(</span><span class="nx">yd</span><span class="p">)</span> <span class="k">then</span> <span class="nx">Lerp</span> <span class="nx">c01</span><span class="p">,</span> <span class="nx">c11</span><span class="p">,</span> <span class="nx">yd</span> <span class="k">else</span> <span class="nx">c01</span>
             <span class="nx">interpolated</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">][</span><span class="nx">z</span><span class="p">]</span> <span class="o">=</span> <span class="k">if</span> <span class="o">not</span> <span class="nb">isNaN</span><span class="p">(</span><span class="nx">zd</span><span class="p">)</span> <span class="k">then</span> <span class="nx">Lerp</span> <span class="nx">c0</span><span class="p">,</span> <span class="nx">c1</span><span class="p">,</span> <span class="nx">zd</span> <span class="k">else</span> <span class="nx">c0</span>
     <span class="nx">interpolated</span>
-
-  <span class="nv">process = </span><span class="nf">(gen, func, newHum = &#39;&#39;, newAct = &#39;&#39;, newCld = &#39;&#39;) -&gt;</span>
-    <span class="p">[</span><span class="nx">newHum</span><span class="p">,</span> <span class="nx">newAct</span><span class="p">,</span> <span class="nx">newCld</span><span class="p">]</span> <span class="o">=</span> <span class="nx">func</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">gen</span><span class="p">)</span>
-    <span class="nv">hum: </span><span class="nx">newHum</span>
-    <span class="nv">act: </span><span class="nx">newAct</span>
-    <span class="nv">cld: </span><span class="nx">newCld</span>
-
-  <span class="nv">growth = </span><span class="nf">(gen, nAct = &#39;&#39;) -&gt;</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-55">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-55">&#182;</a>               </div>               <blockquote>
+  <h3>growth:</h3>
+  
+  <blockquote>
+    <p><strong><code>growth</code></strong> is the implementation of the growth rules from <strong><a href="./A Simple, Efficient Method for Realistic Animation of Clouds.pdf">A Simple, Efficient Method for Realistic Animation of Clouds</a></strong>.</p>
+    
+    <p>There are <strong>Three</strong> rules:</p>
+    
+    <ol>
+    <li><p>A cell will be humid in the next generation if it currently is humid, and it is not currently activated.</p></li>
+    <li><p>A cell will be activated in the next generation if it currently is humid, and it is not currently activated, and at least one of its neighbours is currently activated.</p></li>
+    <li><p>A cell will be cloud in the next generation if it is currently cloud, or it is currently activated.</p></li>
+    </ol>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">growth = </span><span class="nf">(gen, nAct = &#39;&#39;) -&gt;</span>
     <span class="p">{</span><span class="nx">hum</span><span class="p">,</span> <span class="nx">act</span><span class="p">,</span> <span class="nx">cld</span><span class="p">}</span> <span class="o">=</span> <span class="nx">gen</span>
     <span class="nv">actGrid = </span><span class="nx">toGrid</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="nf">(x, y, z) -&gt;</span> <span class="o">+</span><span class="nx">act</span><span class="p">[</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">@x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">@y</span> <span class="o">+</span> <span class="nx">z</span><span class="p">]))</span>
     <span class="nv">nAct = </span><span class="nx">neighboursAct</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="nx">actGrid</span>
     <span class="nv">newHum = </span><span class="nx">logic</span><span class="p">.</span><span class="o">and</span> <span class="nx">hum</span><span class="p">,</span> <span class="nx">logic</span><span class="p">.</span><span class="o">not</span><span class="p">(</span><span class="nx">act</span><span class="p">)</span>
     <span class="nv">newAct = </span><span class="nx">logic</span><span class="p">.</span><span class="o">and</span> <span class="nx">newHum</span><span class="p">,</span> <span class="nx">nAct</span>
     <span class="nv">newCld = </span><span class="nx">logic</span><span class="p">.</span><span class="o">or</span> <span class="nx">cld</span><span class="p">,</span> <span class="nx">act</span>
-    <span class="p">[</span><span class="nx">newHum</span><span class="p">,</span> <span class="nx">newAct</span><span class="p">,</span> <span class="nx">newCld</span><span class="p">]</span>
-
-  <span class="nv">neighboursAct = </span><span class="nf">(grid, str = &#39;&#39;) -&gt;</span>
+    <span class="nv">hum: </span><span class="nx">newHum</span><span class="p">,</span> <span class="nv">act: </span><span class="nx">newAct</span><span class="p">,</span> <span class="nv">cld: </span><span class="nx">newCld</span></pre></div>             </td>           </tr>                               <tr id="section-56">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-56">&#182;</a>               </div>               <blockquote>
+  <h3>neighboursAct:</h3>
+  
+  <blockquote>
+    <p><strong><code>neighboursAct</code></strong> is part of the implementation of the <strong><code>growth</code></strong> function. It checks a specific set of neighbouring cells (<code>2</code> in both <em>X</em> directions, <code>2</code> in both <em>Y</em> directions, <code>1</code> up &amp; <code>2</code> down) to see if any of them are currently activated.</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">neighboursAct = </span><span class="nf">(grid, str = &#39;&#39;) -&gt;</span>
     <span class="nv">neighbourAct = </span><span class="nf">(grid, x, y, z) -&gt;</span>
       <span class="nx">grid</span><span class="p">[</span><span class="nx">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">y</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">z</span><span class="p">]</span> <span class="o">or</span> <span class="nx">grid</span><span class="p">[</span><span class="nx">x</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">z</span><span class="p">]</span> <span class="o">or</span> <span class="nx">grid</span><span class="p">[</span><span class="nx">x</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">y</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">z</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">or</span>
       <span class="nx">grid</span><span class="p">[</span><span class="nx">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">y</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">z</span><span class="p">]</span> <span class="o">or</span> <span class="nx">grid</span><span class="p">[</span><span class="nx">x</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">z</span><span class="p">]</span> <span class="o">or</span> <span class="nx">grid</span><span class="p">[</span><span class="nx">x</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">y</span><span class="p">]</span><span class="o">?</span><span class="p">[</span><span class="nx">z</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">or</span>
@@ -322,19 +384,31 @@
       <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@y</span><span class="p">]</span>
         <span class="k">for</span> <span class="nx">z</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@z</span><span class="p">]</span>
           <span class="nx">str</span> <span class="o">+=</span> <span class="k">if</span> <span class="nx">neighbourAct</span><span class="p">(</span><span class="nx">grid</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">)</span> <span class="k">then</span> <span class="s">&#39;1&#39;</span> <span class="k">else</span> <span class="s">&#39;0&#39;</span>
-    <span class="nx">str</span>
-
-  <span class="nv">extinction = </span><span class="nf">(gen, randHum = &#39;&#39;, randAct = &#39;&#39;, randCld = &#39;&#39;) -&gt;</span>
+    <span class="nx">str</span></pre></div>             </td>           </tr>                               <tr id="section-57">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-57">&#182;</a>               </div>               <blockquote>
+  <h3>extinction:</h3>
+  
+  <blockquote>
+    <p><strong><code>extinction</code></strong> is the implementation of the extinction rules from <strong><a href="./A Simple, Efficient Method for Realistic Animation of Clouds.pdf">A Simple, Efficient Method for Realistic Animation of Clouds</a></strong>. </p>
+    
+    <p>Each of the states of each cell will only be changed if a random number is generated that exceeds the <code>3</code> probability values (<strong><code>P_HUM</code></strong>, <strong><code>P_ACT</code></strong> &amp; <strong><code>P_CLD</code></strong>).</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">extinction = </span><span class="nf">(gen, randHum = &#39;&#39;, randAct = &#39;&#39;, randCld = &#39;&#39;) -&gt;</span>
     <span class="p">{</span><span class="nx">hum</span><span class="p">,</span> <span class="nx">act</span><span class="p">,</span> <span class="nx">cld</span><span class="p">}</span> <span class="o">=</span> <span class="nx">gen</span>
     <span class="p">(</span><span class="nx">randHum</span> <span class="o">+=</span> <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nx">P_HUM</span> <span class="k">then</span> <span class="s">&#39;1&#39;</span> <span class="k">else</span> <span class="s">&#39;0&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@size</span><span class="p">]</span>
-    <span class="p">(</span><span class="nx">randAct</span> <span class="o">+=</span> <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nx">P_HUM</span> <span class="k">then</span> <span class="s">&#39;1&#39;</span> <span class="k">else</span> <span class="s">&#39;0&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@size</span><span class="p">]</span>
+    <span class="p">(</span><span class="nx">randAct</span> <span class="o">+=</span> <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="nx">P_ACT</span> <span class="k">then</span> <span class="s">&#39;1&#39;</span> <span class="k">else</span> <span class="s">&#39;0&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@size</span><span class="p">]</span>
     <span class="p">(</span><span class="nx">randCld</span> <span class="o">+=</span> <span class="k">if</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="nx">P_EXT</span> <span class="k">then</span> <span class="s">&#39;1&#39;</span> <span class="k">else</span> <span class="s">&#39;0&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">...</span><span class="nx">@size</span><span class="p">]</span>
     <span class="nv">newHum = </span><span class="nx">logic</span><span class="p">.</span><span class="o">or</span> <span class="nx">hum</span><span class="p">,</span> <span class="nx">randHum</span>
     <span class="nv">newAct = </span><span class="nx">logic</span><span class="p">.</span><span class="o">or</span> <span class="nx">act</span><span class="p">,</span> <span class="nx">randAct</span>
     <span class="nv">newCld = </span><span class="nx">logic</span><span class="p">.</span><span class="o">and</span> <span class="nx">cld</span><span class="p">,</span> <span class="nx">randCld</span>
-    <span class="p">[</span><span class="nx">newHum</span><span class="p">,</span> <span class="nx">newAct</span><span class="p">,</span> <span class="nx">newCld</span><span class="p">]</span>
+    <span class="nv">hum: </span><span class="nx">newHum</span><span class="p">,</span> <span class="nv">act: </span><span class="nx">newAct</span><span class="p">,</span> <span class="nv">cld: </span><span class="nx">newCld</span></pre></div>             </td>           </tr>                               <tr id="section-58">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-58">&#182;</a>               </div>               <blockquote>
+  <h3>wind:</h3>
+  
+  <blockquote>
+    <p><strong><code>wind</code></strong> is the implementation of the wind rules from <strong><a href="./A Simple, Efficient Method for Realistic Animation of Clouds.pdf">A Simple, Efficient Method for Realistic Animation of Clouds</a></strong>.</p>
     
-  <span class="nv">wind = </span><span class="nf">(gen, humStr = &#39;&#39;, actStr = &#39;&#39;, cldStr = &#39;&#39;) -&gt;</span>
+    <p>A shift in the <em>X</em> direction is determined with a piecewise-linear function, which represents wind speed as a function of height. The whole 3D CA structure is shifted by this value at each different height level.</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">wind = </span><span class="nf">(gen, humStr = &#39;&#39;, actStr = &#39;&#39;, cldStr = &#39;&#39;) -&gt;</span>
     <span class="nv">windSpeed = </span><span class="p">(</span><span class="nx">z</span><span class="p">)</span> <span class="o">=&gt;</span>
       <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nx">z</span> <span class="o">*</span> <span class="p">(</span><span class="nx">WIND_SPEED</span> <span class="o">/</span> <span class="nx">@z</span><span class="p">))</span>
     <span class="p">{</span><span class="nx">hum</span><span class="p">,</span> <span class="nx">act</span><span class="p">,</span> <span class="nx">cld</span><span class="p">}</span> <span class="o">=</span> <span class="nx">gen</span>
@@ -357,9 +431,13 @@
           <span class="nx">humStr</span> <span class="o">+=</span> <span class="nx">newHum</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">][</span><span class="nx">z</span><span class="p">]</span>
           <span class="nx">actStr</span> <span class="o">+=</span> <span class="nx">newAct</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">][</span><span class="nx">z</span><span class="p">]</span>
           <span class="nx">cldStr</span> <span class="o">+=</span> <span class="nx">newCld</span><span class="p">[</span><span class="nx">x</span><span class="p">][</span><span class="nx">y</span><span class="p">][</span><span class="nx">z</span><span class="p">]</span>
-    <span class="p">[</span><span class="nx">humStr</span><span class="p">,</span> <span class="nx">actStr</span><span class="p">,</span> <span class="nx">cldStr</span><span class="p">]</span>
-
-  <span class="nv">getDensity = </span><span class="nf">(clouds, x, y, z) -&gt;</span>
+    <span class="nv">hum: </span><span class="nx">humStr</span><span class="p">,</span> <span class="nv">act: </span><span class="nx">actStr</span><span class="p">,</span> <span class="nv">cld: </span><span class="nx">cldStr</span></pre></div>             </td>           </tr>                               <tr id="section-59">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-59">&#182;</a>               </div>               <blockquote>
+  <h3>getDensity:</h3>
+  
+  <blockquote>
+    <p><strong><code>getDensity</code></strong> changes the 3D binary distribution into a continuous distribution by performing a smoothing operation in the <em>X</em>, <em>Y</em> &amp; <em>Z</em> directions.</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">getDensity = </span><span class="nf">(clouds, x, y, z) -&gt;</span>
     <span class="nv">weight = </span><span class="nf">(dx, dy, dz) -&gt;</span>
       <span class="nb">Math</span><span class="p">.</span><span class="nx">sqrt</span><span class="p">((</span><span class="nx">dx</span> <span class="o">*</span> <span class="nx">dx</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">dy</span> <span class="o">*</span> <span class="nx">dy</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="nx">dz</span> <span class="o">*</span> <span class="nx">dz</span><span class="p">))</span>
     <span class="nv">density = </span><span class="mi">0</span>
@@ -375,8 +453,29 @@
     <span class="k">else</span>
       <span class="nv">density = </span><span class="nx">density</span>
     <span class="nx">density</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-60">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-60">&#182;</a>               </div>               <blockquote>
+  <h2>Public Functions:</h2>
+  
+  <hr />
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-61">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-61">&#182;</a>               </div>               <blockquote>
+  <h3>getGeneration:</h3>
+  
+  <blockquote>
+    <p><strong><code>getGeneration</code></strong> takes the current generation, performs the three sets of rules (<strong><code>growth</code></strong>, <strong><code>extinction</code></strong> and <strong><code>wind</code></strong>) and then transforms the resulting binary distribution into a continuous distribution, which becomes the next generation.</p>
+  </blockquote>
+</blockquote>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nv">getGeneration: </span><span class="o">-&gt;</span>
+    <span class="vi">@_.gen = </span><span class="nx">growth</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="nx">@_</span><span class="p">.</span><span class="nx">gen</span>
+    <span class="vi">@_.gen = </span><span class="nx">extinction</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="nx">@_</span><span class="p">.</span><span class="nx">gen</span>
+    <span class="vi">@_.gen = </span><span class="nx">wind</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="nx">@_</span><span class="p">.</span><span class="nx">gen</span>
+    <span class="vi">@_.clouds = </span><span class="nx">toGrid</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="nf">(x, y, z) -&gt;</span> <span class="o">+</span><span class="nx">@_</span><span class="p">.</span><span class="nx">gen</span><span class="p">.</span><span class="nx">cld</span><span class="p">[</span><span class="nx">x</span> <span class="o">*</span> <span class="nx">@x</span> <span class="o">+</span> <span class="nx">y</span> <span class="o">*</span> <span class="nx">@y</span> <span class="o">+</span> <span class="nx">z</span><span class="p">]))</span>
+    <span class="vi">@density =</span>
+      <span class="nv">current: </span><span class="nx">@density</span><span class="p">.</span><span class="nx">next</span>
+      <span class="nv">next: </span><span class="nx">toGrid</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="p">(</span><span class="nf">(x, y, z) -&gt;</span> <span class="nx">getDensity</span><span class="p">(</span><span class="nx">@_</span><span class="p">.</span><span class="nx">clouds</span><span class="p">,</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">z</span><span class="p">)))</span>
+    <span class="k">if</span> <span class="nx">@interpolate</span> <span class="o">isnt</span> <span class="mi">1</span>
+      <span class="vi">@density.next = </span><span class="nx">trilinear</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="nx">@density</span><span class="p">.</span><span class="nx">next</span>
+    <span class="nx">@density</span></pre></div>             </td>           </tr>                               <tr id="section-62">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-62">&#182;</a>               </div>               <hr />
 
-<span class="nv">root = </span><span class="nx">exports</span> <span class="o">?</span> <span class="k">this</span>
+<h2>Exports:</h2>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-63">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-63">&#182;</a>               </div>               <p>The <strong><a href="#c"><code>Clouds</code></a></strong> function is added to the globol <code>root</code> (<code>exports</code> on <strong><a href="http://nodejs.org/">node.js</a></strong> or <code>window</code>/<code>this</code> in the browser.)</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">root = </span><span class="nx">exports</span> <span class="o">?</span> <span class="k">this</span>
 <span class="nv">root.Clouds = </span><span class="nx">Clouds</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

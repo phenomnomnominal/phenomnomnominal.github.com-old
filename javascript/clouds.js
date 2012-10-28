@@ -158,7 +158,7 @@
   };
 
   CloudCA = (function() {
-    var createPositions, extinction, getDensity, growth, logic, neighboursAct, process, toGrid, trilinear, wind;
+    var createPositions, extinction, getDensity, growth, logic, neighboursAct, toGrid, trilinear, wind;
 
     function CloudCA(x, y, z, interpolate, gen) {
       var i;
@@ -167,12 +167,8 @@
       this.z = z;
       this.interpolate = interpolate != null ? interpolate : 1;
       this.gen = gen != null ? gen : 0;
-      this.positions = createPositions.call(this);
-      this.density = {
-        curr: null,
-        next: null
-      };
       this.size = this.x * this.y * this.z;
+      this.positions = createPositions.call(this);
       this._ = {
         gen: {
           hum: ((function() {
@@ -204,9 +200,12 @@
       this._.clouds = toGrid.call(this, (function(x, y, z) {
         return +this._.gen.cld[x * this.x + y * this.y + z];
       }));
-      this.density.next = toGrid.call(this, (function(x, y, z) {
-        return getDensity(this._.clouds, x, y, z);
-      }));
+      this.density = {
+        current: null,
+        next: toGrid.call(this, (function(x, y, z) {
+          return getDensity(this._.clouds, x, y, z);
+        }))
+      };
       this.getGeneration();
     }
 
@@ -257,25 +256,6 @@
         }).call(this));
       }
       return _results;
-    };
-
-    CloudCA.prototype.getGeneration = function() {
-      this._.gen = process.call(this, this._.gen, growth);
-      this._.gen = process.call(this, this._.gen, extinction);
-      this._.gen = process.call(this, this._.gen, wind);
-      this._.clouds = toGrid.call(this, (function(x, y, z) {
-        return +this._.gen.cld[x * this.x + y * this.y + z];
-      }));
-      this.density = {
-        current: this.density.next,
-        next: toGrid.call(this, (function(x, y, z) {
-          return getDensity(this._.clouds, x, y, z);
-        }))
-      };
-      if (this.interpolate !== 1) {
-        this.density.next = trilinear.call(this, this.density.next);
-      }
-      return this.density;
     };
 
     logic = {
@@ -382,25 +362,6 @@
       return interpolated;
     };
 
-    process = function(gen, func, newHum, newAct, newCld) {
-      var _ref6;
-      if (newHum == null) {
-        newHum = '';
-      }
-      if (newAct == null) {
-        newAct = '';
-      }
-      if (newCld == null) {
-        newCld = '';
-      }
-      _ref6 = func.call(this, gen), newHum = _ref6[0], newAct = _ref6[1], newCld = _ref6[2];
-      return {
-        hum: newHum,
-        act: newAct,
-        cld: newCld
-      };
-    };
-
     growth = function(gen, nAct) {
       var act, actGrid, cld, hum, newAct, newCld, newHum;
       if (nAct == null) {
@@ -414,7 +375,11 @@
       newHum = logic.and(hum, logic.not(act));
       newAct = logic.and(newHum, nAct);
       newCld = logic.or(cld, act);
-      return [newHum, newAct, newCld];
+      return {
+        hum: newHum,
+        act: newAct,
+        cld: newCld
+      };
     };
 
     neighboursAct = function(grid, str) {
@@ -452,7 +417,7 @@
         randHum += Math.random() < P_HUM ? '1' : '0';
       }
       for (i = _m = 0, _ref7 = this.size; 0 <= _ref7 ? _m < _ref7 : _m > _ref7; i = 0 <= _ref7 ? ++_m : --_m) {
-        randAct += Math.random() < P_HUM ? '1' : '0';
+        randAct += Math.random() < P_ACT ? '1' : '0';
       }
       for (i = _n = 0, _ref8 = this.size; 0 <= _ref8 ? _n < _ref8 : _n > _ref8; i = 0 <= _ref8 ? ++_n : --_n) {
         randCld += Math.random() > P_EXT ? '1' : '0';
@@ -460,7 +425,11 @@
       newHum = logic.or(hum, randHum);
       newAct = logic.or(act, randAct);
       newCld = logic.and(cld, randCld);
-      return [newHum, newAct, newCld];
+      return {
+        hum: newHum,
+        act: newAct,
+        cld: newCld
+      };
     };
 
     wind = function(gen, humStr, actStr, cldStr) {
@@ -516,7 +485,11 @@
           }
         }
       }
-      return [humStr, actStr, cldStr];
+      return {
+        hum: humStr,
+        act: actStr,
+        cld: cldStr
+      };
     };
 
     getDensity = function(clouds, x, y, z) {
@@ -542,6 +515,25 @@
         density = density;
       }
       return density;
+    };
+
+    CloudCA.prototype.getGeneration = function() {
+      this._.gen = growth.call(this, this._.gen);
+      this._.gen = extinction.call(this, this._.gen);
+      this._.gen = wind.call(this, this._.gen);
+      this._.clouds = toGrid.call(this, (function(x, y, z) {
+        return +this._.gen.cld[x * this.x + y * this.y + z];
+      }));
+      this.density = {
+        current: this.density.next,
+        next: toGrid.call(this, (function(x, y, z) {
+          return getDensity(this._.clouds, x, y, z);
+        }))
+      };
+      if (this.interpolate !== 1) {
+        this.density.next = trilinear.call(this, this.density.next);
+      }
+      return this.density;
     };
 
     return CloudCA;
