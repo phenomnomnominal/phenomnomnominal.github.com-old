@@ -23,7 +23,6 @@
     if (!((typeof Worker !== "undefined" && Worker !== null) && (typeof Worker === 'function' || typeof Worker === 'object'))) {
       WorkerBench.init = WorkerBench.run = WorkerBench.results = function() {
         console.log('WebWorkers are not available.');
-        alert('WebWorkers are not available.');
         return false;
       };
     } else {
@@ -83,7 +82,6 @@
             return _generateResult(results);
           };
           console.log("Optimum Web Workers: " + (WorkerBench.result()));
-          alert("Optimum Web Workers: " + WorkerBench.result());
           return console.log("Benchmarks took: " + (performance.now() - performance.initTime) + ".");
         }
       };
@@ -98,9 +96,9 @@
         }
         nWorkers = workersPerBenchmark.shift();
         timeout = 100 / nWorkers;
-        onMessage = function() {
+        onMessage = function(e) {
           var worker, _i, _len, _ref1;
-          finished.push("DONE");
+          finished.push(e.data);
           if (finished.length === nWorkers) {
             if ((_ref1 = results[nWorkers]) == null) {
               results[nWorkers] = [];
@@ -158,7 +156,7 @@
     return WorkerBench;
   })();
 
-  WorkerBench.init({pathToWorkerScript: 'libraries/workerbench'});
+  WorkerBench.init();
 
   WorkerBench.start();
 

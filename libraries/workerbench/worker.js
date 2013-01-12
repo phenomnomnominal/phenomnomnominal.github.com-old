@@ -8,7 +8,7 @@
     while (Date.now() < endTime) {
       (function() {})();
     }
-    return self.postMessage();
+    return self.postMessage("DONE");
   };
 
   self.addEventListener('message', benchmark);
