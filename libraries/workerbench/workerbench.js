@@ -40,7 +40,7 @@
         defaultOptions = {
           maxWorkersToTestFor: 8,
           numberOfTimesToBenchmark: 5,
-          pathToWorkerScript: 'javascript/workerbench'
+          pathToWorkerScript: 'libraries/workerbench'
         };
         constant = function(key, value) {
           return Object.defineProperty(this, key, {
