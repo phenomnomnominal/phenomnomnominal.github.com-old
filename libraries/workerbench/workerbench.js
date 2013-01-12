@@ -23,6 +23,7 @@
     if (!((typeof Worker !== "undefined" && Worker !== null) && (typeof Worker === 'function' || typeof Worker === 'object'))) {
       WorkerBench.init = WorkerBench.run = WorkerBench.results = function() {
         console.log('WebWorkers are not available.');
+        alert('WebWorkers are not available.');
         return false;
       };
     } else {
