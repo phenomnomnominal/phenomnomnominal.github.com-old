@@ -196,7 +196,7 @@
                 return max;
               }
             }), noiseThreshold);
-            noiseThrehold = noiseThreshold > 0.001 ? 0.001 : noiseThreshold;
+            noiseThreshold = noiseThreshold > 0.001 ? 0.001 : noiseThreshold;
             noiseCount++;
           }
           spectrumPoints = (function() {
