@@ -1,394 +1,298 @@
-/** * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) * http://cssreset.com */html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video {	margin: 0;	padding: 0;	border: 0;	font-size: 100%;	font: inherit;	vertical-align: baseline;}/* HTML5 display-role reset for older browsers */article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {	display: block;}body {	line-height: 1;}ol, ul {	list-style: none;}blockquote, q {	quotes: none;}blockquote:before, blockquote:after,q:before, q:after {	content: '';	content: none;}table {	border-collapse: collapse;	border-spacing: 0;}
-
-/*------------------------------- Fonts --------------------------------------*/
 @font-face {
-    font-family: 'Lekton';
-    src: url('fonts/lekton-bold-webfont.eot');
-    src: url('fonts/lekton-bold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/lekton-bold-webfont.woff') format('woff'),
-         url('fonts/lekton-bold-webfont.ttf') format('truetype'),
-         url('fonts/lekton-bold-webfont.svg#LektonBold') format('svg');
-    font-weight: bold;
-    font-style: normal;
-}
+  font-family: 'College';
+  src: url("fonts/college.eot");
+  src: url("fonts/college.eot?#iefix") format("embedded-opentype"), url("fonts/college.woff") format("woff"), url("fonts/college.ttf") format("truetype"), url("fonts/college.svg#webfont") format("svg"); }
 
 @font-face {
-    font-family: 'Lekton';
-    src: url('fonts/lekton-italic-webfont.eot');
-    src: url('fonts/lekton-italic-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/lekton-italic-webfont.woff') format('woff'),
-         url('fonts/lekton-italic-webfont.ttf') format('truetype'),
-         url('fonts/lekton-italic-webfont.svg#LektonItalic') format('svg');
-    font-weight: normal;
-    font-style: italic;
-}
+  font-family: 'marvelbold';
+  src: url("fonts/marvel-bold-webfont.eot");
+  src: url("fonts/marvel-bold-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/marvel-bold-webfont.woff") format("woff"), url("fonts/marvel-bold-webfont.ttf") format("truetype"), url("fonts/marvel-bold-webfont.svg#marvelbold") format("svg");
+  font-weight: normal;
+  font-style: normal; }
 
 @font-face {
-    font-family: 'Lekton';
-    src: url('fonts/lekton-regular-webfont.eot');
-    src: url('fonts/lekton-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/lekton-regular-webfont.woff') format('woff'),
-         url('fonts/lekton-regular-webfont.ttf') format('truetype'),
-         url('fonts/lekton-regular-webfont.svg#LektonRegular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+  font-family: 'marvelregular';
+  src: url("fonts/marvel-regular-webfont.eot");
+  src: url("fonts/marvel-regular-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/marvel-regular-webfont.woff") format("woff"), url("fonts/marvel-regular-webfont.ttf") format("truetype"), url("fonts/marvel-regular-webfont.svg#marvelregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
 
 @font-face {
-    font-family: 'Ostrich';
-    src: url('fonts/ostrich-rounded-webfont.eot');
-    src: url('fonts/ostrich-rounded-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/ostrich-rounded-webfont.woff') format('woff'),
-         url('fonts/ostrich-rounded-webfont.ttf') format('truetype'),
-         url('fonts/ostrich-rounded-webfont.svg#OstrichSansRoundedMedium') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+  font-family: 'lektonbold';
+  src: url("fonts/lekton-bold-webfont.eot");
+  src: url("fonts/lekton-bold-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/lekton-bold-webfont.woff") format("woff"), url("fonts/lekton-bold-webfont.ttf") format("truetype"), url("fonts/lekton-bold-webfont.svg#lektonbold") format("svg");
+  font-weight: normal;
+  font-style: normal; }
 
 @font-face {
-    font-family: 'Glasgow';
-    src: url('fonts/glasgow-regular-webfont.eot');
-    src: url('fonts/glasgow-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/glasgow-regular-webfont.woff') format('woff'),
-         url('fonts/glasgow-regular-webfont.ttf') format('truetype'),
-         url('fonts/glasgow-regular-webfont.svg#Glasgow-RegularRegular') format('svg');
-    font-weight: bold;
-    font-style: normal;
-}
+  font-family: 'lektonitalic';
+  src: url("fonts/lekton-italic-webfont.eot");
+  src: url("fonts/lekton-italic-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/lekton-italic-webfont.woff") format("woff"), url("fonts/lekton-italic-webfont.ttf") format("truetype"), url("fonts/lekton-italic-webfont.svg#lektonitalic") format("svg");
+  font-weight: normal;
+  font-style: normal; }
 
 @font-face {
-    font-family: 'Glasgow';
-    src: url('fonts/glasgow-light-webfont.eot');
-    src: url('fonts/glasgow-light-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/glasgow-light-webfont.woff') format('woff'),
-         url('fonts/glasgow-light-webfont.ttf') format('truetype'),
-         url('fonts/glasgow-light-webfont.svg#Glasgow-LightRegular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+  font-family: 'lektonregular';
+  src: url("fonts/lekton-regular-webfont.eot");
+  src: url("fonts/lekton-regular-webfont.eot?#iefix") format("embedded-opentype"), url("fonts/lekton-regular-webfont.woff") format("woff"), url("fonts/lekton-regular-webfont.ttf") format("truetype"), url("fonts/lekton-regular-webfont.svg#lektonregular") format("svg");
+  font-weight: normal;
+  font-style: normal; }
 
-@font-face {
-    font-family: 'Glasgow';
-    src: url('fonts/glasgow-lightita-webfont.eot');
-    src: url('fonts/glasgow-lightita-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/glasgow-lightita-webfont.woff') format('woff'),
-         url('fonts/glasgow-lightita-webfont.ttf') format('truetype'),
-         url('fonts/glasgow-lightita-webfont.svg#Glasgow-LightItaRegular') format('svg');
-    font-weight: normal;
-    font-style: italic;
-}
+html {
+  -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
+  -moz-transform: matrix(1, 0, 0, 1, 0, 0);
+  -ms-transform: matrix(1, 0, 0, 1, 0, 0);
+  -o-transform: matrix(1, 0, 0, 1, 0, 0);
+  transform: matrix(1, 0, 0, 1, 0, 0); }
 
-@font-face {
-    font-family: 'Digital';
-    src: url('fonts/DIGITALDREAM-webfont.eot');
-    src: url('fonts/DIGITALDREAM-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/DIGITALDREAM-webfont.woff') format('woff'),
-         url('fonts/DIGITALDREAM-webfont.ttf') format('truetype'),
-         url('fonts/DIGITALDREAM-webfont.svg#DigitaldreamRegular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+/** * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) * http://cssreset.com */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
 
-.animate {
-  -webkit-transition: all 0.5s;
-     -moz-transition: all 0.5s;
-       -o-transition: all 0.5s;
-          transition: all 0.5s;
-}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block; }
 
-.offLeft {
-  display: none;
-  -webkit-transform: translate(-2000px, 0px);
-     -moz-transform: translate(-2000px, 0px);
-      -ms-transform: translate(-2000px, 0px);
-       -o-transform: translate(-2000px, 0px);
-          transform: translate(-2000px, 0px);
-}
+body {
+  line-height: 1; }
 
-.offRight {
-  display: none;
-  -webkit-transform: translate(4000px, 0px);
-     -moz-transform: translate(4000px, 0px);
-      -ms-transform: translate(4000px, 0px);
-       -o-transform: translate(4000px, 0px);
-          transform: translate(4000px, 0px);
-}
+ol, ul {
+  list-style: none; }
 
-.red { background-color: rgba(255, 187, 201, 0.8); }
-.green { background-color: rgba(187, 255, 201, 0.8); }
-.blue { background-color: rgba(187, 201, 255, 0.8); }
+blockquote, q {
+  quotes: none; }
 
+blockquote:before, blockquote:after, q:before, q:after {
+  content: '';
+  content: none; }
 
-.background {
-  background-image: url('images/home.jpg');
-  background-size: 100% 100%;
-  height: 100%;
-  min-height: 900px;
-  min-width: 1400px;
-  position: fixed;
-  width: 100%;
-}
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
 
-.wrapper {
-  height:100%;
-  min-width: 920px;
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box; }
+
+.cursor {
+  cursor: pointer; }
+
+body {
+  font-size: 24px;
   position: absolute;
+  top: 0px;
   width: 100%;
-}
+  height: 100%;
+  overflow-x: hidden; }
 
 a {
-  color: #FFF;
+  display: block;
   text-decoration: none;
-}
+  color: black; }
+
+main {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: url(images/subtle.png);
+  background-repeat: repeat repeat; }
+
+#wrapper {
+  position: absolute;
+  top: 0px; }
+
+.horizontal-spacing {
+  height: 4%;
+  clear: both; }
+
+.float-left {
+  clear: none;
+  float: left; }
+
+.float-right {
+  clear: none;
+  float: right; }
 
 header {
-  color: #CBF;
-  font-family: Lekton;
-  height: 130px;
-  margin: 50px 0px 0px 150px;
-  text-align: justify;
-  width: 558px;
-}
+  width: 92%;
+  height: 8%;
+  margin: 4%; }
 
-  header h1 {
-    color: #FFF;
-    font-size: 110px;
-    font-family: Ostrich;
-    font-weight: lighter;
-    line-height: 110px;
-    padding: 0px;
-  }
-  
-  header span {
-    font-style: italic;
-  }
-  
-  header hr {
-    margin: 1px 0px 1px 0px;
-  }
-  
-.nav-anchor {
-  position: absolute;
-  margin-top: -25px;
-}
+section.current {
+  display: block; }
 
-nav {
-  background: #F77;
+section {
   display: none;
-  font-size: 30px;
-  font-family: OSTRICH;
-  height: 30px;
-  letter-spacing: 2px;
-  line-height: 30px;
-  margin-top: -25px;
-  position: absolute;
   width: 100%;
-  z-index: 10;
-}
-
-.stick {
-  position: fixed;
-  top: 25px
-}
-  
-  nav * {
-    float: left;
-    text-align: center;
-  }
-  
-  nav .back {
-    background: #7F7;
-    color: #FFF;
-    cursor: pointer;
-    padding: 0px;
-    width: 150px;
-  }
-  
-  nav .back:hover {
-    background: #77F;
-  }
-  
-  nav h2 {
-    color: #FF7;
-    min-width: 415px;
-  }
-  
-  nav div {
-    background: #77F;
-    width: 240px;
-  }
-  
-  nav div:hover {
-    background: #7F7;
-  }
-  
-  nav div span {
-    color: #EEE;
-    cursor: pointer;
+  height: 32%;
+  margin-bottom: 4%; }
+  section h2 {
+    height: 12.5%;
+    margin-bottom: 4%; }
+  section .horizontal-spacing {
+    height: 12.5%;
+    width: 100%; }
+  section .vertical-spacing {
+    width: 4%;
+    height: 100%; }
+  section .full-content {
     width: 100%;
-  }
-  
-  nav ul {
-    display: none;
-    float: right;
-    width: 100%
-  }
+    height: 100%; }
+  section .left-content {
+    width: 40%;
+    height: 100%;
+    margin: 0% 4% 0% 4%; }
+  section .right-content {
+    width: 48%;
+    height: 100%;
+    margin-right: 4%; }
 
-  nav li {
-    background: #77F;
-    padding: 0px 20px;
-    width: 200px;
-  }
-  
-  nav li:hover {
-    background: #F77;
-  }
-
-.project-list {
-  min-height: 800px;
-  margin: 0px 0px 0px 150px;
-}
-
-  .project {
-    color: #EEE;
-    cursor: pointer;
-    float: left;
-    font-family: Ostrich;
-    font-size: 200%;
-    font-weight: lighter;
-    height: 180px;
+#home nav {
+  height: 62.5%; }
+  #home nav a {
+    height: 20%; }
+    #home nav a#nav-projects {
+      width: 80%; }
+    #home nav a#nav-social {
+      width: 60%; }
+    #home nav a#nav-blog {
+      width: 40%; }
+    #home nav a#nav-cv {
+      width: 20%; }
+#home .social {
+  height: 12.5%; }
+  #home .social span, #home .social a {
+    height: 85%;
+    float: left; }
+  #home .social a.icon {
+    width: 10%; }
+    #home .social a.icon img {
+      width: 85%; }
+    #home .social a.icon:hover {
+      cursor: pointer; }
+  #home .social span {
+    font-family: 'College';
+    font-size: 50%;
+    white-space: nowrap;
     overflow: hidden;
-    position: relative;   
-    width: 279px;
-  }
+    width: 85.2%;
+    padding: 2% 0 0 4%; }
+    #home .social span em {
+      color: #fff;
+      padding-right: 20px; }
 
-    .project .mask {
-      height: 180px;
-      left: 0;
-      padding: 0px 20px 20px 20px;
-      position: absolute;
-      opacity: 0px;
-      overflow: hidden;
-      top: 0;
-      -webkit-transform: translate(225px, 140px) rotate(45deg);
-         -moz-transform: translate(225px, 140px) rotate(45deg);
-          -ms-transform: translate(225px, 140px) rotate(45deg);
-           -o-transform: translate(225px, 140px) rotate(45deg);
-              transform: translate(225px, 140px) rotate(45deg);
-      -webkit-transition: all 0.2s ease-in-out;
-         -moz-transition: all 0.2s ease-in-out;
-           -o-transition: all 0.2s ease-in-out;
-              transition: all 0.2s ease-in-out;
-      width: 280px;
-    }
+#projects .links, #social .links {
+  margin: 0 8% 0 12%;
+  height: 75%; }
+  #projects .links a, #social .links a {
+    display: block;
+    width: 15%;
+    margin-right: 5%;
+    float: left; }
+    #projects .links a img, #social .links a img {
+      width: 95%;
+      height: 95%; }
 
-    .project img {
-      display: block;
-      opacity: 0.7;
-      position: relative;
-      -webkit-transition: all 0.2s ease-in;
-         -moz-transition: all 0.2s ease-in;
-           -o-transition: all 0.2s ease-in;
-              transition: all 0.2s ease-in;
-    }
+#project {
+  height: 48%;
+  margin-top: -12%;
+  margin-bottom: 0; }
+  #project .full-content {
+    width: 92%;
+    margin-top: -4%;
+    margin-right: 4%;
+    margin-left: 4%; }
+    #project .full-content h2 {
+      height: 8.333%;
+      margin-bottom: 0; }
+    #project .full-content div {
+      width: 100%;
+      height: 91.666%;
+      padding: 25px; }
 
-    .project h2 {
-      background: transparent;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-      color: #FF7;
-      margin: 20px 20px 0 20px;
-      padding: 10px;
-      position: relative;
-      text-align: center;
-      text-transform: uppercase;
-      -webkit-transform: translate(200px, -200px);
-         -moz-transform: translate(200px, -200px);
-          -ms-transform: translate(200px, -200px);
-           -o-transform: translate(200px, -200px);
-              transform: translate(200px, -200px);
-      -webkit-transition: all 0.2s ease-in-out;
-         -moz-transition: all 0.2s ease-in-out;
-           -o-transition: all 0.2s ease-in-out;
-              transition: all 0.2s ease-in-out;
-    }
-
-    .project p {
-      font-family: Lekton;
-      font-size: 12px;
-      font-style: italic;
-      position: relative;
-      padding: 10px 10px 20px;
-      text-align: center;
-      -webkit-transform: translate(200px, -200px);
-         -moz-transform: translate(200px, -200px);
-          -ms-transform: translate(200px, -200px);
-           -o-transform: translate(200px, -200px);
-              transform: translate(200px, -200px);
-      -webkit-transition: all 0.2s ease-in-out;
-         -moz-transition: all 0.2s ease-in-out;
-           -o-transition: all 0.2s ease-in-out;
-              transition: all 0.2s ease-in-out;
-    }
-
-    .project:hover .mask {
-      -webkit-transform: translate(-20px, -20px) rotate(0deg);
-         -moz-transform: translate(-20px, -20px) rotate(0deg);
-          -ms-transform: translate(-20px, -20px) rotate(0deg);
-           -o-transform: translate(-20px, -20px) rotate(0deg);
-              transform: translate(-20px, -20px) rotate(0deg);
-    }
-
-    .project:hover h2, .project:hover p {
-      -webkit-transform: translate(0px, 0px);
-         -moz-transform: translate(0px, 0px);
-          -ms-transform: translate(0px, 0px);
-           -o-transform: translate(0px, 0px);
-              transform: translate(0px, 0px);
-    }
-
-.project-displays {
-  min-width: 920px;
-  min-height: 800px;
-}
-
-.tuner {
+#blog h2, #cv h2 {
+  margin-bottom: 0%; }
+#blog a, #cv a {
+  display: inline; }
+#blog #content-blog, #blog #content-cv, #cv #content-blog, #cv #content-cv {
+  width: 52%;
+  height: 87.5%;
+  margin: 2% 2% 2% 14%;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow-y: scroll;
+  float: left; }
+  #blog #content-blog h1, #blog #content-cv h1, #cv #content-blog h1, #cv #content-cv h1 {
+    font-family: 'College';
+    font-size: 75%;
+    letter-spacing: 3px;
+    margin-bottom: 15px; }
+  #blog #content-blog h3, #blog #content-cv h3, #cv #content-blog h3, #cv #content-cv h3 {
+    font-family: 'College';
+    font-size: 35%;
+    letter-spacing: 1px;
+    margin-bottom: 5px; }
+  #blog #content-blog blockquote, #blog #content-cv blockquote, #cv #content-blog blockquote, #cv #content-cv blockquote {
+    margin-bottom: 25px; }
+  #blog #content-blog li, #blog #content-cv li, #cv #content-blog li, #cv #content-cv li {
+    font-family: 'College';
+    font-size: 40%; }
+  #blog #content-blog hr, #blog #content-cv hr, #cv #content-blog hr, #cv #content-cv hr {
+    border: 2px solid #DDDDFF;
+    margin: 20px 0px; }
+  #blog #content-blog p, #blog #content-cv p, #cv #content-blog p, #cv #content-cv p {
+    font-family: 'marvelregular';
+    font-size: 35%;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    letter-spacing: 1.2px;
+    text-align: justify; }
+  #blog #content-blog a, #blog #content-cv a, #cv #content-blog a, #cv #content-cv a {
+    text-decoration: underline; }
+  #blog #content-blog strong, #blog #content-cv strong, #cv #content-blog strong, #cv #content-cv strong {
+    font-family: 'marvelbold';
+    letter-spacing: 2px; }
+    #blog #content-blog strong code, #blog #content-cv strong code, #cv #content-blog strong code, #cv #content-cv strong code {
+      font-family: 'lektonbold'; }
+  #blog #content-blog code, #blog #content-cv code, #cv #content-blog code, #cv #content-cv code {
+    font-family: 'lektonregular';
+    color: #3333ff; }
+#blog #listening-blog, #cv #listening-blog {
+  width: 24%;
   height: 100%;
-  width: 100%; 
-}
-
-.tuner canvas {
-  margin-top: -180px;
-  height: 100%;
+  float: right;
+  margin-right: 4%; }
+#blog #cover-blog, #cv #cover-blog {
   width: 100%;
-}
-
-.tuner div {
-  color: #EEE;
-  font-family: Lekton;
-  font-size: 100px;
-  height: 100px;
-  line-height: 100px;
-  position: absolute;
-  text-align: center;
-  top: 200px;
+  height: 75%; }
+  #blog #cover-blog img, #cv #cover-blog img {
+    width: 97.5%;
+    height: 97.5%; }
+#blog #info-blog, #cv #info-blog {
   width: 100%;
-}
+  height: 12.5%;
+  font-family: 'College';
+  font-size: 50%;
+  padding: 3%; }
 
-.tuner .inTune {
-  color: #7F7;
-}
-
-.tuner .outTune {
-  color: #F77;
-}
-
-.tetris {
-  margin-left: 150px;
-}
-
-.clouds canvas {
-  height: 100%;
-  position: fixed;
-  margin-top: -180px;
-  width: 100%;
-}
+footer {
+  height: 4%;
+  width: 100%; }
+  footer .option {
+    margin-right: 4%;
+    width: 4%;
+    height: 100%; }
+    footer .option img {
+      width: 85%; }
+  footer #back {
+    margin-left: 4%; }

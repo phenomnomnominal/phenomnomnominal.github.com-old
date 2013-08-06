@@ -1,4 +1,0 @@
-Craig Spence
-============
-
-Projects & Things
