@@ -1,10 +1,10 @@
 {
-  "home": ["common.HEADER", "common.FULLSCREEN", "common.WIREFRAME",
+  "home": ["common.HEADER", "common.LIGHTCOLOUR", "common.BLOCKCOLOUR", "common.FULLSCREEN", "common.WIREFRAME",
            "home.PROJECTS", "home.SOCIAL", "home.BLOG", "home.CV", 
            "home.TWITTER", "home.GITHUB", "home.CONTENT"],
-  "projects": ["common.HEADER", "common.BACK", "common.FULLSCREEN", "common.WIREFRAME", "projects"],
-  "projects/project": ["common.BACK", "common.FULLSCREEN", "common.WIREFRAME", "project"],
-  "social": ["common.HEADER", "common.BACK", "common.FULLSCREEN", "common.WIREFRAME", "social"],
-  "blog": ["common.HEADER", "common.BACK", "common.FULLSCREEN", "common.WIREFRAME", "blog"],
-  "cv": ["common.HEADER", "common.BACK", "common.FULLSCREEN", "common.WIREFRAME", "cv"]
+  "projects": ["common.HEADER", "common.BACK", "common.LIGHTCOLOUR", "common.BLOCKCOLOUR", "common.FULLSCREEN", "common.WIREFRAME", "projects"],
+  "projects/project": ["common.BACK", "common.LIGHTCOLOUR", "common.BLOCKCOLOUR", "common.FULLSCREEN", "common.WIREFRAME", "project"],
+  "social": ["common.HEADER", "common.BACK", "common.LIGHTCOLOUR", "common.BLOCKCOLOUR", "common.FULLSCREEN", "common.WIREFRAME", "social"],
+  "blog": ["common.HEADER", "common.BACK", "common.LIGHTCOLOUR", "common.BLOCKCOLOUR", "common.FULLSCREEN", "common.WIREFRAME", "blog"],
+  "cv": ["common.HEADER", "common.BACK", "common.LIGHTCOLOUR", "common.BLOCKCOLOUR", "common.FULLSCREEN", "common.WIREFRAME", "cv"]
 }

@@ -347,6 +347,13 @@
         return this;
       };
 
+      BlockGroup.prototype.one = function(eventType, handler) {
+        var objects;
+        objects = this.get('object');
+        Events.one(eventType, objects, handler);
+        return this;
+      };
+
       BlockGroup.prototype.animate = function(options, callback) {
         var objects;
         objects = this.get('object');
@@ -400,7 +407,7 @@
         this.y = y;
         this.width = width != null ? width : 1;
         this.height = height != null ? height : 1;
-        this.colour = colour != null ? colour : Colours.blue;
+        this.colour = colour != null ? colour : Colours.main;
         this.content = content != null ? content : null;
         this.material = Materials.phong(this.colour);
         this.object = new THREE.Mesh(GEOMETRY, this.material);
@@ -495,7 +502,7 @@
           return 2 + i * 2;
         });
         return _.map(BLOCK_X, function(x, i) {
-          return new Block(x, 2, 2, 2, Colours.blue, name[i]);
+          return new Block(x, 2, 2, 2, Colours.main, name[i]);
         });
       })();
       return new BlockGroup(titleBlocks, null, 'RIGHT');
@@ -524,9 +531,29 @@
   })();
 
   (typeof exports !== "undefined" && exports !== null ? exports : this).Colours = (function() {
+    var blockColours, changeBlockColour, changeLightColour, lightColours;
+    blockColours = [0xFF00FF, 0x00FFFF, 0xFFFF00, 0xFFFFFF, 0x800080, 0x008080, 0x808000, 0xC0C0C0, 0x0000FF, 0x00FF00, 0xFF0000, 0x808080, 0x000080, 0x008000, 0x800000, 0x000000];
+    lightColours = [0xFF00FF, 0x00FFFF, 0xFFFF00, 0xFFFFFF, 0x800080, 0x008080, 0x808000, 0xC0C0C0, 0x0000FF, 0x00FF00, 0xFF0000, 0x808080, 0x000080, 0x008000, 0x800000, 0x000000];
+    changeBlockColour = function() {
+      var oldColour;
+      oldColour = Colours.main;
+      Colours.main = blockColours[0];
+      Rendering.changeBlockColour(oldColour, Colours.main);
+      return blockColours.push(blockColours.shift());
+    };
+    changeLightColour = function() {
+      Colours.light = {
+        day: lightColours[0],
+        night: lightColours[0]
+      };
+      Rendering.changeLightColour(Colours.light);
+      return lightColours.push(lightColours.shift());
+    };
     return {
+      changeBlockColour: changeBlockColour,
+      changeLightColour: changeLightColour,
       "default": 0xDDDDFF,
-      blue: 0x444499,
+      main: 0x444499,
       white: 0xFFFFFF,
       background: {
         day: 0x000000,
@@ -597,7 +624,7 @@
   })();
 
   (typeof exports !== "undefined" && exports !== null ? exports : this).Events = (function() {
-    var addEventListener, get, init, removeEventListener, update, _activeEvents, _camera, _click, _eventMappings, _getWidthAndHeight, _height, _intersected, _mousePixelsX, _mousePixelsY, _mouseX, _mouseY, _mousedown, _mouseup, _objects, _previousIntersected, _previousMouseX, _previousMouseY, _previousObjects, _projector, _runEvents, _scene, _width;
+    var addEventListener, get, init, one, removeEventListener, update, _activeEvents, _camera, _click, _eventMappings, _getWidthAndHeight, _height, _intersected, _mousePixelsX, _mousePixelsY, _mouseX, _mouseY, _mousedown, _mouseup, _objects, _previousIntersected, _previousMouseX, _previousMouseY, _previousObjects, _projector, _runEvents, _scene, _width;
     _projector = new THREE.Projector();
     _scene = null;
     _camera = null;
@@ -758,6 +785,14 @@
       }
       return objects;
     };
+    one = function(event, objects, handler) {
+      var wrappedHandler;
+      wrappedHandler = function() {
+        handler.apply(this, arguments);
+        return removeEventListener(event, objects, wrappedHandler);
+      };
+      return addEventListener(event, objects, wrappedHandler);
+    };
     return {
       init: init,
       get: get,
@@ -765,7 +800,8 @@
       addEventListener: addEventListener,
       on: addEventListener,
       removeEventListener: removeEventListener,
-      off: removeEventListener
+      off: removeEventListener,
+      one: one
     };
   })();
 
@@ -868,7 +904,7 @@
   })();
 
   (typeof exports !== "undefined" && exports !== null ? exports : this).Rendering = (function() {
-    var ASPECT_RATIO, FAR_Z, FIELD_OF_VIEW, NEAR_Z, SIX_AM, SIX_PM, init, initProject, killProject, setLightTarget, setRendererSize, toggleDebug, update, _camera, _initCamera, _initLights, _initShadow, _lights, _makeLight, _nighttime, _project, _renderer, _scene;
+    var ASPECT_RATIO, FAR_Z, FIELD_OF_VIEW, NEAR_Z, SIX_AM, SIX_PM, changeBlockColour, changeLightColour, init, initProject, killProject, setLightTarget, setRendererSize, toggleDebug, update, _camera, _initCamera, _initLights, _initShadow, _lights, _makeLight, _nighttime, _project, _renderer, _scene;
     FIELD_OF_VIEW = 70;
     ASPECT_RATIO = 16 / 9;
     NEAR_Z = 0.01;
@@ -938,7 +974,7 @@
     };
     toggleDebug = function() {
       return _.each(_scene.children, function(child) {
-        if (child instanceof THREE.DirectionalLight) {
+        if (child instanceof THREE.DirectionalLight || child instanceof THREE.SpotLight) {
           child.shadowCameraVisible = Main.debug;
         } else if (child.material != null) {
           child.material.wireframe = Main.debug;
@@ -948,6 +984,32 @@
             return letter.material.wireframe = Main.debug;
           }
         });
+      });
+    };
+    changeBlockColour = function(oldColour, newColour) {
+      oldColour = new THREE.Color(oldColour);
+      newColour = new THREE.Color(newColour);
+      return _.each(_scene.children, function(child) {
+        var childColour;
+        if (child instanceof THREE.Mesh) {
+          childColour = child.material.color;
+          if (childColour.r === oldColour.r && childColour.g === oldColour.g && childColour.b === oldColour.b) {
+            return child.material.color = newColour;
+          }
+        }
+      });
+    };
+    changeLightColour = function(newColour) {
+      _nighttime = new Date().getHours() < SIX_AM || new Date().getHours() > SIX_PM;
+      if (_nighttime) {
+        newColour = new THREE.Color(newColour.night);
+      } else {
+        newColour = new THREE.Color(newColour.day);
+      }
+      return _.each(_scene.children, function(child) {
+        if (child instanceof THREE.DirectionalLight || child instanceof THREE.SpotLight) {
+          return child.color = newColour;
+        }
       });
     };
     update = function() {
@@ -971,6 +1033,8 @@
       setLightTarget: setLightTarget,
       setRendererSize: setRendererSize,
       toggleDebug: toggleDebug,
+      changeBlockColour: changeBlockColour,
+      changeLightColour: changeLightColour,
       update: update
     };
   })();
@@ -1297,7 +1361,7 @@
               for (_i = 0, _len = _blocks.length; _i < _len; _i++) {
                 block = _blocks[_i];
                 if (_ref = block.x + (block.y * 50), __indexOf.call(_world, _ref) >= 0) {
-                  _results.push(block.object.material.color.setHex(0x4444ff));
+                  _results.push(block.object.material.color.setHex(0x444499));
                 } else {
                   _results.push(void 0);
                 }
@@ -1385,7 +1449,7 @@
           var _ref;
           if (_ref = block.x + (block.y * 50), __indexOf.call(_snake, _ref) >= 0) {
             if (_snake.indexOf(block.x + (block.y * 50)) === _snake.length - 1) {
-              return block.object.material.color.setHex(0x4444ff);
+              return block.object.material.color.setHex(0x444499);
             } else {
               return block.object.material.color.setHex(0x222222);
             }
@@ -1625,6 +1689,12 @@
         projectId = $(e.target).closest('a').attr('id');
         projectName = projectId.substr(0, projectId.indexOf('-project'));
         return Routing.go("projects/" + projectName);
+      },
+      changeBlockColour: function() {
+        return Colours.changeBlockColour();
+      },
+      changeLightColour: function() {
+        return Colours.changeLightColour();
       },
       toggleFullscreen: function() {
         if (document.isFullScreen()) {

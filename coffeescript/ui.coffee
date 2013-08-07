@@ -24,6 +24,10 @@
       projectName = projectId.substr 0, projectId.indexOf '-project'
       Routing.go "projects/#{projectName}"
 
+    changeBlockColour: ->
+      Colours.changeBlockColour()
+    changeLightColour: ->
+      Colours.changeLightColour() 
     toggleFullscreen: ->
       if document.isFullScreen() then document.exitFullscreen() else document.documentElement.requestFullscreen()
     toggleWireframe: ->

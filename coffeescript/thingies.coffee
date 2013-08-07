@@ -71,7 +71,7 @@ Thingie = do ->
           setTimeout (-> navigator.geolocation.getCurrentPosition _getMapPosition), 1000
           for block in _blocks
             if (block.x + (block.y * 50)) in _world
-              block.object.material.color.setHex 0x4444ff
+              block.object.material.color.setHex 0x444499
 
         update: ->
 
@@ -117,7 +117,7 @@ Thingie = do ->
       _drawSnake = (block) ->
         if (block.x + (block.y * 50)) in _snake
           if _snake.indexOf((block.x + (block.y * 50))) is _snake.length - 1
-            block.object.material.color.setHex 0x4444ff
+            block.object.material.color.setHex 0x444499
           else
             block.object.material.color.setHex 0x222222
 

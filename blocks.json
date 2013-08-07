@@ -47,6 +47,30 @@
               "mouseover": "addPointer",
               "mouseout": "removePointer"
             }
+        },
+        "BLOCKCOLOUR": {
+            "blocks": [
+                { "x": 38, "y": 26, "height": 2, "width": 2 }
+            ],
+            "offDirection": "RIGHT",
+            "selector": "#blockcolour",
+            "events": {
+              "click": "changeBlockColour",
+              "mouseover": "addPointer",
+              "mouseout": "removePointer"
+            }
+        },
+        "LIGHTCOLOUR": {
+            "blocks": [
+                { "x": 34, "y": 26, "height": 2, "width": 2 }
+            ],
+            "offDirection": "RIGHT",
+            "selector": "#lightcolour",
+            "events": {
+              "click": "changeLightColour",
+              "mouseover": "addPointer",
+              "mouseout": "removePointer"
+            }
         }
     },
     "home": {
@@ -55,7 +79,7 @@
                 { "x": 2, "content": "P" }, { "x": 4, "content": "R" }, { "x": 6, "content": "O" }, { "x": 8, "content": "J" }, { "x": 10, "content": "E" }, { "x": 12, "content": "C" }, { "x": 14, "content": "T" }, { "x": 16, "content": "S" }
             ],
             "y": 8,
-            "colour": "blue",
+            "colour": "main",
             "height": 2,
             "width": 2,
             "offDirection": "LEFT",
@@ -68,7 +92,7 @@
                 { "x": 2, "content": "S" }, { "x": 4, "content": "O" }, { "x": 6, "content": "C" }, { "x": 8, "content": "I" }, { "x": 10, "content": "A" }, { "x": 12, "content": "L" }
             ],
             "y": 10,
-            "colour": "blue",
+            "colour": "main",
             "height": 2,
             "width": 2,
             "offDirection": "LEFT",
@@ -81,7 +105,7 @@
                 { "x": 2, "content": "B" }, { "x": 4, "content": "L" }, { "x": 6, "content": "O" }, { "x": 8, "content": "G" }
             ],
             "y": 12,
-            "colour": "blue",
+            "colour": "main",
             "height": 2,
             "width": 2,
             "offDirection": "LEFT",
@@ -94,7 +118,7 @@
                 { "x": 2, "content": "C" }, { "x": 4, "content": "V" }
             ],
             "y": 14,
-            "colour": "blue",
+            "colour": "main",
             "height": 2,
             "width": 2,
             "offDirection": "LEFT",
@@ -111,7 +135,7 @@
         },
         "TWITTER": {
             "blocks": [
-                { "x": 2, "width": 2, "colour": "blue" },
+                { "x": 2, "width": 2, "colour": "main" },
                 { "x": 4, "width": 18 }
             ],
             "y": 18,
@@ -122,7 +146,7 @@
         },
         "GITHUB": {
             "blocks": [
-                { "x": 2, "width": 2, "colour": "blue" },
+                { "x": 2, "width": 2, "colour": "main" },
                 { "x": 4, "width": 18 }
             ],
             "y": 20,

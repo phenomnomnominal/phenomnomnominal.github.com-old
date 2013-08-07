@@ -32,11 +32,16 @@
       objects = @get 'object'
       Events.off eventType, objects, handler
       this
+      
+    one: (eventType, handler) ->
+      objects = @get 'object'
+      Events.one eventType, objects, handler
+      this
 
     animate: (options, callback) ->
       objects = @get 'object'
       Animate objects, options, callback
-      Animate @elements, options if @elements
+      Animate @elements, options if @elements 
       this
 
     move: (direction, amount, css = {}) ->
@@ -63,7 +68,7 @@
       this
 
   class Block
-    constructor: (@x, @y, @width = 1, @height = 1, @colour = Colours.blue, @content = null) ->
+    constructor: (@x, @y, @width = 1, @height = 1, @colour = Colours.main, @content = null) ->
       @material = Materials.phong @colour
       @object = new THREE.Mesh(GEOMETRY, @material)
       @object.position.x = @x * OFFSET + (@width * HALF_SIZE) + (@width - 1) * HALF_GAP
@@ -117,7 +122,7 @@
   makeProjectTitle = (name) ->
     titleBlocks = do ->
       BLOCK_X = _.map name, (content, i) -> 2 + i * 2
-      _.map BLOCK_X , (x, i) -> new Block(x, 2, 2, 2, Colours.blue, name[i])
+      _.map BLOCK_X , (x, i) -> new Block(x, 2, 2, 2, Colours.main, name[i])
     new BlockGroup(titleBlocks, null, 'RIGHT')
 
   init: init

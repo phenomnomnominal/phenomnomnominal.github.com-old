@@ -31,7 +31,7 @@
   _makeLight = (colour, position) ->
     light = if _nighttime then new THREE.SpotLight(colour, 2.5) else new THREE.DirectionalLight(colour)
     light.position = position
-    light.target.position = new THREE.Vector3(960, 540, 10) 
+    light.target.position = new THREE.Vector3(960, 540, 10)
     light.castShadow = yes
     light.shadowCameraVisible = Main.debug
     _lights.push light
@@ -66,13 +66,32 @@
 
   toggleDebug = ->
     _.each _scene.children, (child) ->
-      if child instanceof THREE.DirectionalLight
+      if child instanceof THREE.DirectionalLight or child instanceof THREE.SpotLight
         child.shadowCameraVisible = Main.debug
       else if child.material?
         child.material.wireframe = Main.debug
       _.each child.children, (letter) ->
         if letter.material?
           letter.material.wireframe = Main.debug
+  
+  changeBlockColour = (oldColour, newColour) ->
+    oldColour = new THREE.Color(oldColour)
+    newColour = new THREE.Color(newColour)
+    _.each _scene.children, (child) ->
+      if child instanceof THREE.Mesh
+        childColour = child.material.color
+        if childColour.r is oldColour.r and childColour.g is oldColour.g and childColour.b is oldColour.b
+          child.material.color = newColour
+          
+  changeLightColour = (newColour) ->
+    _nighttime = new Date().getHours() < SIX_AM or new Date().getHours() > SIX_PM
+    if _nighttime
+      newColour = new THREE.Color(newColour.night)
+    else
+      newColour = new THREE.Color(newColour.day)
+    _.each _scene.children, (child) ->
+      if child instanceof THREE.DirectionalLight or child instanceof THREE.SpotLight
+        child.color = newColour
 
   update = ->
     _renderer.render _scene, _camera unless _project
@@ -90,4 +109,6 @@
   setLightTarget: setLightTarget
   setRendererSize: setRendererSize
   toggleDebug: toggleDebug
+  changeBlockColour: changeBlockColour
+  changeLightColour: changeLightColour
   update: update

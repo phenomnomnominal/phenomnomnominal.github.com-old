@@ -117,6 +117,12 @@
           _eventMappings[event][object.id] = []
     objects
 
+  one = (event, objects, handler) ->
+    wrappedHandler = ->
+      handler.apply this, arguments
+      removeEventListener event, objects, wrappedHandler
+    addEventListener event, objects, wrappedHandler
+
   init: init
   get: get
   update: update
@@ -124,3 +130,4 @@
   on: addEventListener
   removeEventListener: removeEventListener
   off: removeEventListener
+  one: one
