@@ -1051,8 +1051,8 @@
         return (function() {
           var large, medium, small;
           large = matchMedia("(min-width: 1025px)").matches;
-          medium = matchMedia("(min-width: 700px) and (max-width: 1024px)").matches;
-          small = matchMedia("(max-width: 700px)").matches;
+          medium = matchMedia("(min-width: 600px) and (max-width: 1024px)").matches;
+          small = matchMedia("(max-width: 600px)").matches;
           if (large && Modernizr.webgl) {
             return 'largeWithGL';
           } else if (large) {
@@ -1110,8 +1110,14 @@
         });
       },
       large: function() {},
-      mediumWithGL: function() {},
-      medium: function() {},
+      mediumWithGL: function() {
+        Twitter.init();
+        return Blog.init();
+      },
+      medium: function() {
+        Twitter.init();
+        return Blog.init();
+      },
       smallWithGL: function() {
         Twitter.init();
         return Blog.init();

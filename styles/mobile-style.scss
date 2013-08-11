@@ -144,23 +144,23 @@ only screen and (                min-resolution: 192dpi) and (min-width: 0px),
 only screen and (                min-resolution: 2dppx)  and (min-width: 0px) {
 }
 
-@media only screen and (min-width: 700px) {
+@media only screen and (min-width: 600px) {
 
   /* Medium screen, non-retina */
-
+  
+  #listening-blog {
+    padding: 0 25% 0 25%;
+  }
 }
 
 @media
-only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 700px),
-only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 700px),
-only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 700px),
-only screen and (        min-device-pixel-ratio: 2)      and (min-width: 700px),
-only screen and (                min-resolution: 192dpi) and (min-width: 700px),
-only screen and (                min-resolution: 2dppx)  and (min-width: 700px) {
+only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 600px),
+only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 600px),
+only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 600px),
+only screen and (        min-device-pixel-ratio: 2)      and (min-width: 600px),
+only screen and (                min-resolution: 192dpi) and (min-width: 600px),
+only screen and (                min-resolution: 2dppx)  and (min-width: 600px) {
 
-  body { 
-    font-size: 200%;
-  }
 }
 
 @media only screen and (min-width: 1024px) {

@@ -5,8 +5,8 @@
   _getDeviceType = ->
     if Modernizr.mediaqueries then do ->
       large = matchMedia("(min-width: 1025px)").matches
-      medium = matchMedia("(min-width: 700px) and (max-width: 1024px)").matches
-      small = matchMedia("(max-width: 700px)").matches 
+      medium = matchMedia("(min-width: 600px) and (max-width: 1024px)").matches
+      small = matchMedia("(max-width: 600px)").matches 
       if large and Modernizr.webgl then 'largeWithGL'
       else if large then 'large'
       else if medium and Modernizr.webgl then 'mediumWithGL'
@@ -48,7 +48,11 @@
           _update.largeWithGL()
     large: ->
     mediumWithGL: ->
+      Twitter.init()
+      Blog.init()
     medium: ->
+      Twitter.init()
+      Blog.init()
     smallWithGL: ->
       Twitter.init()
       Blog.init()
