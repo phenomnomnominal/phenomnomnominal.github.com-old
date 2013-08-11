@@ -137,175 +137,103 @@ a {
   color: #6666bb;
   text-decoration: none; }
 
-body {
-  font-size: 100%;
-  position: absolute;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden; }
+@media only screen and (min-width: 0px) {
+  #github, #thingies, #projects, #project, #cv, footer {
+    display: none; }
 
-header {
-  font-size: 0em; }
-
-main {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow-y: hidden;
-  background: url(images/subtle.png);
-  background-repeat: repeat repeat; }
-
-#wrapper {
-  position: absolute;
-  top: 0px; }
-
-.horizontal-spacing {
-  height: 4%;
-  clear: both; }
-
-.float-left {
-  clear: none;
-  float: left; }
-
-.float-right {
-  clear: none;
-  float: right; }
-
-header {
-  width: 92%;
-  height: 8%;
-  margin: 4%; }
-
-section.current {
-  display: block; }
-
-section {
-  display: none;
-  width: 100%;
-  height: 32%;
-  margin-bottom: 4%; }
-  section h2 {
-    height: 12.5%;
-    margin-bottom: 4%; }
-  section .horizontal-spacing {
-    height: 12.5%;
-    width: 100%; }
-  section .vertical-spacing {
-    width: 4%;
-    height: 100%; }
-  section .full-content {
+  html {
     width: 100%;
     height: 100%; }
-  section .left-content {
-    width: 40%;
-    height: 100%;
-    margin: 0% 4% 0% 4%; }
-  section .right-content {
-    width: 48%;
-    height: 100%;
-    margin-right: 4%; }
 
-#home nav {
-  height: 62.5%; }
-  #home nav a {
-    height: 20%; }
-    #home nav a#nav-projects {
-      width: 80%; }
-    #home nav a#nav-social {
-      width: 60%; }
-    #home nav a#nav-blog {
-      width: 40%; }
-    #home nav a#nav-cv {
-      width: 20%; }
-#home .social {
-  height: 12.5%; }
-  #home .social span, #home .social a {
-    height: 85%;
-    float: left; }
-  #home .social a.icon {
-    width: 10%; }
-    #home .social a.icon img {
-      width: 85%; }
-    #home .social a.icon:hover {
-      cursor: pointer; }
-  #home .social span {
-    font-family: 'College';
-    font-size: 2em;
-    color: #111111;
-    white-space: nowrap;
-    overflow: hidden;
-    width: 85.2%;
-    padding: 2% 0 0 4%; }
-    #home .social span a {
-      text-decoration: none;
-      color: #111111; }
-    #home .social span em {
-      color: #fff;
-      padding-right: 20px; }
-
-#projects .links, #social .links {
-  margin: 0 8% 0 12%;
-  height: 75%; }
-  #projects .links a, #social .links a {
-    display: block;
-    width: 15%;
-    margin-right: 5%;
-    float: left; }
-    #projects .links a img, #social .links a img {
-      width: 95%;
-      height: 95%; }
-
-#project {
-  height: 48%;
-  margin-top: -12%;
-  margin-bottom: 0; }
-  #project .full-content {
-    width: 92%;
-    margin-top: -4%;
-    margin-right: 4%;
-    margin-left: 4%; }
-    #project .full-content h2 {
-      height: 8.333%;
-      margin-bottom: 0; }
-    #project .full-content div {
-      width: 100%;
-      height: 91.666%;
-      padding: 25px; }
-
-#blog #content-blog, #blog #content-cv, #cv #content-blog, #cv #content-cv {
-  width: 52%;
-  height: 87.5%;
-  margin: 2% 2% 2% 14%;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  overflow-y: scroll;
-  float: left; }
-#blog #listening-blog, #cv #listening-blog {
-  width: 24%;
-  height: 100%;
-  float: right;
-  margin-right: 4%; }
-#blog #cover-blog, #cv #cover-blog {
-  width: 100%;
-  height: 75%; }
-  #blog #cover-blog img, #cv #cover-blog img {
-    width: 97.5%;
-    height: 97.5%; }
-#blog #info-blog, #cv #info-blog {
-  width: 100%;
-  height: 12.5%;
-  padding: 3%; }
-
-footer {
-  height: 4%;
-  width: 100%; }
-  footer .option {
-    margin-right: 4%;
-    width: 4%;
+  body {
+    width: 100%;
     height: 100%; }
-    footer .option img {
-      width: 85%; }
-  footer #back {
-    margin-left: 4%; }
+
+  a:hover {
+    background: #6666bb; }
+
+  main {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background: url(images/subtle.png); }
+
+  header {
+    font-size: 5em;
+    font-family: College;
+    text-align: center;
+    color: #eeeeee;
+    background: #444499;
+    margin-bottom: 8px; }
+
+  section {
+    background: #444499; }
+
+  #home .left-content {
+    display: table;
+    width: 100%;
+    overflow: hidden; }
+    #home .left-content nav {
+      display: none; }
+    #home .left-content #twitter {
+      height: 50px;
+      display: table-row;
+      border: none;
+      overflow: hidden; }
+      #home .left-content #twitter a, #home .left-content #twitter span {
+        display: table-cell; }
+      #home .left-content #twitter a {
+        width: 50px;
+        height: 50px; }
+      #home .left-content #twitter span a {
+        text-decoration: none;
+        text-align: left;
+        overflow: hidden;
+        white-space: nowrap;
+        font-family: College;
+        color: #eeeeee;
+        letter-spacing: 2px;
+        font-size: 1.5em;
+        vertical-align: top;
+        line-height: 1.5em; }
+        #home .left-content #twitter span a:hover {
+          background: none; }
+        #home .left-content #twitter span a em {
+          color: #bbbbbb;
+          padding: 0 10px; }
+
+  .icon img {
+    width: 50px;
+    height: 50px; }
+
+  #social {
+    background: #444499; }
+    #social div.full-content {
+      display: table;
+      width: 100%; }
+    #social div.links {
+      display: table-row; }
+    #social #twitter-social {
+      display: none; }
+    #social .links a {
+      height: 50px;
+      width: 25%;
+      display: table-cell;
+      text-align: center; }
+
+  #blog {
+    border: 8px solid #444499;
+    padding: 10px;
+    background: none; }
+    #blog h1 {
+      color: #888888; } }
+@media only screen and (min-width: 700px) {
+  /* Medium screen, non-retina */ }
+@media only screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 700px), only screen and (min--moz-device-pixel-ratio: 2) and (min-width: 700px), only screen and (-o-min-device-pixel-ratio: 2 / 1) and (min-width: 700px), only screen and (min-device-pixel-ratio: 2) and (min-width: 700px), only screen and (min-resolution: 192dpi) and (min-width: 700px), only screen and (min-resolution: 2dppx) and (min-width: 700px) {
+  body {
+    font-size: 200%; } }
+@media only screen and (min-width: 1024px) {
+  /* Large screen, non-retina */ }
+@media only screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px), only screen and (min--moz-device-pixel-ratio: 2) and (min-width: 1024px), only screen and (-o-min-device-pixel-ratio: 2 / 1) and (min-width: 1024px), only screen and (min-device-pixel-ratio: 2) and (min-width: 1024px), only screen and (min-resolution: 192dpi) and (min-width: 1024px), only screen and (min-resolution: 2dppx) and (min-width: 1024px) {
+  body {
+    font-size: 200%; } }

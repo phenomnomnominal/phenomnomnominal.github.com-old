@@ -1,48 +1,19 @@
 do ->
-  window.requestAnimFrame = do ->
-    requestAnimationFrame or
-    webkitRequestAnimationFrame or
-    mozRequestAnimationFrame or
-    oRequestAnimationFrame or
-    msRequestAnimationFrame or
-    (callback) -> setTimeout(callback, 1000 / 60)
-  
-  window.cancelAnimFrame = do ->
-    cancelAnimationFrame or
-    webkitCancelAnimationFrame or
-    mozCancelAnimationFrame or
-    oCancelAnimationFrame or
-    msCancelAnimationFrame
+  BASE = 'libraries/polyfills/'
 
-  HTMLElement::requestFullscreen = do ->
-    if HTMLElement::requestFullscreen
-      HTMLElement::requestFullscreen
-    else if HTMLElement::mozRequestFullScreen
-      HTMLElement::mozRequestFullScreen
-    else if HTMLElement::webkitRequestFullscreen
-      -> @webkitRequestFullscreen Element.ALLOW_KEYBOARD_INPUT
-    else if HTMLElement::webkitRequestFullScreen
-      -> @webkitRequestFullScreen Element.ALLOW_KEYBOARD_INPUT
+  yepnope
+    test: Modernizr.fullscreen
+    yep: "#{BASE}fullscreen.js"
+    nope: "#{BASE}fullscreen.js"
 
-  document.exitFullscreen = do ->
-    document.exitFullscreen or
-    document.mozCancelFullScreen or
-    document.webkitExitFullScreen or
-    document.webkitCancelFullScreen
+  yepnope
+    test: Modernizr.mediaqueries
+    nope: "#{BASE}matchMedia.js"
 
-  document.isFullScreen = ->
-    document.fullScreenElement? or
-    document.mozFullScreenElement? or
-    document.mozIsFullScreen or
-    document.webkitFullScreenElement? or
-    document.webkitIsFullScreen
+  yepnope
+    test: Modernizr.raf
+    nope: '#{BASE}rAF.js'
 
-  window.fullscreenchange = do ->
-    body = document.body
-    if body.onfullscreenchange?
-      'fullscreenchange'
-    else if body.onmozfullscreenchange?
-      'mozfullscreenchange'
-    else if body.onwebkitfullscreenchange?
-      'webkitfullscreenchange'
-    else null
+  yepnope
+    test: Modernizr.classlist
+    nope: "#{BASE}classList.js"

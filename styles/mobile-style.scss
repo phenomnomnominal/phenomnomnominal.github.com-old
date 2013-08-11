@@ -1,0 +1,182 @@
+@import "fonts";
+@import "transforms";
+@import "reset";
+@import "common";
+
+$spacing: 50px;
+$retinaSpacing: 100px;
+
+@media only screen and (min-width: 0px) {
+  #github, #thingies, #projects, #project, #cv, footer {
+    display: none;
+  }
+
+  html {
+    width: 100%;
+    height: 100%;
+  }
+  
+  body {
+    width: 100%;
+    height: 100%;
+  }
+  
+  a:hover {
+    background: $accentColour;
+  }
+  
+  main {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background: url(images/subtle.png);
+  }
+
+  header {
+    font-size: 5em;
+    font-family: College;
+    text-align: center;
+    color: $lightColour;
+    background: $mainColour;
+    margin-bottom: 8px;
+  }
+  
+  section {
+    background: $mainColour;
+  }
+
+  #home {
+    .left-content {
+      display: table;
+      width: 100%;
+      overflow: hidden;
+      
+      nav {
+        display: none;
+      }
+  
+      #twitter {
+        height: $spacing;
+        display: table-row;
+        border: none;
+        overflow: hidden;
+      
+        a, span {
+          display: table-cell;
+        }
+      
+        a {
+          width: $spacing;
+          height: $spacing;
+        }
+        
+        span a {
+          text-decoration: none;
+          text-align: left;
+          overflow: hidden;
+          white-space: nowrap;
+          font-family: College;
+          color: $lightColour;
+          letter-spacing: 2px;
+          font-size: 1.5em;
+          vertical-align: top;
+          line-height: 1.5em;
+          
+          &:hover {
+            background: none;
+          };
+        
+          em {
+            color: $midColour;
+            padding: 0 10px;
+          }
+        }
+      }
+    }
+  }
+
+  .icon img {
+    width: $spacing;
+    height: $spacing;
+  }
+
+  #social {
+    background: $mainColour;
+    
+    div.full-content {
+      display: table;
+      width: 100%;      
+    }
+    
+    div.links {
+      display: table-row;
+    }
+    
+    #twitter-social {
+      display: none;
+    }
+  
+    .links a {
+      height: $spacing;
+      width: 25%;
+      display: table-cell;
+      text-align: center;
+    }
+  }
+  
+  #blog {
+    border: 8px solid #444499;
+    padding: 10px;
+    background: none;
+    
+    h1 {
+      color: $darkColour;
+    }
+  }
+}
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 0px),
+only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 0px),
+only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 0px),
+only screen and (        min-device-pixel-ratio: 2)      and (min-width: 0px),
+only screen and (                min-resolution: 192dpi) and (min-width: 0px),
+only screen and (                min-resolution: 2dppx)  and (min-width: 0px) {
+}
+
+@media only screen and (min-width: 700px) {
+
+  /* Medium screen, non-retina */
+
+}
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 700px),
+only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 700px),
+only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 700px),
+only screen and (        min-device-pixel-ratio: 2)      and (min-width: 700px),
+only screen and (                min-resolution: 192dpi) and (min-width: 700px),
+only screen and (                min-resolution: 2dppx)  and (min-width: 700px) {
+
+  body { 
+    font-size: 200%;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+
+  /* Large screen, non-retina */
+
+}
+
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 1024px),
+only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 1024px),
+only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 1024px),
+only screen and (        min-device-pixel-ratio: 2)      and (min-width: 1024px),
+only screen and (                min-resolution: 192dpi) and (min-width: 1024px),
+only screen and (                min-resolution: 2dppx)  and (min-width: 1024px) { 
+  body { 
+    font-size: 200%;
+  }
+}

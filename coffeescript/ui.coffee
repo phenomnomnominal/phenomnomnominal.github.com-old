@@ -29,17 +29,9 @@
     changeLightColour: ->
       Colours.changeLightColour() 
     toggleFullscreen: ->
-      if document.isFullScreen() then document.exitFullscreen() else document.documentElement.requestFullscreen()
+      if document.fullscreenEnabled then document.exitFullscreen() else document.documentElement.requestFullscreen()
     toggleWireframe: ->
       Main.toggleDebug()
-
-    windowResize: ->
-      screenSize = Events.get.screenSize()
-      Rendering.setRendererSize screenSize
-      [width, height] = screenSize
-      $('main').height(height)
-      $('#wrapper').width(width).height(width)
-      $(document.body).css 'font-size': (width / 25) * 0.85
 
     mousemove: ->
       [x, y] = Events.get.mousePixels()

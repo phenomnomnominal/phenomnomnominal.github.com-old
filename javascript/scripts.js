@@ -143,7 +143,7 @@
       return "matrix3d(" + (newMatrix.join(', ')) + ")";
     };
     update = function() {
-      var animation, property, steps, _i, _len, _results;
+      var animation, matrix, property, steps, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = _animating.length; _i < _len; _i++) {
         animation = _animating[_i];
@@ -175,7 +175,13 @@
                     _results1.push(animation.object.scale.z = steps.shift());
                     break;
                   case 'translateX' || 'translateY' || 'translateZ':
-                    _results1.push(animation.object.style[window.transform] = cssMatrixCompose(animation.object, property, steps.shift()));
+                    matrix = cssMatrixCompose(animation.object, property, steps.shift());
+                    animation.object.style[window.transform] = matrix;
+                    if (matrix !== 'matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)') {
+                      _results1.push(animation.object.classList.add('is-transformed'));
+                    } else {
+                      _results1.push(animation.object.classList.remove('is-transformed'));
+                    }
                     break;
                   default:
                     _results1.push(void 0);
@@ -365,7 +371,7 @@
       };
 
       BlockGroup.prototype.move = function(direction, amount, css) {
-        var block, _i, _len, _ref, _transformMappings;
+        var block, _i, _len, _ref, _ref1, _transformMappings;
         if (css == null) {
           css = {};
         }
@@ -392,6 +398,11 @@
             'position.z': 'translateZ'
           };
           css[window.transform] = "" + _transformMappings['position.' + direction] + "(" + amount + "px)";
+          if ((_ref1 = css[window.transform]) !== 'translateX(0px)' && _ref1 !== 'translateY(0px)' && _ref1 !== 'translateZ(0px)') {
+            $(this.elements).addClass('is-transformed');
+          } else {
+            $(this.elements).removeClass('is-transformed');
+          }
           $(this.elements).css(css);
         }
         return this;
@@ -469,6 +480,8 @@
               }
               if (requiresOk) {
                 return new Block(blockX, blockY, blockWidth, blockHeight, Colours[blockColour], blockContent);
+              } else {
+                return new Block(-100, -100, 1, 1);
               }
             });
             if (blocks.length > 0) {
@@ -521,6 +534,7 @@
       return $.get('blog/1000GoodIntentions.html', (function(result) {
         $('#content-blog').html(result);
         $('#blog a').attr('target', '_blank');
+        $('#cover-blog a').attr('href', 'https://itunes.apple.com/nz/album/wildlife/id463651346');
         $('#cover-blog img').attr('src', '../blog/covers/LA DISPUTE - WILDLIFE.png');
         return $('#info-blog a').text('LA DISPUTE: Wildlife').attr('href', 'https://itunes.apple.com/nz/album/wildlife/id463651346');
       }));
@@ -605,16 +619,18 @@
           if (zTilt == null) {
             zTilt = 0;
           }
-          return _.each(Blocks.common.HEADER.blocks, function(block) {
-            if (Math.abs(_lastBeta - event.beta) > 5) {
-              xTilt = -event.beta * piOver540;
-            }
-            if (Math.abs(_lastGamma - event.gamma) > 5) {
-              zTilt = event.gamma * piOver540;
-            }
-            rotateAroundWorldAxis(block.object, X_AXIS, xTilt);
-            return rotateAroundWorldAxis(block.object, Z_AXIS, zTilt);
-          });
+          if (typeof Blocks.common === "function" ? Blocks.common(typeof HEADER !== "undefined" && HEADER !== null) : void 0) {
+            return _.each(Blocks.common.HEADER.blocks, function(block) {
+              if (Math.abs(_lastBeta - event.beta) > 5) {
+                xTilt = -event.beta * piOver540;
+              }
+              if (Math.abs(_lastGamma - event.gamma) > 5) {
+                zTilt = event.gamma * piOver540;
+              }
+              rotateAroundWorldAxis(block.object, X_AXIS, xTilt);
+              return rotateAroundWorldAxis(block.object, Z_AXIS, zTilt);
+            });
+          }
         });
       }
     };
@@ -641,11 +657,7 @@
     _getWidthAndHeight = function(container) {
       if (container.height() >= container.width() * 9 / 16) {
         _height = container.height();
-        _width = _height * 16 / 9;
-        return $('main').css({
-          'overflow-x': 'scroll',
-          'overflow-y': 'hidden'
-        });
+        return _width = _height * 16 / 9;
       } else {
         _width = container.width();
         return _height = _width * 9 / 16;
@@ -806,49 +818,18 @@
   })();
 
   $(function() {
-    var addDomEvents, _ref;
-    if (Modernizr.webgl) {
-      addDomEvents = function() {
-        document.body.addEventListener('mousemove', UI.events.mousemove);
-        document.body.addEventListener(fullscreenchange, UI.events.windowResize);
-        $(window).on('resize', UI.events.windowResize);
-        return $(window).trigger('resize');
-      };
-      _ref = Rendering.init(), Main.scene = _ref[0], Main.camera = _ref[1];
-      Events.init(Main.scene, Main.camera);
-      return Blocks.init(function() {
-        Blog.init();
-        CV.init();
-        DeviceOrientation.init();
-        return Scenes.init(function() {
-          Routing.init();
-          Thingie.init();
-          Twitter.init();
-          addDomEvents();
-          return Main.update();
-        });
-      });
-    }
+    return $(window).trigger('resize');
   });
 
   (typeof exports !== "undefined" && exports !== null ? exports : this).Main = (function() {
-    var toggleDebug, update;
+    var toggleDebug;
     toggleDebug = function() {
       Main.debug = !Main.debug;
       return Rendering.toggleDebug();
     };
-    update = function() {
-      Animate.update();
-      Events.update();
-      Rendering.update();
-      Thingie.update();
-      Projects.update();
-      return requestAnimationFrame(update);
-    };
     return {
       debug: false,
-      toggleDebug: toggleDebug,
-      update: update
+      toggleDebug: toggleDebug
     };
   })();
 
@@ -903,139 +884,303 @@
     };
   })();
 
-  (typeof exports !== "undefined" && exports !== null ? exports : this).Rendering = (function() {
-    var ASPECT_RATIO, FAR_Z, FIELD_OF_VIEW, NEAR_Z, SIX_AM, SIX_PM, changeBlockColour, changeLightColour, init, initProject, killProject, setLightTarget, setRendererSize, toggleDebug, update, _camera, _initCamera, _initLights, _initShadow, _lights, _makeLight, _nighttime, _project, _renderer, _scene;
-    FIELD_OF_VIEW = 70;
-    ASPECT_RATIO = 16 / 9;
-    NEAR_Z = 0.01;
-    FAR_Z = 800;
-    SIX_AM = 6;
-    SIX_PM = 18;
-    _scene = new THREE.Scene();
-    _renderer = new THREE.WebGLRenderer({
-      antialias: true
+  if (Modernizr.webgl) {
+    (typeof exports !== "undefined" && exports !== null ? exports : this).Rendering = (function() {
+      var ASPECT_RATIO, FAR_Z, FIELD_OF_VIEW, NEAR_Z, SIX_AM, SIX_PM, changeBlockColour, changeLightColour, clearScene, init, initProject, killProject, setLightTarget, setRendererSize, toggleDebug, update, _camera, _initCamera, _initLights, _initShadow, _lights, _makeLight, _nighttime, _project, _renderer, _scene;
+      FIELD_OF_VIEW = 70;
+      ASPECT_RATIO = 16 / 9;
+      NEAR_Z = 0.01;
+      FAR_Z = 800;
+      SIX_AM = 6;
+      SIX_PM = 18;
+      _scene = new THREE.Scene();
+      _renderer = new THREE.WebGLRenderer({
+        antialias: true
+      });
+      _camera = new THREE.PerspectiveCamera(FIELD_OF_VIEW, ASPECT_RATIO, NEAR_Z, FAR_Z);
+      _lights = [];
+      _nighttime = false;
+      _project = false;
+      _initShadow = function() {
+        _renderer.shadowMapEnabled = true;
+        _renderer.shadowCameraNear = NEAR_Z;
+        _renderer.shadowCameraFar = FAR_Z;
+        _renderer.shadowCameraFov = FIELD_OF_VIEW;
+        _renderer.shadowMapDarkness = 1;
+        _renderer.shadowMapWidth = 256;
+        return _renderer.shadowMapHeight = 256;
+      };
+      _initCamera = function() {
+        _camera.position = new THREE.Vector3(960, 540, 772);
+        return _camera.lookAt(new THREE.Vector3(960, 540, 0));
+      };
+      _makeLight = function(colour, position) {
+        var light;
+        light = _nighttime ? new THREE.SpotLight(colour, 2.5) : new THREE.DirectionalLight(colour);
+        light.position = position;
+        light.target.position = new THREE.Vector3(960, 540, 10);
+        light.castShadow = true;
+        light.shadowCameraVisible = Main.debug;
+        _lights.push(light);
+        return _scene.add(light);
+      };
+      _initLights = function() {
+        _lights = [];
+        _nighttime = new Date().getHours() < SIX_AM || new Date().getHours() > SIX_PM;
+        if (_nighttime) {
+          _renderer.setClearColor(Colours.background.night, 1);
+          _makeLight(Colours.light.night, new THREE.Vector3(0, 1080, 250));
+          return _makeLight(Colours.light.night, new THREE.Vector3(1920, 1080, 250));
+        } else {
+          _renderer.setClearColor(Colours.background.day, 0);
+          _makeLight(Colours.light.day, new THREE.Vector3(-200, 1080, 700));
+          return _makeLight(Colours.light.day, new THREE.Vector3(2120, 1080, 700));
+        }
+      };
+      init = function() {
+        _initShadow();
+        _initCamera();
+        _initLights();
+        $('main').append(_renderer.domElement);
+        setRendererSize(Events.get.screenSize());
+        return [_scene, _camera];
+      };
+      setLightTarget = function(position) {
+        if (!_project) {
+          return _.each(_lights, function(light) {
+            return light.target.position = position;
+          });
+        }
+      };
+      setRendererSize = function(screenSize) {
+        return _renderer.setSize.apply(_renderer, screenSize);
+      };
+      toggleDebug = function() {
+        return _.each(_scene.children, function(child) {
+          if (child instanceof THREE.DirectionalLight || child instanceof THREE.SpotLight) {
+            child.shadowCameraVisible = Main.debug;
+          } else if (child.material != null) {
+            child.material.wireframe = Main.debug;
+          }
+          return _.each(child.children, function(letter) {
+            if (letter.material != null) {
+              return letter.material.wireframe = Main.debug;
+            }
+          });
+        });
+      };
+      changeBlockColour = function(oldColour, newColour) {
+        oldColour = new THREE.Color(oldColour);
+        newColour = new THREE.Color(newColour);
+        return _.each(_scene.children, function(child) {
+          var childColour;
+          if (child instanceof THREE.Mesh) {
+            childColour = child.material.color;
+            if (childColour.r === oldColour.r && childColour.g === oldColour.g && childColour.b === oldColour.b) {
+              return child.material.color = newColour;
+            }
+          }
+        });
+      };
+      changeLightColour = function(newColour) {
+        _nighttime = new Date().getHours() < SIX_AM || new Date().getHours() > SIX_PM;
+        if (_nighttime) {
+          newColour = new THREE.Color(newColour.night);
+        } else {
+          newColour = new THREE.Color(newColour.day);
+        }
+        return _.each(_scene.children, function(child) {
+          if (child instanceof THREE.DirectionalLight || child instanceof THREE.SpotLight) {
+            return child.color = newColour;
+          }
+        });
+      };
+      update = function() {
+        if (!_project) {
+          return _renderer.render(_scene, _camera);
+        }
+      };
+      initProject = function() {
+        _.each(_lights, function(light) {
+          return light.target.position = new THREE.Vector3(960, 540, 0);
+        });
+        return _project = true;
+      };
+      killProject = function() {
+        return _project = false;
+      };
+      clearScene = function() {
+        var child, children;
+        children = (function() {
+          var _i, _len, _ref, _results;
+          _ref = _scene.children;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            child = _ref[_i];
+            _results.push(child);
+          }
+          return _results;
+        })();
+        return _.each(children, function(child) {
+          if (child instanceof THREE.Mesh || child instanceof THREE.DirectionalLight || child instanceof THREE.SpotLight) {
+            return _scene.remove(child);
+          }
+        });
+      };
+      return {
+        init: init,
+        initProject: initProject,
+        killProject: killProject,
+        clearScene: clearScene,
+        setLightTarget: setLightTarget,
+        setRendererSize: setRendererSize,
+        toggleDebug: toggleDebug,
+        changeBlockColour: changeBlockColour,
+        changeLightColour: changeLightColour,
+        update: update
+      };
+    })();
+  }
+
+  (typeof exports !== "undefined" && exports !== null ? exports : this).Responsive = (function() {
+    var _animationFrameRequest, _deviceType, _getDeviceType, _init, _kill, _resize, _update;
+    _deviceType = null;
+    _animationFrameRequest = null;
+    _getDeviceType = function() {
+      if (Modernizr.mediaqueries) {
+        return (function() {
+          var large, medium, small;
+          large = matchMedia("(min-width: 1025px)").matches;
+          medium = matchMedia("(min-width: 700px) and (max-width: 1024px)").matches;
+          small = matchMedia("(max-width: 700px)").matches;
+          if (large && Modernizr.webgl) {
+            return 'largeWithGL';
+          } else if (large) {
+            return 'large';
+          } else if (medium && Modernizr.webgl) {
+            return 'mediumWithGL';
+          } else if (medium) {
+            return 'medium';
+          } else if (small && Modernizr.webgl) {
+            return 'smallWithGL';
+          } else if (small) {
+            return 'small';
+          }
+        })();
+      } else {
+        return 'fail';
+      }
+    };
+    $(window).resize(function(e) {
+      var _newType;
+      _newType = _getDeviceType();
+      if (_newType !== _deviceType) {
+        if (_deviceType) {
+          _kill[_deviceType]();
+        }
+        cancelAnimationFrame(_animationFrameRequest);
+        _init[_newType]();
+        _deviceType = _newType;
+        Routing.go('reload');
+      }
+      return _resize[_deviceType](e);
     });
-    _camera = new THREE.PerspectiveCamera(FIELD_OF_VIEW, ASPECT_RATIO, NEAR_Z, FAR_Z);
-    _lights = [];
-    _nighttime = false;
-    _project = false;
-    _initShadow = function() {
-      _renderer.shadowMapEnabled = true;
-      _renderer.shadowCameraNear = NEAR_Z;
-      _renderer.shadowCameraFar = FAR_Z;
-      _renderer.shadowCameraFov = FIELD_OF_VIEW;
-      _renderer.shadowMapDarkness = 1;
-      _renderer.shadowMapWidth = 256;
-      return _renderer.shadowMapHeight = 256;
-    };
-    _initCamera = function() {
-      _camera.position = new THREE.Vector3(960, 540, 772);
-      return _camera.lookAt(new THREE.Vector3(960, 540, 0));
-    };
-    _makeLight = function(colour, position) {
-      var light;
-      light = _nighttime ? new THREE.SpotLight(colour, 2.5) : new THREE.DirectionalLight(colour);
-      light.position = position;
-      light.target.position = new THREE.Vector3(960, 540, 10);
-      light.castShadow = true;
-      light.shadowCameraVisible = Main.debug;
-      _lights.push(light);
-      return _scene.add(light);
-    };
-    _initLights = function() {
-      _nighttime = new Date().getHours() < SIX_AM || new Date().getHours() > SIX_PM;
-      if (_nighttime) {
-        _renderer.setClearColor(Colours.background.night, 1);
-        _makeLight(Colours.light.night, new THREE.Vector3(0, 1080, 250));
-        return _makeLight(Colours.light.night, new THREE.Vector3(1920, 1080, 250));
-      } else {
-        _renderer.setClearColor(Colours.background.day, 0);
-        _makeLight(Colours.light.day, new THREE.Vector3(-200, 1080, 700));
-        return _makeLight(Colours.light.day, new THREE.Vector3(2120, 1080, 700));
-      }
-    };
-    init = function() {
-      _initShadow();
-      _initCamera();
-      _initLights();
-      $('main').append(_renderer.domElement);
-      setRendererSize(Events.get.screenSize());
-      return [_scene, _camera];
-    };
-    setLightTarget = function(position) {
-      if (!_project) {
-        return _.each(_lights, function(light) {
-          return light.target.position = position;
+    _init = {
+      largeWithGL: function() {
+        var addDomEvents, _ref;
+        addDomEvents = function() {
+          document.body.addEventListener('mousemove', UI.events.mousemove);
+          document.body.addEventListener('fullscreenchange', UI.events.windowResize);
+          $(window).on('resize', UI.events.windowResize);
+          return $(window).trigger('resize');
+        };
+        _ref = Rendering.init(), Main.scene = _ref[0], Main.camera = _ref[1];
+        Events.init(Main.scene, Main.camera);
+        return Blocks.init(function() {
+          Blog.init();
+          CV.init();
+          DeviceOrientation.init();
+          return Scenes.init(function() {
+            Routing.init();
+            Thingie.init();
+            Twitter.init();
+            addDomEvents();
+            return _update.largeWithGL();
+          });
         });
+      },
+      large: function() {},
+      mediumWithGL: function() {},
+      medium: function() {},
+      smallWithGL: function() {
+        Twitter.init();
+        return Blog.init();
+      },
+      small: function() {
+        Twitter.init();
+        return Blog.init();
+      },
+      fail: function() {
+        return alert('Update your browser yo!');
       }
     };
-    setRendererSize = function(screenSize) {
-      return _renderer.setSize.apply(_renderer, screenSize);
+    _update = {
+      largeWithGL: function() {
+        Animate.update();
+        Events.update();
+        Rendering.update();
+        Thingie.update();
+        Projects.update();
+        return _animationFrameRequest = requestAnimationFrame(_update.largeWithGL);
+      },
+      large: function() {},
+      mediumWithGL: function() {},
+      medium: function() {},
+      smallWithGL: function() {},
+      small: function() {},
+      fail: function() {}
     };
-    toggleDebug = function() {
-      return _.each(_scene.children, function(child) {
-        if (child instanceof THREE.DirectionalLight || child instanceof THREE.SpotLight) {
-          child.shadowCameraVisible = Main.debug;
-        } else if (child.material != null) {
-          child.material.wireframe = Main.debug;
-        }
-        return _.each(child.children, function(letter) {
-          if (letter.material != null) {
-            return letter.material.wireframe = Main.debug;
+    _kill = {
+      largeWithGL: function() {
+        Rendering.clearScene();
+        $('canvas').remove();
+        $('main').height('100%');
+        $('#wrapper').width('100%').height('100%');
+        Scenes.clear();
+        $('.is-transformed').css(window.transform, 'matrix(1, 0, 0, 1, 0, 0)');
+        _.each(Blocks, function(prop, key) {
+          if (_.isObject(prop) && !_.isFunction(prop)) {
+            return Blocks[key] = null;
           }
         });
-      });
-    };
-    changeBlockColour = function(oldColour, newColour) {
-      oldColour = new THREE.Color(oldColour);
-      newColour = new THREE.Color(newColour);
-      return _.each(_scene.children, function(child) {
-        var childColour;
-        if (child instanceof THREE.Mesh) {
-          childColour = child.material.color;
-          if (childColour.r === oldColour.r && childColour.g === oldColour.g && childColour.b === oldColour.b) {
-            return child.material.color = newColour;
+        return _.each(Scenes, function(prop, key) {
+          if (_.isObject(prop) && !_.isFunction(prop)) {
+            return Scenes[key] = null;
           }
-        }
-      });
+        });
+      },
+      large: function() {},
+      mediumWithGL: function() {},
+      medium: function() {},
+      smallWithGL: function() {},
+      small: function() {},
+      fail: function() {}
     };
-    changeLightColour = function(newColour) {
-      _nighttime = new Date().getHours() < SIX_AM || new Date().getHours() > SIX_PM;
-      if (_nighttime) {
-        newColour = new THREE.Color(newColour.night);
-      } else {
-        newColour = new THREE.Color(newColour.day);
-      }
-      return _.each(_scene.children, function(child) {
-        if (child instanceof THREE.DirectionalLight || child instanceof THREE.SpotLight) {
-          return child.color = newColour;
-        }
-      });
-    };
-    update = function() {
-      if (!_project) {
-        return _renderer.render(_scene, _camera);
-      }
-    };
-    initProject = function() {
-      _.each(_lights, function(light) {
-        return light.target.position = new THREE.Vector3(960, 540, 0);
-      });
-      return _project = true;
-    };
-    killProject = function() {
-      return _project = false;
-    };
-    return {
-      init: init,
-      initProject: initProject,
-      killProject: killProject,
-      setLightTarget: setLightTarget,
-      setRendererSize: setRendererSize,
-      toggleDebug: toggleDebug,
-      changeBlockColour: changeBlockColour,
-      changeLightColour: changeLightColour,
-      update: update
+    return _resize = {
+      largeWithGL: function() {
+        var height, screenSize, width;
+        screenSize = Events.get.screenSize();
+        Rendering.setRendererSize(screenSize);
+        width = screenSize[0], height = screenSize[1];
+        $('main').height(height);
+        return $('#wrapper').width(width).height(width);
+      },
+      large: function() {},
+      mediumWithGL: function() {},
+      medium: function() {},
+      smallWithGL: function() {},
+      small: function() {},
+      fail: function() {}
     };
   })();
 
@@ -1057,6 +1202,9 @@
         return Scenes.change('home', function() {
           return _setCurrentSection('home');
         });
+      });
+      _router.route('/reload', function() {
+        return Routing.go('home');
       });
       _router.route('/projects', function() {
         return Scenes.change('projects', function() {
@@ -1126,7 +1274,7 @@
   })();
 
   (typeof exports !== "undefined" && exports !== null ? exports : this).Scenes = (function() {
-    var change, init, _getBlocks, _getOffAnimation, _getOnAnimation, _on;
+    var change, clear, init, _getBlocks, _getOffAnimation, _getOnAnimation, _on;
     _on = [];
     _getOnAnimation = function(blockGroup) {
       switch (blockGroup.offDirection) {
@@ -1194,78 +1342,61 @@
       if (newOn == null) {
         newOn = [];
       }
-      if (_on.length === 0) {
-        callback();
+      if (Scenes[scene]) {
+        if (_on.length === 0) {
+          callback();
+        }
+        _.each(_on, function(blockGroup) {
+          var animation;
+          if (__indexOf.call(Scenes[scene].blockGroups, blockGroup) < 0) {
+            animation = _getOffAnimation(blockGroup);
+            blockGroup.animate(animation, callback);
+            return callback = null;
+          } else {
+            return newOn.push(blockGroup);
+          }
+        });
+        _.each(Scenes[scene].blockGroups, function(blockGroup) {
+          var animation;
+          if (__indexOf.call(newOn, blockGroup) < 0) {
+            animation = _getOnAnimation(blockGroup);
+            blockGroup.animate(animation);
+            return newOn.push(blockGroup);
+          }
+        });
+        return _on = newOn;
       }
-      _.each(_on, function(blockGroup) {
-        var animation;
-        if (__indexOf.call(Scenes[scene].blockGroups, blockGroup) < 0) {
-          animation = _getOffAnimation(blockGroup);
-          blockGroup.animate(animation, callback);
-          return callback = null;
-        } else {
-          return newOn.push(blockGroup);
-        }
-      });
-      _.each(Scenes[scene].blockGroups, function(blockGroup) {
-        var animation;
-        if (__indexOf.call(newOn, blockGroup) < 0) {
-          animation = _getOnAnimation(blockGroup);
-          blockGroup.animate(animation);
-          return newOn.push(blockGroup);
-        }
-      });
-      return _on = newOn;
+    };
+    clear = function() {
+      return _on = [];
     };
     return {
       init: init,
-      change: change
+      change: change,
+      clear: clear
     };
   })();
 
   (function() {
-    window.requestAnimFrame = (function() {
-      return requestAnimationFrame || webkitRequestAnimationFrame || mozRequestAnimationFrame || oRequestAnimationFrame || msRequestAnimationFrame || function(callback) {
-        return setTimeout(callback, 1000 / 60);
-      };
-    })();
-    window.cancelAnimFrame = (function() {
-      return cancelAnimationFrame || webkitCancelAnimationFrame || mozCancelAnimationFrame || oCancelAnimationFrame || msCancelAnimationFrame;
-    })();
-    HTMLElement.prototype.requestFullscreen = (function() {
-      if (HTMLElement.prototype.requestFullscreen) {
-        return HTMLElement.prototype.requestFullscreen;
-      } else if (HTMLElement.prototype.mozRequestFullScreen) {
-        return HTMLElement.prototype.mozRequestFullScreen;
-      } else if (HTMLElement.prototype.webkitRequestFullscreen) {
-        return function() {
-          return this.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-        };
-      } else if (HTMLElement.prototype.webkitRequestFullScreen) {
-        return function() {
-          return this.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-        };
-      }
-    })();
-    document.exitFullscreen = (function() {
-      return document.exitFullscreen || document.mozCancelFullScreen || document.webkitExitFullScreen || document.webkitCancelFullScreen;
-    })();
-    document.isFullScreen = function() {
-      return (document.fullScreenElement != null) || (document.mozFullScreenElement != null) || document.mozIsFullScreen || (document.webkitFullScreenElement != null) || document.webkitIsFullScreen;
-    };
-    return window.fullscreenchange = (function() {
-      var body;
-      body = document.body;
-      if (body.onfullscreenchange != null) {
-        return 'fullscreenchange';
-      } else if (body.onmozfullscreenchange != null) {
-        return 'mozfullscreenchange';
-      } else if (body.onwebkitfullscreenchange != null) {
-        return 'webkitfullscreenchange';
-      } else {
-        return null;
-      }
-    })();
+    var BASE;
+    BASE = 'libraries/polyfills/';
+    yepnope({
+      test: Modernizr.fullscreen,
+      yep: "" + BASE + "fullscreen.js",
+      nope: "" + BASE + "fullscreen.js"
+    });
+    yepnope({
+      test: Modernizr.mediaqueries,
+      nope: "" + BASE + "matchMedia.js"
+    });
+    yepnope({
+      test: Modernizr.raf,
+      nope: '#{BASE}rAF.js'
+    });
+    return yepnope({
+      test: Modernizr.classlist,
+      nope: "" + BASE + "classList.js"
+    });
   })();
 
   Thingie = (function() {
@@ -1623,17 +1754,22 @@
     };
     _handleTweets = function(response) {
       _tweets = response.data;
-      _displayNextTweet();
-      return $(window).resize();
+      return _displayNextTweet();
     };
     _displayNextTweet = function() {
+      var _tweetHTML, _wrapHTML;
       clearInterval(scroll);
       _count = _count === (_tweets.length - 1) || _count === null ? 0 : _count + 1;
-      _$twitter.html("<em>></em>" + _tweets[_count].text + " - (" + (_formatDate(_tweets[_count].created_at)) + ")");
+      _wrapHTML = function() {
+        return "<a target='_blank' href='https://twitter.com/phenomnominal/status/" + _tweets[_count].id_str + "'>" + _tweetHTML + "</a>";
+      };
+      _tweetHTML = "<em>></em>" + _tweets[_count].text + " - (" + (_formatDate(_tweets[_count].created_at)) + ")";
+      _$twitter.html(_wrapHTML(_tweetHTML));
       return setTimeout((function() {
         var scroll;
         return scroll = setInterval((function() {
-          _$twitter.html("<em>></em>" + (_$twitter.text().slice(3)));
+          _tweetHTML = "<em>></em>" + (_$twitter.text().slice(3));
+          _$twitter.html(_wrapHTML(_tweetHTML));
           if (_$twitter.text().length < 3) {
             clearInterval(scroll);
             return _displayNextTweet();
@@ -1643,7 +1779,9 @@
     };
     return {
       init: function() {
-        return $.getJSON(TWEET_PATH, _handleTweets);
+        if (_tweets === null) {
+          return $.getJSON(TWEET_PATH, _handleTweets);
+        }
       }
     };
   })();
@@ -1697,7 +1835,7 @@
         return Colours.changeLightColour();
       },
       toggleFullscreen: function() {
-        if (document.isFullScreen()) {
+        if (document.fullscreenEnabled) {
           return document.exitFullscreen();
         } else {
           return document.documentElement.requestFullscreen();
@@ -1705,17 +1843,6 @@
       },
       toggleWireframe: function() {
         return Main.toggleDebug();
-      },
-      windowResize: function() {
-        var height, screenSize, width;
-        screenSize = Events.get.screenSize();
-        Rendering.setRendererSize(screenSize);
-        width = screenSize[0], height = screenSize[1];
-        $('main').height(height);
-        $('#wrapper').width(width).height(width);
-        return $(document.body).css({
-          'font-size': (width / 25) * 0.85
-        });
       },
       mousemove: function() {
         var x, y, _ref;

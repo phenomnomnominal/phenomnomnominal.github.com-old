@@ -14,6 +14,7 @@ task 'coffee', 'compile the CoffeeScript', ->
 task 'scss', 'compile the SCSS', ->
   console.log 'Running SCSS compile...'
   exec 'sass --watch styles/style.scss:style.css'
+  exec 'sass --watch styles/mobile-style.scss:mobile-style.css'
   console.log 'Done SCSS compile, watching for changes...'
 
 task 'projects', 'compile the projects', ->

@@ -113,7 +113,12 @@ Animate = do ->
               when 'scale.z'
                 animation.object.scale.z = steps.shift()
               when 'translateX' or 'translateY' or 'translateZ'
-                animation.object.style[window.transform] = cssMatrixCompose animation.object, property, steps.shift()
+                matrix = cssMatrixCompose animation.object, property, steps.shift()
+                animation.object.style[window.transform] = matrix
+                if matrix isnt 'matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)'
+                  animation.object.classList.add 'is-transformed'
+                else
+                  animation.object.classList.remove 'is-transformed'
           else
             if animation.callback?
               animation.callback()

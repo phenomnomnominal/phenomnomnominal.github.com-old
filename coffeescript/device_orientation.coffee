@@ -18,12 +18,13 @@
   init = ->
     if Modernizr.deviceorientation
       window.addEventListener DEVICE_ORIENTATION, (event, xTilt = 0, zTilt = 0) ->
-        _.each Blocks.common.HEADER.blocks, (block) ->
-          if Math.abs(_lastBeta - event.beta) > 5
-            xTilt = -event.beta * piOver540
-          if Math.abs(_lastGamma - event.gamma) > 5
-            zTilt = event.gamma * piOver540
-          rotateAroundWorldAxis block.object, X_AXIS, xTilt
-          rotateAroundWorldAxis block.object, Z_AXIS, zTilt
+        if Blocks.common?HEADER?
+          _.each Blocks.common.HEADER.blocks, (block) ->
+            if Math.abs(_lastBeta - event.beta) > 5
+              xTilt = -event.beta * piOver540
+            if Math.abs(_lastGamma - event.gamma) > 5
+              zTilt = event.gamma * piOver540
+            rotateAroundWorldAxis block.object, X_AXIS, xTilt
+            rotateAroundWorldAxis block.object, Z_AXIS, zTilt
 
   init: init

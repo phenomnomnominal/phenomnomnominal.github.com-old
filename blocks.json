@@ -233,7 +233,7 @@
         },
         "LISTENING": {
             "blocks": [
-                { "y": 10, "height": 12 }, { "y": 22, "height": 2 }
+                { "y": 10, "height": 2 }, { "y": 12, "height": 12 }
             ],
             "x": 36,
             "colour": "default",

@@ -30,21 +30,26 @@
       callback()
             
   change = (scene, callback, newOn = []) ->
-    if _on.length is 0
-      callback()
-    _.each _on, (blockGroup) ->
-      if blockGroup not in Scenes[scene].blockGroups
-        animation = _getOffAnimation blockGroup
-        blockGroup.animate animation, callback
-        callback = null
-      else
-        newOn.push blockGroup
-    _.each Scenes[scene].blockGroups, (blockGroup) ->
-      if blockGroup not in newOn
-        animation = _getOnAnimation blockGroup
-        blockGroup.animate animation
-        newOn.push blockGroup
-    _on = newOn
+    if Scenes[scene]
+      if _on.length is 0
+        callback()
+      _.each _on, (blockGroup) ->
+        if blockGroup not in Scenes[scene].blockGroups
+          animation = _getOffAnimation blockGroup
+          blockGroup.animate animation, callback
+          callback = null
+        else
+          newOn.push blockGroup
+      _.each Scenes[scene].blockGroups, (blockGroup) ->
+        if blockGroup not in newOn
+          animation = _getOnAnimation blockGroup
+          blockGroup.animate animation
+          newOn.push blockGroup
+      _on = newOn
+      
+  clear = ->
+    _on = []
 
   init: init
   change: change
+  clear: clear

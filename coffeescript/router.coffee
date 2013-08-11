@@ -11,6 +11,7 @@
   init = ->
     _router.route '/*path', -> Projects.kill()
     _router.route '/home', -> Scenes.change 'home', -> _setCurrentSection 'home'
+    _router.route '/reload', -> Routing.go 'home'
     _router.route '/projects', ->
       Scenes.change 'projects', ->
         _setCurrentSection 'projects'

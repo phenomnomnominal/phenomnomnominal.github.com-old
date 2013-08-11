@@ -19,7 +19,6 @@
     if container.height() >= container.width() * 9 / 16
       _height = container.height()
       _width = _height * 16 / 9
-      $('main').css 'overflow-x': 'scroll', 'overflow-y': 'hidden'
     else
       _width = container.width()
       _height = _width * 9 / 16

@@ -45,7 +45,7 @@
       $CONTAINER.append(CANVAS);
       CONTEXT = CANVAS.getContext('2d');
       $(window).resize(_resize);
-      if (WorkerBench.workersAvailable()) {
+      if (WorkerBench.workersAvailable() && false) {
         genieInit = function() {
           _resize();
           Genie.init({

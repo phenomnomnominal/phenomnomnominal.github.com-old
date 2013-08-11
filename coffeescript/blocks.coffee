@@ -64,6 +64,10 @@
           'position.z': 'translateZ'
 
         css[window.transform] = "#{_transformMappings['position.' + direction]}(#{amount}px)"
+        if css[window.transform] not in ['translateX(0px)', 'translateY(0px)', 'translateZ(0px)']
+          $(@elements).addClass 'is-transformed'
+        else 
+          $(@elements).removeClass 'is-transformed'
         $(@elements).css css
       this
 
@@ -107,6 +111,8 @@
               _.each blockRequires.split(' '), (require) -> requiresOk = requiresOk and Modernizr[require]
             if requiresOk
               new Block(blockX, blockY, blockWidth, blockHeight, Colours[blockColour], blockContent)
+            else
+              new Block(-100, -100, 1, 1)
           if blocks.length > 0
             blockGroup = new BlockGroup(blocks, $(selector), offDirection)
             for own event, handlerName of events
