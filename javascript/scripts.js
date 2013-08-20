@@ -639,6 +639,32 @@
     };
   })();
 
+  (typeof exports !== "undefined" && exports !== null ? exports : this).EasterEggs = (function() {
+    var KONAMI_KEYS, daybreak;
+    daybreak = function() {
+      return $(document.body).append($('<audio>', {
+        src: '/audio/daybreak.mp3',
+        autoplay: true
+      }));
+    };
+    KONAMI_KEYS = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+    return (function() {
+      var pressedKeys;
+      pressedKeys = [];
+      return $(document.body).on('keyup', function(e) {
+        if (e.keyCode === KONAMI_KEYS[pressedKeys.length]) {
+          pressedKeys.push(e.keyCode);
+        } else {
+          pressedKeys = [];
+        }
+        if (pressedKeys.length === KONAMI_KEYS.length) {
+          daybreak();
+          return pressedKeys = [];
+        }
+      });
+    })();
+  })();
+
   (typeof exports !== "undefined" && exports !== null ? exports : this).Events = (function() {
     var addEventListener, get, init, one, removeEventListener, update, _activeEvents, _camera, _click, _eventMappings, _getWidthAndHeight, _height, _intersected, _mousePixelsX, _mousePixelsY, _mouseX, _mouseY, _mousedown, _mouseup, _objects, _previousIntersected, _previousMouseX, _previousMouseY, _previousObjects, _projector, _runEvents, _scene, _width;
     _projector = new THREE.Projector();
