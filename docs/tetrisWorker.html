@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>tetrisWorker.litcoffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>tetrisWorker.litcoffee</h1>
+        
+
+        
+      </div>
+
+      
+        
+        <p>Because we have fancy machines with multi-core processors, and nice new shiny browsers
+we can use <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/workers.html"><strong><code>WebWorkers</code></strong></a> to run multiple instances of <a href="../docs/TetrisAI.html"><strong><code>TetrisAI</code></strong></a>
+in parallel, which allows us to speed up the progress of the genetic algorithm. However, 
+a <strong><code>Worker</code></strong> has a number of restrictions (for instance it cannot access the <strong><code>DOM</code></strong>). To
+get around this, we split out the functionality so that the heavy-lifting is done by the <strong><code>Worker</code></strong>
+and it just reports back to the main thread, which handles the rendering and the distribution of the work.</p>
+<h2>Setup:</h2>
+<hr>
+<p>We first need to import the scripts that we depend on, which is just the combined
+<strong><code>Tetris</code></strong> script and the <a href="http://underscorejs.org/"><strong><code>underscore</code></strong></a> utility library.</p>
+
+        
+          <div class='highlight'><pre>importScripts <span class="string">'tetris.js'</span>, <span class="string">'/libraries/underscore.js'</span></pre></div>
+        
+      
+        
+        <p>Then we declare some variables which will be accessed from throughout the script.</p>
+
+        
+          <div class='highlight'><pre>_tetris = _chromosomeIndex = <span class="literal">null</span></pre></div>
+        
+      
+        
+        <h2>Update:</h2>
+<hr>
+<p>The <strong><code>update</code></strong> function is in charge of reporting the information back to the main thread
+(via <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/workers.html#dom-dedicatedworkerglobalscope-postmessage"><strong><code>self.postMessage</code></strong></a>), based on the two possible states of the current game.</p>
+
+        
+          <div class='highlight'><pre><span class="function"><span class="title">update</span></span> = -&gt;</pre></div>
+        
+      
+        
+        <h3>There are still valid moves to be made:</h3>
+<p>If the <strong><code>TetrisAI</code></strong> is still playing the game, the whole <a href="../docs/TetrisGrid.html"><strong><code>TetrisGrid</code></strong></a> is
+passed back to the main thread for rendering, along with the index of the <a href="../docs/Chromosome.html"><strong><code>Chromosome</code></strong></a>
+is the current generation.</p>
+
+        
+          <div class='highlight'><pre>  <span class="keyword">unless</span> _tetris.gameOver()
+    _tetris.makeMove()
+    self.postMessage
+      func: <span class="string">'move'</span>
+      tetris: _tetris
+      index: _chromosomeIndex</pre></div>
+        
+      
+        
+        <h3>The game is over:</h3>
+<p>Once the game is finished - which happens when the AI can no longer find a valid more (or it hits the top)
+of the <strong><code>TetrisGrid</code></strong> - the final score is returned to the main thread, and the <strong><code>WebWorker</code></strong> destroys itself.</p>
+
+        
+          <div class='highlight'><pre>  <span class="keyword">else</span>
+    self.postMessage 
+      func: <span class="string">'complete'</span>
+      score: _tetris.score
+      index: _chromosomeIndex
+    self.close()</pre></div>
+        
+      
+        
+        <h2>Event delegation:</h2>
+<hr>
+<p>In order for the <strong><code>Worker</code></strong> to know what to do, it needs to be able to handle the different
+types of messages that can come from the main thread. We do this by passing a value called <strong><code>func</code></strong>
+with each message. Each different possible value of <strong><code>func</code></strong> is handled differently:</p>
+
+        
+          <div class='highlight'><pre>handlers =</pre></div>
+        
+      
+        
+        <p>The first message that comes from the main thread will always have a <strong><code>func</code></strong> value of <strong><code>&quot;evaluateFitness&quot;</code></strong>.
+This tells us that we can expect to get some information about the current <strong><code>Chromosome</code></strong>, which will let us 
+initialise an instance of <strong><code>TetrisAI</code></strong> and get to work.</p>
+
+        
+          <div class='highlight'><pre>  evaluateFitness: -&gt;
+    { chromosome, index} = e.data
+    { workerIndex, chromosomeIndex } = index
+
+    _tetris = <span class="keyword">new</span> TetrisAI(chromosome.genes)
+    _chromosomeIndex = chromosomeIndex
+
+    update()</pre></div>
+        
+      
+        
+        <p>Every message that comes after that will have a <strong><code>func</code></strong> value of <strong><code>&quot;update&quot;</code></strong> which means the <strong><code>TetrisAI</code></strong>
+should evaluate and try to make another move.</p>
+
+        
+          <div class='highlight'><pre>  update: -&gt;
+    update()</pre></div>
+        
+      
+        
+        <p>Lastly, we need to actually add an event listener so that we can handle any messages that
+the <strong><code>Worker</code></strong> receives from the main thread.</p>
+
+        
+          <div class='highlight'><pre>self.addEventListener <span class="string">'message'</span>, (e) -&gt; <span class="keyword">do</span> handlers[e.data.func]</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>
