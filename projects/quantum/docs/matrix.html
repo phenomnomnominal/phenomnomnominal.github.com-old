@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>matrix.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>matrix.coffee</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="algorithms.html">
+                    algorithms.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="bra-ket.html">
+                    bra-ket.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="complex.html">
+                    complex.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="index.html">
+                    index.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="matrix.html">
+                    matrix.coffee
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <h3 id="-quantum-computer-simulator-quantum-html-"><a href="../quantum.html">Quantum Computer Simulator</a></h3>
+<p><em>matrix.coffee</em> contains the <strong><code>Matrix</code></strong>, <strong><code>Hermitian</code></strong> and <strong><code>Unitary</code></strong> classes.</p>
+<hr>
+
+        
+      
+        
+        <h2 id="error-types-">Error Types:</h2>
+<p>Some specific <strong><code>Error</code></strong> types for these classes:</p>
+
+        
+      
+        
+        <section id='mce'></section>
+
+<ul>
+<li><strong><code>MatrixConstructorError</code></strong>:</li>
+</ul>
+<blockquote>
+<blockquote>
+<p>These errors are thrown when something is wrong in the <a href="#matrix"><strong><code>Matrix</code></strong></a> constructor</p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MatrixConstructorError</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Error</span></span></pre></div>
+        
+      
+        
+        <section id='mme'></section>
+
+<ul>
+<li><strong><code>MatrixMathError</code></strong>:</li>
+</ul>
+<blockquote>
+<blockquote>
+<p>These errors are thrown when something is mathematically wrong a <strong><code>Matrix</code></strong> function</p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MatrixMathError</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Error</span></span></pre></div>
+        
+      
+        
+        <section id='hce'></section>
+
+<ul>
+<li><strong><code>HermitianConstructorError</code></strong>:</li>
+</ul>
+<blockquote>
+<blockquote>
+<p>These errors are thrown when something is wrong in the <a href="#hermitian"><strong><code>Hermitian</code></strong></a> constructor</p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HermitianConstructorError</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Error</span></span></pre></div>
+        
+      
+        
+        <section id='uce'></section>
+
+<ul>
+<li><strong><code>UnitaryConstructorError</code></strong>:</li>
+</ul>
+<blockquote>
+<blockquote>
+<p>These errors are thrown when something is wrong in the <a href="#unitary"><strong><code>Unitary</code></strong></a> constructor</p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">UnitaryConstructorError</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Error</span></span></pre></div>
+        
+      
+        
+        <hr>
+
+        
+      
+        
+        <h2 id="-section-id-matrix-matrix-section-"><section id='matrix'>Matrix:</section></h2>
+<hr>
+<p>The <strong><code>Matrix</code></strong> class provides a low-level representation of Matrices.</p>
+
+        
+          <div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Matrix</span></span></pre></div>
+        
+      
+        
+        <h3 id="-constructor-"><em>constructor:</em></h3>
+<blockquote>
+<p>The <strong><code>Matrix</code></strong> constructor requires one parameters:</p>
+<ul>
+<li>A <code>2D Array</code> as a representation of the matrix, containing only <a href="complex.html#complex"><strong><code>Complex</code></strong></a> numbers: <code>m</code></li>
+</ul>
+<p>The constructor function also takes a single optional parameter.</p>
+<ul>
+<li>A <code>Number</code> which multiplies the whole matrix by a scaling value: <code>constant</code> - defaults to <code>1</code></li>
+</ul>
+<p>If the arguments are of the incorrect type, the constructor will throw a <a href="#mce"><strong><code>MatrixConstructorError</code></strong></a>.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(m, constant = <span class="hljs-number">1</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">unless</span> m?
+      <span class="hljs-keyword">throw</span> MatrixConstructorError <span class="hljs-string">'`m` must be defined.'</span>
+    <span class="hljs-keyword">unless</span> _.isArray m
+      <span class="hljs-keyword">throw</span> MatrixConstructorError <span class="hljs-string">'`m` must be an Array.'</span>
+    <span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> m
+      <span class="hljs-keyword">unless</span> _.isArray obj
+        <span class="hljs-keyword">throw</span> MatrixConstructorError <span class="hljs-string">'`m` must be a 2D Array.'</span>
+    <span class="hljs-keyword">unless</span> m.length &gt; <span class="hljs-number">0</span>
+      <span class="hljs-keyword">throw</span> MatrixConstructorError <span class="hljs-string">'`m` must have more than 0 rows.'</span>
+    length = -<span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> m
+      <span class="hljs-keyword">if</span> length &lt; <span class="hljs-number">0</span>
+        length = n.length
+      <span class="hljs-keyword">unless</span> n.length <span class="hljs-keyword">is</span> length
+        <span class="hljs-keyword">throw</span> MatrixConstructorError <span class="hljs-string">'`m` must contain rows of one length.'</span>
+    <span class="hljs-keyword">unless</span> length &gt; <span class="hljs-number">0</span>
+      <span class="hljs-keyword">throw</span> MatrixConstructorError <span class="hljs-string">'`m` must have more than 0 columns.'</span>
+    <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> m
+      <span class="hljs-keyword">for</span> obj <span class="hljs-keyword">in</span> n
+        <span class="hljs-keyword">unless</span> obj <span class="hljs-keyword">instanceof</span> $C
+          <span class="hljs-keyword">throw</span> MatrixConstructorError <span class="hljs-string">'`m` must only contain Complex numbers.'</span>
+
+    complexM = []
+    <span class="hljs-keyword">for</span> x <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..m.length]
+      <span class="hljs-keyword">for</span> y <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..m[x].length]
+        complexM[x] ?= []
+        complexM[x][y] = <span class="hljs-keyword">new</span> $C(m[x][y]).multiply constant
+    <span class="hljs-property">@matrix</span> = complexM
+    <span class="hljs-property">@rows</span> = <span class="hljs-property">@matrix</span>.length
+    <span class="hljs-property">@columns</span> = <span class="hljs-property">@matrix</span>[<span class="hljs-number">0</span>].length</pre></div>
+        
+      
+        
+        <hr>
+<h3 id="utility-constructor-functions-">Utility Constructor Functions:</h3>
+
+        
+      
+        
+        <p>These functions are attached to the <strong><code>Matrix</code></strong> class and provide easy access to some commonly generated Matrices:</p>
+
+        
+      
+        
+        <h3 id="-matrix-identity-"><em>Matrix.Identity:</em></h3>
+<blockquote>
+<p><strong><code>Matrix.Identity</code></strong> creates a new <strong><code>Matrix</code></strong> where the values <em>M<sub>ij</sub></em> where <em>i = j</em> are set to <code>1</code>. The size of the <strong><code>Matrix</code></strong> is determined by <code>n</code>, where the resulting <strong><code>Matrix</code></strong> will be <em>2<sup>n</sup> x 2<sup>n</sup></em></p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@Identity</span>: <span class="hljs-function"><span class="hljs-params">(n = <span class="hljs-number">1</span>)</span> -&gt;</span>
+    n = Math.pow <span class="hljs-number">2</span>, n
+    matrix = []
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..n]
+      matrix[r] = []
+      <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..n]
+        matrix[r][c] = <span class="hljs-keyword">if</span> r <span class="hljs-keyword">is</span> c <span class="hljs-keyword">then</span> <span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>) <span class="hljs-keyword">else</span> <span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>)
+    <span class="hljs-keyword">new</span> Matrix(matrix)</pre></div>
+        
+      
+        
+        <h3 id="-matrix-ones-"><em>Matrix.Ones:</em></h3>
+<blockquote>
+<p><strong><code>Matrix.Ones</code></strong> creates a new <strong><code>Matrix</code></strong> where all values are set to <code>1</code>. The size of the <strong><code>Matrix</code></strong> is determined by <code>n</code>, where the resulting <strong><code>Matrix</code></strong> will be <em>2<sup>n</sup> x 2<sup>n</sup></em></p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@Ones</span>: <span class="hljs-function"><span class="hljs-params">(n = <span class="hljs-number">1</span>)</span> -&gt;</span>
+    n = Math.pow <span class="hljs-number">2</span>, n
+    matrix = []
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..n]
+      matrix[r] = []
+      <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..n]
+        matrix[r][c] = <span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>)
+    <span class="hljs-keyword">new</span> Matrix(matrix)</pre></div>
+        
+      
+        
+        <h3 id="-matrix-zeroes-"><em>Matrix.Zeroes:</em></h3>
+<blockquote>
+<p><strong><code>Matrix.Zeroes</code></strong> creates a new <strong><code>Matrix</code></strong> where all values are set to <code>0</code>. The size of the <strong><code>Matrix</code></strong> is determined by <code>n</code>, where the resulting <strong><code>Matrix</code></strong> will be <em>2<sup>n</sup> x 2<sup>n</sup></em></p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@Zeroes</span>: <span class="hljs-function"><span class="hljs-params">(n = <span class="hljs-number">1</span>)</span> -&gt;</span>
+    n = Math.pow <span class="hljs-number">2</span>, n
+    matrix = []
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..n]
+      matrix[r] = []
+      <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..n]
+        matrix[r][c] = <span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>)
+    <span class="hljs-keyword">new</span> Matrix(matrix)</pre></div>
+        
+      
+        
+        <hr>
+<h3 id="utility-functions-">Utility Functions:</h3>
+
+        
+      
+        
+        <h3 id="-print-"><em>print:</em></h3>
+<blockquote>
+<p><strong><code>print</code></strong> outputs a representation of a <strong>Matrix</strong> to the console, e.g:</p>
+<blockquote>
+<p><strong>COFFEESCRIPT:</strong></p>
+<pre><code>hadamard = $U.Hadamard()
+hadamard.<span class="hljs-built_in">print</span> <span class="hljs-string">'Hadamard'</span>
+</code></pre><p><strong>CONSOLE OUTPUT:</strong></p>
+<pre><code>Hadamard <span class="hljs-attribute">MATRIX</span>:
+[<span class="hljs-number">0.7071067811865475</span> + <span class="hljs-number">0</span>i, <span class="hljs-number">0.7071067811865475</span> + <span class="hljs-number">0</span>i]
+[<span class="hljs-number">0.7071067811865475</span> + <span class="hljs-number">0</span>i, -<span class="hljs-number">0.7071067811865475</span> + <span class="hljs-number">0</span>i]
+</code></pre></blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">print</span>: <span class="hljs-function"><span class="hljs-params">(id)</span> -&gt;</span>
+    <span class="hljs-built_in">console</span>.log <span class="hljs-string">"<span class="hljs-subst">#{id}</span> MATRIX:"</span>
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@rows</span>]
+      str = <span class="hljs-string">'['</span>
+      <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@columns</span>]
+        str += <span class="hljs-string">"<span class="hljs-subst">#{<span class="hljs-property">@matrix</span>[r][c]}</span>, "</span>
+      str = <span class="hljs-string">"<span class="hljs-subst">#{str[<span class="hljs-number">0.</span>..str.length - <span class="hljs-number">2</span>]}</span>]"</span>
+      <span class="hljs-built_in">console</span>.log str
+    <span class="hljs-keyword">this</span></pre></div>
+        
+      
+        
+        <hr>
+<h3 id="prototypical-instance-functions-">Prototypical Instance Functions:</h3>
+
+        
+      
+        
+        <p>These functions are attached to each instance of the <strong><code>Matrix</code></strong> class - changing the function of one <strong><code>Matrix</code></strong> changes the function on all other <strong><code>Matrixs</code></strong> as well. These functions act on a <strong><code>Matrix</code></strong> instance in place - the original object is modified.</p>
+
+        
+      
+        
+        <h3 id="-scale-"><em>scale:</em></h3>
+<blockquote>
+<p><strong><code>scale</code></strong> scales each value in a <strong>Matrix</strong> by a given scaling factor, <code>s</code>.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">scale</span>: <span class="hljs-function"><span class="hljs-params">(s)</span> -&gt;</span>
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@rows</span>]
+      <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@columns</span>]
+        <span class="hljs-property">@matrix</span>[r][c].multiply s
+    <span class="hljs-keyword">this</span></pre></div>
+        
+      
+        
+        <h3 id="-negate-"><em>negate:</em></h3>
+<blockquote>
+<p><strong><code>negate</code></strong> scales each value in a <strong>Matrix</strong> by <code>-1</code>.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">negate</span>:<span class="hljs-function"> -&gt;</span>
+    <span class="hljs-keyword">this</span>.scale -<span class="hljs-number">1</span></pre></div>
+        
+      
+        
+        <h3 id="-transpose-"><em>transpose:</em></h3>
+<blockquote>
+<p><strong><code>transpose</code></strong> transposes a <strong>Matrix</strong> by flipping the <strong>Matrix</strong> across the trace.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">transpose</span>:<span class="hljs-function"> -&gt;</span>
+    trans = clone(<span class="hljs-keyword">this</span>)
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@rows</span>]
+      <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@columns</span>]
+        trans.matrix[c][r] = <span class="hljs-property">@matrix</span>[r][c]
+    trans</pre></div>
+        
+      
+        
+        <h3 id="-conj-"><em>conj:</em></h3>
+<blockquote>
+<p><strong><code>conj</code></strong> conjugates a <strong>Matrix</strong> by conjugating each of the values in the <strong>Matrix</strong>.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">conj</span>:<span class="hljs-function"> -&gt;</span>
+    conj = clone(<span class="hljs-keyword">this</span>)
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@rows</span>]
+      <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@columns</span>]
+        conj.matrix[r][c] = <span class="hljs-property">@matrix</span>[r][c].conjugate()
+    conj</pre></div>
+        
+      
+        
+        <h3 id="-isunitary-"><em>isUnitary:</em></h3>
+<blockquote>
+<p><strong><code>isUnitary</code></strong> tests if a <strong>Matrix</strong> is <a href="http://en.wikipedia.org/wiki/Unitary_matrix">unitary</a> by checking that <em>UU<sub>ct</sub> = I</em>, where <em>U<sub>ct</sub></em> is the <em>conjugate transpose</em> of <em>U</em>, and <em>I</em> is an <em>Identity</em> matirx.</p>
+<p>In quantum systems, all matrices representing <a href="http://en.wikipedia.org/wiki/Quantum_gate">gate</a> operations must be unitary. This function is therefore called whenever a <strong><code>Unitary</code></strong> is initialised.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">isUnitary</span>:<span class="hljs-function"> -&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@rows</span> <span class="hljs-keyword">isnt</span> <span class="hljs-property">@columns</span>
+      <span class="hljs-literal">no</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-property">@size</span> = <span class="hljs-property">@rows</span>
+      conjTrans = clone(<span class="hljs-keyword">this</span>).conj().transpose()
+      <span class="hljs-keyword">if</span> Matrix.Multiply(<span class="hljs-keyword">this</span>, conjTrans).isIdentity() <span class="hljs-keyword">then</span> <span class="hljs-literal">yes</span> <span class="hljs-keyword">else</span> <span class="hljs-literal">no</span></pre></div>
+        
+      
+        
+        <h3 id="-ishermitian-"><em>isHermitian:</em></h3>
+<blockquote>
+<p><strong><code>isHermitian</code></strong> tests if a <strong>Matrix</strong> is <a href="http://en.wikipedia.org/wiki/Hermitian_matrix">Hermitian</a> by checking that <em>U<sub>ct</sub> = U</em>, where <em>U<sub>ct</sub></em> is the <em>conjugate transpose</em> of <em>U</em>.</p>
+<p>In quantum systems, all matrices representing <a href="http://en.wikipedia.org/wiki/Quantum_measurement">measurement</a> operations must be Hermitian. This function is therefore called whenever a <strong><code>Hermitian</code></strong> is initialised.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">isHermitian</span>:<span class="hljs-function"> -&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@rows</span> <span class="hljs-keyword">isnt</span> <span class="hljs-property">@columns</span>
+      <span class="hljs-literal">no</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-property">@size</span> = <span class="hljs-property">@rows</span>
+      <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@size</span>]
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@size</span>]
+          val = <span class="hljs-property">@matrix</span>[r][c]
+          conj = $C.Conjugate <span class="hljs-property">@matrix</span>[c][r]
+          <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> $C.Equals val, conj <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">no</span>
+      <span class="hljs-literal">yes</span></pre></div>
+        
+      
+        
+        <h3 id="-isidentity-"><em>isIdentity:</em></h3>
+<blockquote>
+<p><strong><code>isIdentity</code></strong> tests if a <strong>Matrix</strong> is an <a href="http://en.wikipedia.org/wiki/Identity_matrix">Identity</a> matrix by checking that <em>U<sub>ij</sub></em> is <code>1</code> where <em>i = j</em>, and <code>0</code> everywhere else.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">isIdentity</span>:<span class="hljs-function"> -&gt;</span>
+    <span class="hljs-keyword">if</span> <span class="hljs-property">@rows</span> <span class="hljs-keyword">isnt</span> <span class="hljs-property">@columns</span>
+      <span class="hljs-literal">no</span>
+    <span class="hljs-keyword">else</span>
+      <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@rows</span>]
+        <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..<span class="hljs-property">@columns</span>]
+          <span class="hljs-keyword">if</span> r <span class="hljs-keyword">is</span> c
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@matrix</span>[r][c].equals <span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>) <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">no</span>
+          <span class="hljs-keyword">else</span>
+            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> <span class="hljs-property">@matrix</span>[r][c].equals <span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>) <span class="hljs-keyword">then</span> <span class="hljs-keyword">return</span> <span class="hljs-literal">no</span>
+      <span class="hljs-literal">yes</span></pre></div>
+        
+      
+        
+        <h3 id="-clone-"><em>clone:</em></h3>
+<blockquote>
+<p><strong><code>clone</code></strong> creates an exact copy of the existing <strong>Matrix</strong>.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-title">clone</span> = <span class="hljs-params">(m)</span> -&gt;</span>
+    <span class="hljs-keyword">new</span> Matrix(m.matrix)</pre></div>
+        
+      
+        
+        <hr>
+<h3 id="static-functions-">Static Functions:</h3>
+
+        
+      
+        
+        <p>These functions belong to the <strong><code>Matrix</code></strong> class - any object arguments are not modified and a new object is always returned.</p>
+
+        
+      
+        
+        <h3 id="-matrix-add-"><em>Matrix.Add:</em></h3>
+<blockquote>
+<p><strong><code>Matrix.Add</code></strong> adds any number of <strong><code>Matrix</code></strong> together.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@Add</span> = <span class="hljs-function"><span class="hljs-params">(m1, m2, mn...)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> m1.columns <span class="hljs-keyword">isnt</span> m2.columns <span class="hljs-keyword">and</span> m1.rows <span class="hljs-keyword">isnt</span> m2.rows
+      <span class="hljs-keyword">throw</span> MatrixMathError <span class="hljs-string">'Matrix dimensions incorrect for addition.'</span>
+    result = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..m1.rows]
+      result[i] = []
+      <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..m1.columns]
+        result[i][j] = $C.Add(m1.matrix[i][j], m2.matrix[i][j])
+    add = <span class="hljs-keyword">new</span> Matrix(result)
+    <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> mn
+      add = Matrix.Multiply add, m
+    add</pre></div>
+        
+      
+        
+        <h3 id="-matrix-multiply-"><em>Matrix.Multiply:</em></h3>
+<blockquote>
+<p><strong><code>Matrix.Multiply</code></strong> multiplies any number of <strong><code>Matrixs</code></strong> together.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@Multiply</span> = <span class="hljs-function"><span class="hljs-params">(m1, m2, mn...)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> m1.columns <span class="hljs-keyword">isnt</span> m2.rows
+      <span class="hljs-keyword">throw</span> MatrixMathError <span class="hljs-string">'Matrix dimensions incorrect for multiplication.'</span>
+    result = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..m1.rows]
+      result.push []
+    <span class="hljs-keyword">for</span> r <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..m1.rows]
+      <span class="hljs-keyword">for</span> c <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..m2.columns]
+        val = <span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>)
+        <span class="hljs-keyword">for</span> k <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..m1.columns]
+          val.add $C.Multiply(m1.matrix[r][k], m2.matrix[k][c])
+        result[r][c] = val
+    mul = <span class="hljs-keyword">new</span> Matrix(result)
+    <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> mn
+      mul = Matrix.Multiply mul, m
+    mul</pre></div>
+        
+      
+        
+        <h3 id="-section-id-kron-matrix-kron-section-"><section id='kron'><em>Matrix.Kron:</em></section></h3>
+<blockquote>
+<p><strong><code>Matrix.Kron</code></strong> evaluates the <a href="http://en.wikipedia.org/wiki/Kronecker_product">Kronecker Product</a> of any number of <strong><code>Matrix</code></strong>.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@Kron</span> = <span class="hljs-function"><span class="hljs-params">(matrices)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> matrices.length <span class="hljs-keyword">is</span> <span class="hljs-number">1</span>
+      <span class="hljs-keyword">return</span> matrices[<span class="hljs-number">0</span>]
+    <span class="hljs-keyword">else</span>
+      m1 = matrices[<span class="hljs-number">0</span>]
+      m2 = matrices[<span class="hljs-number">1</span>]
+      kronProd = []
+      height1 = m1.rows
+      width1 = m1.columns
+      height2 = m2.rows
+      width2 = m2.columns
+      <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..height1 * height2]
+        kronProd.push []
+      <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..height1]
+        <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..width1]
+          <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..height2]
+            <span class="hljs-keyword">for</span> q <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..width2]
+              newM = m * height2 + p
+              newN = n * width2 + q
+              val = $C.Multiply m1.matrix[m][n], m2.matrix[p][q]
+              kronProd[newM][newN] = val
+      <span class="hljs-keyword">return</span> Matrix.Kron [<span class="hljs-keyword">new</span> Matrix(kronProd)].concat matrices[<span class="hljs-number">2.</span>.]</pre></div>
+        
+      
+        
+        <hr>
+
+        
+      
+        
+        <h2 id="-section-id-hermitian-hermitian-section-"><section id='hermitian'>Hermitian:</section></h2>
+<hr>
+<p>The <strong><code>Hermitian</code></strong> class provides a representation of <a href="http://en.wikipedia.org/wiki/Hermitian_matrix">Hermitian</a> matrices, which are a special type of <strong>Matrix</strong> which has the property that <em>U<sub>ct</sub> = U</em>, where <em>U<sub>ct</sub></em> is the <em>conjugate transpose</em> of <em>U</em>.</p>
+<p>In quantum systems, all matrices representing <a href="http://en.wikipedia.org/wiki/Quantum_measurement">measurement</a> operations must be Hermitian. </p>
+
+        
+          <div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Hermitian</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Matrix</span></span></pre></div>
+        
+      
+        
+        <h3 id="-constructor-"><em>constructor:</em></h3>
+<blockquote>
+<p>The <strong><code>Hermitian</code></strong> constructor requires one parameters:</p>
+<ul>
+<li>A <code>2D Array</code> as a representation of the matrix, containing only <a href="complex.html#complex"><strong><code>Complex</code></strong></a> numbers: <code>m</code></li>
+</ul>
+<p>The constructor function also takes a single optional parameter.</p>
+<ul>
+<li>A <code>Number</code> which multiplies the whole matrix by a scaling value: <code>constant</code> - defaults to <code>1</code></li>
+</ul>
+<p>The <strong>Matrix</strong> constructor is called with these parameters, and the resulting <strong>Matrix</strong> is tested for being Hermitian. If it is not, the constructor will throw a <a href="#hce"><strong><code>HermitianConstructorError</code></strong></a>.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(m, constant = <span class="hljs-number">1</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(m, constant)
+    <span class="hljs-keyword">unless</span> <span class="hljs-property">@isHermitian</span>()
+      <span class="hljs-keyword">throw</span> HermitianConstructorError <span class="hljs-string">'Matrix is not Hermitian.'</span></pre></div>
+        
+      
+        
+        <hr>
+
+        
+      
+        
+        <h2 id="-section-id-unitary-unitary-section-"><section id='unitary'>Unitary:</section></h2>
+<hr>
+<p>The <strong><code>Unitary</code></strong> class provides a representation of <a href="http://en.wikipedia.org/wiki/Unitary_matrix">Unitary</a> matrices, which are a special type of <strong>Matrix</strong> which has the property that <em>U<sub>ct</sub>U = I</em>, where <em>U<sub>ct</sub></em> is the <em>conjugate transpose</em> of <em>U</em>, and <em>I</em> is an <em>Identity</em> matrix.</p>
+<p>In quantum systems, all matrices representing <a href="http://en.wikipedia.org/wiki/Quantum_gate">gate</a> operations must be unitary. </p>
+
+        
+          <div class='highlight'><pre><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Unitary</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Matrix</span></span></pre></div>
+        
+      
+        
+        <h3 id="-constructor-"><em>constructor:</em></h3>
+<blockquote>
+<p>The <strong><code>Unitary</code></strong> constructor requires one parameters:</p>
+<ul>
+<li>A <code>2D Array</code> as a representation of the matrix, containing only <a href="complex.html#complex"><strong><code>Complex</code></strong></a> numbers: <code>m</code></li>
+</ul>
+<p>The constructor function also takes a single optional parameter.</p>
+<ul>
+<li>A <code>Number</code> which multiplies the whole matrix by a scaling value: <code>constant</code> - defaults to <code>1</code></li>
+</ul>
+<p>The <strong>Matrix</strong> constructor is called with these parameters, and the resulting <strong>Matrix</strong> is tested for being Unitary. If it is not, the constructor will throw a <a href="#uce"><strong><code>UnitaryConstructorError</code></strong></a>.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">constructor</span>: <span class="hljs-function"><span class="hljs-params">(m, constant = <span class="hljs-number">1</span>)</span> -&gt;</span>
+    <span class="hljs-keyword">super</span>(m, constant)
+    <span class="hljs-keyword">unless</span> <span class="hljs-property">@isUnitary</span>()
+      <span class="hljs-keyword">throw</span> UnitaryConstructorError <span class="hljs-string">'Matrix is not Unitary.'</span></pre></div>
+        
+      
+        
+        <hr>
+<h3 id="gate-constructor-functions-">Gate Constructor Functions:</h3>
+
+        
+      
+        
+        <p>These functions are attached to the <strong><code>Unitary</code></strong> class and provide easy access to some commonly generated quantum gates:</p>
+
+        
+      
+        
+        <h3 id="-unitary-paulix-"><em>Unitary.PauliX:</em></h3>
+<blockquote>
+<p><em>Unitary.PauliX</em> creates a new <strong><code>Unitary</code></strong> that represents the PauliX (σ<sub>x</sub>) gate:</p>
+<blockquote>
+<p><img src="../images/pauliX.png"/></p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@PauliX</span> =<span class="hljs-function"> -&gt;</span>
+    <span class="hljs-keyword">new</span> Unitary([[<span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>)],
+                 [<span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>), <span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>)]])</pre></div>
+        
+      
+        
+        <h3 id="-unitary-pauliy-"><em>Unitary.PauliY:</em></h3>
+<blockquote>
+<p><em>Unitary.PauliY</em> creates a new <strong><code>Unitary</code></strong> that represents the PauliY (σ<sub>y</sub>) gate:</p>
+<blockquote>
+<p><img src="../images/pauliY.png"/></p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@PauliY</span> =<span class="hljs-function"> -&gt;</span>
+    <span class="hljs-keyword">new</span> Unitary([[<span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> $C(<span class="hljs-string">'-i'</span>)],
+                 [<span class="hljs-keyword">new</span> $C(<span class="hljs-string">'i'</span>), <span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>)]])</pre></div>
+        
+      
+        
+        <h3 id="-unitary-pauliz-"><em>Unitary.PauliZ:</em></h3>
+<blockquote>
+<p><em>Unitary.PauliZ</em> creates a new <strong><code>Unitary</code></strong> that represents the PauliZ (σ<sub>z</sub>) gate:</p>
+<blockquote>
+<p><img src="../images/pauliZ.png"/></p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@PauliZ</span> =<span class="hljs-function"> -&gt;</span>
+    <span class="hljs-keyword">new</span> Unitary([[<span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>), <span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>)],
+                 [<span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> $C(-<span class="hljs-number">1</span>)]])</pre></div>
+        
+      
+        
+        <h3 id="-unitary-s-"><em>Unitary.S:</em></h3>
+<blockquote>
+<p><em>Unitary.S</em> creates a new <strong><code>Unitary</code></strong> that represents the S gate:</p>
+<blockquote>
+<p><img src="../images/s.png"/></p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@S</span> =<span class="hljs-function"> -&gt;</span>
+    <span class="hljs-keyword">new</span> Unitary([[<span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>), <span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>)],
+                 [<span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> $C(<span class="hljs-string">'i'</span>)]])</pre></div>
+        
+      
+        
+        <h3 id="-unitary-t-"><em>Unitary.T:</em></h3>
+<blockquote>
+<p><em>Unitary.T</em> creates a new <strong><code>Unitary</code></strong> that represents the Phase shift gate (with <code>θ</code> = <code>π / 4</code> by default):</p>
+<blockquote>
+<p><img src="../images/t.png"/></p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@T</span> = <span class="hljs-function"><span class="hljs-params">(θ)</span> -&gt;</span>
+    e = $C.Exp
+    π = Math.PI
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> θ?
+      θ = π / <span class="hljs-number">4</span>
+    iθ = <span class="hljs-keyword">new</span> $C(<span class="hljs-string">'i'</span>).multiply(θ)
+    <span class="hljs-keyword">new</span> Unitary([[<span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>), <span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>)],
+                 [<span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>), e(iθ)]])</pre></div>
+        
+      
+        
+        <h3 id="-unitary-hadamard-"><em>Unitary.Hadamard:</em></h3>
+<blockquote>
+<p><em>Unitary.Hadamard</em> creates a new <strong><code>Unitary</code></strong> that represents the Hadamard gate:</p>
+<blockquote>
+<p><img src="../images/hadamard.png"/></p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@Hadamard</span> =<span class="hljs-function"> -&gt;</span>
+    oneOverRoot2 = <span class="hljs-number">1</span> / Math.sqrt <span class="hljs-number">2</span>
+    <span class="hljs-keyword">new</span> Unitary([[<span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>), <span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>)],
+                 [<span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>), <span class="hljs-keyword">new</span> $C(-<span class="hljs-number">1</span>)]], oneOverRoot2)</pre></div>
+        
+      
+        
+        <h3 id="-unitary-sqrtnot-"><em>Unitary.SqrtNot:</em></h3>
+<blockquote>
+<p><em>Unitary.SqrtNot</em> creates a new <strong><code>Unitary</code></strong> that represents the SqrtNot gate:</p>
+<blockquote>
+<p><img src="../images/sqrtnot.png"/></p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@SqrtNot</span> =<span class="hljs-function"> -&gt;</span>
+    oneOverRoot2 = <span class="hljs-number">1</span> / Math.sqrt <span class="hljs-number">2</span>
+    <span class="hljs-keyword">new</span> Unitary([[<span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>), <span class="hljs-keyword">new</span> $C(-<span class="hljs-number">1</span>)],
+                 [<span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>), <span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>)]], oneOverRoot2)</pre></div>
+        
+      
+        
+        <h3 id="-unitary-createnbithaystack-"><em>Unitary.CreateNBitHaystack:</em></h3>
+<blockquote>
+<p><em>Unitary&gt;CreateNBitHaystack</em> is used to create the Unitary oracle that is used in the Deutsch-Jozsa Algorithm.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@CreateNBitDeutschJozsaOracle</span> = <span class="hljs-function"><span class="hljs-params">(n, solution)</span> -&gt;</span>
+    range = [<span class="hljs-number">0.</span>..(<span class="hljs-number">2</span>* Math.pow <span class="hljs-number">2</span>, n)]
+    x = _.flatten([i,i] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..(range.length / <span class="hljs-number">2</span>)])
+    y = (i % <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range)
+    solution = solution.toString(<span class="hljs-number">2</span>)
+    <span class="hljs-keyword">while</span> solution.length &lt; range.length /<span class="hljs-number">2</span>
+      solution = <span class="hljs-string">"0<span class="hljs-subst">#{solution}</span>"</span>
+    fx = _.flatten([i,i] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> solution.split <span class="hljs-string">''</span>)
+    yXORfx = (y[i] ^ fx[i] <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range)
+    xy = (parseInt <span class="hljs-string">"<span class="hljs-subst">#{x[i].toString(<span class="hljs-number">2</span>)}</span><span class="hljs-subst">#{y[i].toString(<span class="hljs-number">2</span>)}</span>"</span>, <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range)
+    xyXORfx = (parseInt <span class="hljs-string">"<span class="hljs-subst">#{x[i].toString(<span class="hljs-number">2</span>)}</span><span class="hljs-subst">#{yXORfx[i].toString(<span class="hljs-number">2</span>)}</span>"</span>, <span class="hljs-number">2</span> <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range)
+    matrix = $M.Zeroes n + <span class="hljs-number">1</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..xy.length]
+      matrix.matrix[xy[i]][xyXORfx[i]] = <span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>)
+    matrix</pre></div>
+        
+      
+        
+        <h3 id="-unitary-createnbithaystack-"><em>Unitary.CreateNBitHaystack:</em></h3>
+<blockquote>
+<p><em>Unitary&gt;CreateNBitHaystack</em> is used to create the Unitary oracle that is used in Grover’s algorithm, with the appropriate rows flipped for the given solution, e.g.:</p>
+<p>For <code>n</code> = <code>2</code>, and <code>solution</code> = <code>3</code></p>
+<blockquote>
+<p><img src="../images/haystack.png"/></p>
+</blockquote>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-property">@CreateNBitHaystack</span> = <span class="hljs-function"><span class="hljs-params">(n, solution)</span> -&gt;</span>
+    <span class="hljs-keyword">if</span> solution &gt;= Math.pow(<span class="hljs-number">2</span>, n) <span class="hljs-keyword">or</span> solution &lt; <span class="hljs-number">0</span>
+      <span class="hljs-keyword">throw</span> MatrixMathError <span class="hljs-string">'The solution must be smaller than 2^n and greater than 0.'</span>
+    matrix = $U.Identity(n + <span class="hljs-number">1</span>).matrix
+    matrix[<span class="hljs-number">2</span> * solution][<span class="hljs-number">2</span> * solution] = <span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>)
+    matrix[<span class="hljs-number">2</span> * solution][<span class="hljs-number">2</span> * solution + <span class="hljs-number">1</span>] = <span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>)
+    matrix[<span class="hljs-number">2</span> * solution + <span class="hljs-number">1</span>][<span class="hljs-number">2</span> * solution] = <span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>)
+    matrix[<span class="hljs-number">2</span> * solution + <span class="hljs-number">1</span>][<span class="hljs-number">2</span> * solution + <span class="hljs-number">1</span>] = <span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>)
+    <span class="hljs-keyword">new</span> $U(matrix)</pre></div>
+        
+      
+        
+        <hr>
+<h2 id="exports-">Exports:</h2>
+
+        
+      
+        
+        <p>The <a href="#matrix"><strong><code>Matrix</code></strong></a>, <a href="#hermitian"><strong><code>Hermitian</code></strong></a> and <a href="#unitary"><strong><code>Unitary</code></strong></a> classes are added to the global <code>root</code> object, with the aliases <a href="#matrix"><strong><code>$M</code></strong></a>, <a href="#hermitian"><strong><code>$O</code></strong></a> and <a href="#unitary"><strong><code>$U</code></strong></a> respectively.</p>
+
+        
+          <div class='highlight'><pre>root = <span class="hljs-built_in">exports</span> ? <span class="hljs-keyword">this</span>
+root.$M = root.Matrix = Matrix
+root.$O = root.Hermitian = Hermitian
+root.$U = root.Unitary = Unitary</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

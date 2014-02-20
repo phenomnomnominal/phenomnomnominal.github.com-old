@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<link rel='stylesheet' type='text/css' href='style.css'/>
+<script type='text/javascript' src='libraries/jquery.js'></script>
+<script type='text/javascript' src='libraries/jquery-ui.js'></script>
+<script type='text/javascript' src='libraries/masonry.js'></script>
+<script type='text/javascript' src='libraries/underscore.js'></script>
+<script type='text/javascript' src='javascript/quantum.js'></script>
+</head>
+<body>
+  <div id='wrapper'>
+    <header>
+	  <p>Quantum Computer Simulator</p>
+	  <div class='code'>
+	  	<p>Annotated Code:</p>
+	    <ul>
+	      <li><a href='docs/algorithms.html' target='_blank'>algorithms.coffee</a></li>
+	      <li><a href='docs/bra-ket.html' target='_blank'>bra-ket.coffee</a></li>
+	      <li><a href='docs/complex.html' target='_blank'>complex.coffee</a></li>
+	      <li><a href='docs/matrix.html' target='_blank'>matrix.coffee</a></li>
+	    </ul>
+	  </div>
+	</header>
+	<div id='infoBar' class='default'></div>
+	<div id='createKetsDiv' class='left padBottom'>
+	  <div id='createCustomKet' class='padBottom'>
+    	<p class='title'>CREATE A CUSTOM <a href='http://en.wikipedia.org/wiki/Bra-ket_notation' target='_blank'>KET</a>:</p>
+	    <form id='createKetForm' class='padBottom'>
+	      <label for='ketName'>Ket name:</label>
+	      <input id='ketName' type='text' value='φ'>
+      	  <br/>
+		  <label for='ketQubits'>Number of <a href='http://en.wikipedia.org/wiki/Qubit' target='_blank'>QUBITS</a>:</label>
+	      <input id='ketQubits' type='text'/>
+	      <div id='ketProbs'></div>
+        </form>
+      </div>
+      <div id='createSetKet' class='padBottom'>
+	    <p class='title'>CREATE A PRE-DEFINED <a href='http://en.wikipedia.org/wiki/Bra-ket_notation' target='_blank'>KET</a>:</p>
+		<form id='createSetKetForm' class='padBottom'>
+          <select id='ketSelect'>
+			<option value=''>SELECT:</option>
+			<option value='zero'>Zero</option>
+	        <option value='one'>One</option>
+	      </select>
+        </form>
+      </div>
+    </div>
+    <div id='createGatesDiv' class='left padBottom'>
+  	  <div id='createCustomGate' class='padBottom'>
+  	    <p class='title'>CREATE A CUSTOM <a href='http://en.wikipedia.org/wiki/Quantum_gate' target='_blank'>GATE</a>:</p>
+	    <form id='createCustomGate' class='padBottom'>
+	      <label for='gateName'>Gate name:</label>
+	      <input id='gateName' type='text' value='M'>
+    	  <br/>
+		  <label for='gateQubits'>Number of <a href='http://en.wikipedia.org/wiki/Qubit' target='_blank'>QUBITS</a>:</label>
+	      <input id='gateQubits' type='text'/>
+    	  <div id='gateVals'></div>
+        </form>
+      </div>
+	  <div id='createSetGate' class='padBottom'>
+	    <p class='title'>CREATE A PRE-DEFINED <a href='http://en.wikipedia.org/wiki/Quantum_gate' target='_blank'>GATE</a>:</p>
+		<form id='createSetGateForm' class='padBottom'>
+          <select id='gateSelect'>
+			<option value=''>SELECT:</option>
+			<option value='pauliX'>PauliX</option>
+	        <option value='pauliY'>PauliY</option>
+	        <option value='pauliZ'>PauliZ</option>
+	        <option value='s'>S</option>
+	        <option value='t'>T</option>
+	        <option value='sqrtNot'>√Not</option>
+	        <option value='hadamard'>Hadamard</option>
+	      </select>
+        </form>
+      </div>
+    </div>
+	<div id='quantumComputer' class='right'>
+	  <p class='title'><a href='http://en.wikipedia.org/wiki/Quantum_computer' target='_blank'>QUANTUM COMPUTER</a></p>
+	  <input class='button' id='clearQuantumComputer' type='button' value='clear'>
+	  <p class='subtitle'>KETS:</p>
+	  <p class='note'>(Drag a KET by its NAME - Hover over a state for probability)</p>
+	  <div id='kets' class='state'></div>
+   	  <p class='subtitle'>GATES:</p>
+      <p class='note'>(Drag a GATE by its NAME)</p>
+	  <div id='gates' class='state'></div>
+    </div>
+    <div id='operations' class='right padBottom'>
+	  <div id='transition' class='operation padBottom'>
+		<p class='title'><a href='http://en.wikipedia.org/wiki/Probability_amplitude' target='_blank'>TRANSITION AMPLITUDE:</a></p>
+	    <p class='subtitle'></p>
+		<p class='note'>(Drag 2 KETS here to compute their transition amplitude)</p>
+	    <div id='transition1Drop' class='transition drop'></div>
+	    <div id='transition2Drop' class='transition drop'></div>
+	  </div>
+	  <div id='applyGate' class='operation padBottom'>
+	  	<p class='title'>APPLY GATE</p>
+	    <p class='subtitle'></p>
+		<p class='note'>(Drag 1 GATE and 1 KET here to apply the GATE to the KET)</p>
+	    <div id='gateDrop' class='apply drop'></div>
+	    <div id='ketDrop' class='apply drop'></div>
+	  </div>
+	  <div id='kronGates' class='operation padBottom'>
+	  	<p class='title'><a href='http://en.wikipedia.org/wiki/Kronecker_product' target='_blank'>KRON</a> GATES</p>
+	    <p class='subtitle'></p>
+		<p class='note'>(Drag 2 GATES here to create their Kronecker product)</p>
+	    <div id='kron1Drop' class='kron drop'></div>
+	    <div id='kron2Drop' class='kron drop'></div>
+	  </div>
+	</div>
+    <div id='algorithms' class='left'>
+      <p class='title'>RUN A QUANTUM ALGORITHM:</p>
+	  <form id='algorithmForm' class='padBottom'>
+         <select id='algorithmSelect'>
+ 		   <option value=''>SELECT:</option>
+		   <option value='deutsch'>Deutsch</option>
+           <option value='deutschjozsa'>Deutsch-Josza</option>
+           <option value='grover'>Grover's</option>
+           <option value='shor'>Shor's</option>
+        </select>
+        <div id='deutschDescription' class='description'>
+	      <br/>
+	      <p>The Deutsch Algorithm solves a problem that isn't particularly difficult or particularly important, but it can be solved faster on a quantum computer than on a classical computer.</p>
+	      <br/>
+	      <p>Suppose there is a function ƒ(x) that maps the set {0, 1} onto the set {0, 1}. We want to know whether the function is <strong>BALANCED</strong> (one-to-one) or <strong>CONSTANT</strong> (same output for either input). This can be solved on a quantum computer by using the Deutsch Algorithm.
+	      <br/>
+	      <p>There are four possible functions:</p>
+	      <br/>
+	      <div>
+	  	    <select>
+		      <option value=''>SELECT:</option>
+	  	      <option value='0'>ƒ(x) = 0</option>
+	          <option value='3'>ƒ(x) = 1</option>
+	          <option value='1'>ƒ(x) = x</option>
+	          <option value='2'>ƒ(x) = x̄</option>
+	        </select>
+          </div>
+          <br/>
+  	      <p>Run the algorithm to test if the function is <strong>BALANCED</strong> or  <strong>CONSTANT</strong>.</p>
+        </div>
+        <div id='deutschJozsaDescription' class='description'>
+	      <br/>
+		  <p>The <a href='http://en.wikipedia.org/wiki/Deutsch%E2%80%93Jozsa_algorithm' target='_blank'>Deutsch-Jozsa Algorithm</a> is an extension to the Deutsch Algorithm.</p>
+		  <br/>
+		  <p>Instead of a function which maps {0, 1} onto {0, 1}, we have a function that map the set {0, 1}<sup>n</sup> onto the set {0, 1}. We want to determine whether this function is <strong>BALANCED</strong> (one-to-one) or <strong>NOT BALANCED</strong> (not one-to-one).
+		  <br/>
+		  <p>Again, this is not a particularly useful problem to solve, but the Deutsch-Jozsa Algorithm is one of the first algorithms that is exponentially faster on a quantum computer than on a classical computer.<p/>
+		  <br/>
+		  <p>As this is only a simulator, only small values of <strong>n</strong> can return an answer in a reasonable time:
+		  <div>
+			<select>
+		      <option value=''>SELECT:</option>
+	  	      <option value='1'>n = 1 (Same as Deutsch Algorithm)</option>
+	          <option value='2'>n = 2</option>
+	          <option value='3'>n = 3</option>
+	          <option value='4'>n = 4</option>
+	        </select>
+		  </div>
+		  <br/>
+	    </div>
+    	<div id='groversDescription' class='description'>
+	      <br/>
+	      <p><a href='http://en.wikipedia.org/wiki/Grover%27s_algorithm' target='_blank'>Grover's Algorithm</a> is a quantum algorithm for searching an unsorted database with N entries in O(N<sup>1/2</sup>) time. This is better than an equivalent classical algorithm, which would take at least linear time.</p>
+		  <br/>
+    	  <p>As an example, if we has a list of all N bit strings, e.g. for 4 bits, '0000', '0001', '0010', ... , of which one string is the correct result, Grover's Algorithm can select the correct answer from all the possibilities.</p>
+          <br/>
+		  <p> Grover's Algorithm is probabilistic, in that it gives the correct answer with high, but not certain, probability. This chance of getting the correct answer can be increased by repeating the algorithm.
+		  <br/>
+		  <p>As this is only a simulator, only small values of <strong>n</strong> can return an answer in a reasonable time:
+		  <div>
+			<select>
+		      <option value=''>SELECT:</option>
+	  	      <option value='2'>n = 2</option>
+	          <option value='3'>n = 3</option>
+	          <option value='4'>n = 4</option>
+	          <option value='5'>n = 5</option>
+	          <option value='6'>n = 6</option>
+	        </select>
+		  </div>
+		  <br/>
+	    </div>
+		<div id='shorsDescription' class='description'>
+	      <br/>
+	      <p><a href='http://en.wikipedia.org/wiki/Shor%27s_algorithm' target='_blank'>Shor's Algorithm</a> is a quantum algorithm for performing integer factorisation in polynomial time. This is much better than an equivalent classical algorithm, which the most efficient of which runs in sub-exponential time.
+	      <br/>
+	      <p>Given a number, which is a product of two unknown primes, a quantum computer using Shor's Algorithm can determine the prime factors in a reasonable time (compared to a classical computer).
+		  <br/>
+    	  <p>With a large enough quantum computer, this algorithm could be used to break public-key encryption, as these encryption methods rely on the fact that is is difficult to find the factors of large numbers.</p>
+          <br/>
+		  <div id='selectPrimes'>
+			<p class='title'>Select Primes:</p>
+		  </div>
+		  <br/>
+	    </div>
+      </form>
+    </div>
+  </div>
+  <div class='overlay'></div>
+</body>
+</html>

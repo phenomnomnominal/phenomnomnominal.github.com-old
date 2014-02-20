@@ -1,0 +1,469 @@
+/*------------------------------- Fonts --------------------------------------*/
+@font-face {
+    font-family: 'Lekton';
+    src: url('fonts/lekton-bold-webfont.eot');
+    src: url('fonts/lekton-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lekton-bold-webfont.woff') format('woff'),
+         url('fonts/lekton-bold-webfont.ttf') format('truetype'),
+         url('fonts/lekton-bold-webfont.svg#LektonBold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Lekton';
+    src: url('fonts/lekton-italic-webfont.eot');
+    src: url('fonts/lekton-italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lekton-italic-webfont.woff') format('woff'),
+         url('fonts/lekton-italic-webfont.ttf') format('truetype'),
+         url('fonts/lekton-italic-webfont.svg#LektonItalic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Lekton';
+    src: url('fonts/lekton-regular-webfont.eot');
+    src: url('fonts/lekton-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/lekton-regular-webfont.woff') format('woff'),
+         url('fonts/lekton-regular-webfont.ttf') format('truetype'),
+         url('fonts/lekton-regular-webfont.svg#LektonRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ostrich';
+    src: url('fonts/ostrich-rounded-webfont.eot');
+    src: url('fonts/ostrich-rounded-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/ostrich-rounded-webfont.woff') format('woff'),
+         url('fonts/ostrich-rounded-webfont.ttf') format('truetype'),
+         url('fonts/ostrich-rounded-webfont.svg#OstrichSansRoundedMedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Glasgow';
+    src: url('fonts/glasgow-regular-webfont.eot');
+    src: url('fonts/glasgow-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/glasgow-regular-webfont.woff') format('woff'),
+         url('fonts/glasgow-regular-webfont.ttf') format('truetype'),
+         url('fonts/glasgow-regular-webfont.svg#Glasgow-RegularRegular') format('svg');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Glasgow';
+    src: url('fonts/glasgow-light-webfont.eot');
+    src: url('fonts/glasgow-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/glasgow-light-webfont.woff') format('woff'),
+         url('fonts/glasgow-light-webfont.ttf') format('truetype'),
+         url('fonts/glasgow-light-webfont.svg#Glasgow-LightRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Glasgow';
+    src: url('fonts/glasgow-lightita-webfont.eot');
+    src: url('fonts/glasgow-lightita-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/glasgow-lightita-webfont.woff') format('woff'),
+         url('fonts/glasgow-lightita-webfont.ttf') format('truetype'),
+         url('fonts/glasgow-lightita-webfont.svg#Glasgow-LightItaRegular') format('svg');
+    font-weight: normal;
+    font-style: italic;
+}
+
+/** * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) * http://cssreset.com */html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,b, u, i, center,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,time, mark, audio, video {	margin: 0;	padding: 0;	border: 0;	font-size: 100%;	font: inherit;	vertical-align: baseline;}/* HTML5 display-role reset for older browsers */article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {	display: block;}body {	line-height: 1;}ol, ul {	list-style: none;}blockquote, q {	quotes: none;}blockquote:before, blockquote:after,q:before, q:after {	content: '';	content: none;}table {	border-collapse: collapse;	border-spacing: 0;}
+
+body {
+  background: #111;
+  color: #EEE;
+  font-family: 'Glasgow', 'Palatino Linotype', 'Book Antiqua', Palatino, FreeSerif, serif;
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+#wrapper {
+  height: 100%;
+  min-width: 1070px;
+  overflow: auto;
+  width: 100%;    
+}
+
+header {
+  background-image: url('images/background.gif');
+  padding: 0px 0px 0px 2px;
+  overflow: auto;
+}
+
+header * { display: inline; }
+
+header p {
+  font-family: 'Ostrich';
+  font-size: 300%;
+}
+
+.code { 
+  background: none;
+  float: right;
+}
+
+.code p { 
+  float: left; 
+  padding: 0;
+}
+
+.code ul li a {
+  float: left;
+  font-family: 'Lekton', 'Courier New';
+  padding: 15px 11px;
+  text-decoration: none;
+}
+
+.code ul li a:visited { color: #EEE; }
+ 
+.code ul li a:hover { background-color:#0B75B2; }
+
+#infoBar, #matrixInfo {
+  font-size: 135%;
+  height: 30px;
+  line-height: 27px;
+  margin-bottom: 10px;
+  text-align: center;
+  -webkit-transition: 500ms linear 0s;  
+  -moz-transition: 500ms linear 0s;  
+  -o-transition: 500ms linear 0s;  
+  transition: 500ms linear 0s;
+}
+
+.default { background-color: #0B75B2; }
+
+.info { background-color: #6F6; }
+.infoFlash { background-color: #1B1; }
+
+.warning { background-color: #FFAA77; }
+.warningFlash { background-color: #ED5220; }
+
+.error { background-color: #F44; }
+.errorFlash { background-color: #E00; }
+
+div { background-color: #111; }
+
+div.left {
+  padding-top: 10px;
+  float: left;
+  width: 20%;
+}
+
+div.right {
+  padding-top: 10px;
+  float: right;
+  width: 20%;
+}
+
+p { 
+  margin: 0px 10px;
+  padding-bottom: 10px
+}
+
+p.title {
+  font-family: 'Ostrich';
+  font-size: 200%;
+  text-align: center;
+}
+
+p.subtitle {
+  font-family: 'Ostrich';
+  font-size: 150%;
+  height: 20px;
+}
+
+p.note {
+  font-family: 'Glasgow';
+  font-size: 75%;
+  height: 20px;
+  padding: 2px;
+}
+
+p.answer {
+  padding-top: 30px;
+  font-size: 250%;
+}
+
+a {
+  color: #FF0;
+  text-decoration: none;
+}
+
+a:visited { color: #FF0; }
+
+form { text-align: center; }
+
+label { padding: 0px 10px 0px 0px; }
+
+input, select {
+  background: #0B75B2;
+  color: #EEE;
+  font-size: 100%;
+  text-align: center;
+}
+
+input:focus, select:focus { outline: none; }
+
+input {
+  border: none;
+  margin: 2px 0px;
+  width: 50px;
+}
+
+select {
+  border: 1px solid #111;
+  width: 60%;
+}
+
+.button {
+  background-color: #2C2;
+  color: #111;
+  cursor: pointer;
+  font-family: 'Lekton';
+  width: 100%;
+}
+
+.button.half {
+  width: 48%;
+  margin: 1%;
+}
+
+.red { background-color: #F00; }
+
+.stateProb {
+  font-size: 85%;
+  margin: 2px 10px;
+  min-width: 100px;
+  width: 60%;
+}
+
+#gateVals {
+  padding: 0px 10%;
+}
+
+#createSetGateForm {
+  padding: 0px 10%;
+}
+
+#createSetKetForm {
+  padding: 0px 10%;
+}
+
+#algorithmForm {
+  padding: 0px 10%;
+}
+
+.operation {
+  overflow: auto;
+  text-align: center;
+}
+
+table, tbody, tr { 
+  width: 100%;
+  max-width: 640px;
+}
+
+.gateVal {
+  font-size: 85%;
+  width: 90%;
+}
+
+.drop {
+  border: 1px dashed #333;
+  border-radius: 10px;
+  float: left;
+  font-size: 125%;
+  height: 89px;
+  line-height: 89px;
+  margin: 10px 4% 10px 4%;
+  overflow: hidden;
+  text-align: center;
+  width: 40%;
+}
+
+.drop.drag {
+  border: 1px dashed #0B75B2;
+  background: #4FB9F6;
+}
+
+.drop.over {
+  background: #CFFFFE;
+}
+
+.dropped {
+  border: 1px solid #0B75B2;
+  border-radius: 0px;
+  background: #0B75B2;
+}
+
+.transitionAmp {
+  clear: both;
+  color: #0B75B2;
+  margin: 0;
+}
+
+#quantumComputer {
+  width: 40%;
+}
+
+sub { vertical-align: sub}
+sup { vertical-align: super}
+sub, sup { font-size: 50%; }
+
+.name {
+  font-size: 120%;
+}
+
+.state {
+  min-height: 150px;
+  padding: 0px 0px 10px 10px;
+}
+
+.ket {
+  background: #222;
+  cursor: pointer;
+  padding: 4px 8px;
+  width: 160px;
+}
+
+.draggingKet {
+  opacity: 0.5;
+  height: 18px;
+  max-width: 150px;
+  overflow: hidden;
+}
+
+.ket .complexProb {
+  color: #0B75B2;
+  cursor: pointer;
+  font-weight: bolder;
+  position: absolute;
+  width: 120px;
+}
+
+.matrixType {
+  padding: 0px 3px;
+  margin: 0px 1px;
+}
+
+.unitary { background: #F00}
+.hermitian { background: #00F}
+.identity { background: #0F0}
+
+.gate {
+  background: #222;
+  cursor: pointer;
+  padding: 4px 8px;
+  width: 160;
+}
+
+.draggingGate {
+  opacity: 0.5;
+  height: 18px;
+  max-width: 150px;
+  overflow: hidden;
+}
+
+.draggingGate .matrixType {
+  display: none;
+}
+
+.matrix {
+  background: none;
+  height: 80%;
+  position: fixed;
+  top: 0;
+  z-index: 10
+}
+
+.table {
+  background: #111;
+  max-height: 60%;
+  overflow: scroll;
+}
+
+.matrix td { padding: 3px 0px; }
+
+.matrix td p {
+  background: #0B75B2;
+  cursor: pointer;
+  font-size: 80%;
+  margin: -1px 2px;
+  padding: 5px 0px;
+  text-align: center;
+}
+
+.padBottom {
+  padding-bottom: 20px;
+}
+
+.overlay {
+  display: none;
+  height: 100%;
+  opacity: 0;
+  position: fixed;
+  top: 0px;
+  width: 100%;
+}
+
+#algorithms {
+  width: 40%;
+}
+
+strong {
+  color: #0B75B2;
+}
+
+#createFunction select {
+  width: 20%;
+  margin-right: 20px;
+}
+
+#selectSolution select {
+  width: 20%;
+}
+
+#selectPrimes select {
+  width: 20%;
+}
+
+#deutschDescription {
+  display: none;
+}
+#deutschDescription div{
+  text-align: center;
+}
+
+#deutschJozsaDescription {
+  display: none;
+}
+#deutschJozsaDescription div{
+  text-align: center;
+}
+
+#groversDescription {
+  display: none;
+}
+#groversDescription div{
+  text-align: center;
+}
+
+#shorsDescription {
+  display: none;
+}
+#shorsDescription div{
+  text-align: center;
+}
+
+.description {
+  text-align: justify;
+}

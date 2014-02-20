@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>algorithms.coffee</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>algorithms.coffee</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="algorithms.html">
+                    algorithms.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="bra-ket.html">
+                    bra-ket.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="complex.html">
+                    complex.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="index.html">
+                    index.coffee
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="matrix.html">
+                    matrix.coffee
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <h3 id="-quantum-computer-simulator-quantum-html-"><a href="../quantum.html">Quantum Computer Simulator</a></h3>
+<p><em>algorithms.coffee</em> contains the implementations of the <a href="#d"><strong><code>Deutsch</code></strong></a>, <a href="#dj"><strong><code>Deutsch-Jozsa</code></strong></a>, <a href="#g"><strong><code>Grover</code></strong></a> and <a href="#s"><strong><code>Shor</code></strong></a> algorithms.</p>
+<hr>
+
+        
+      
+        
+        <h2 id="-section-id-q-quantum-section-"><section id='q'>Quantum:</section></h2>
+<p>The <strong><code>Quantum</code></strong> object holds references to the functions for each algorithm.</p>
+<hr>
+
+        
+          <div class='highlight'><pre>Quantum =</pre></div>
+        
+      
+        
+        <h3 id="-section-id-d-deutsch-section-"><section id='d'><strong>Deutsch</strong>:</section></h3>
+<blockquote>
+<p>The Deutsch Algorithm solves a problem that isn’t particularly difficult or particularly important, but it can be solved faster on a quantum computer than on a classical computer.  </p>
+<p>Suppose there is a function ƒ(x) that maps the set {0, 1} onto the set {0, 1}. We want to know whether the function is BALANCED (one-to-one) or CONSTANT (same output for either input). This can be solved on a quantum computer by using the Deutsch Algorithm.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">Deutsch</span>: <span class="hljs-function"><span class="hljs-params">(oracle)</span> -&gt;</span>
+    x = $K.Zero()
+    y = $K.One()
+    ϕ<span class="hljs-number">0</span> = $K.Combine(x, y)
+    HkH = $M.Kron([$U.Hadamard(), $U.Hadamard()])
+    ϕ<span class="hljs-number">1</span> = $K.ApplyGate(HkH, ϕ<span class="hljs-number">0</span>)
+    ϕ<span class="hljs-number">2</span> = $K.ApplyGate(oracle, ϕ<span class="hljs-number">1</span>)
+    HkI = $M.Kron([$U.Hadamard(), $U.Identity()])
+    ϕ<span class="hljs-number">3</span> = $K.ApplyGate(HkI, ϕ<span class="hljs-number">2</span>)
+    ϕ<span class="hljs-number">4</span> = <span class="hljs-keyword">new</span> $K(ϕ<span class="hljs-number">3.</span>col)
+    ϕ<span class="hljs-number">4.</span>ignore <span class="hljs-number">1</span>
+    
+    <span class="hljs-function"><span class="hljs-title">answer</span> = <span class="hljs-params">(ket)</span> -&gt;</span> 
+      <span class="hljs-keyword">if</span> ket.probability(<span class="hljs-number">0</span>) <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> <span class="hljs-string">'Constant'</span>
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ket.probability(<span class="hljs-number">0</span>) <span class="hljs-keyword">is</span> <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-string">'Balanced'</span>
+    
+    results = 
+      <span class="hljs-string">'ϕ&lt;sub&gt;0&lt;/sub&gt;'</span>: ϕ<span class="hljs-number">0</span>
+      <span class="hljs-string">'H⊗H'</span>: HkH
+      <span class="hljs-string">'ϕ&lt;sub&gt;1&lt;/sub&gt; = H⊗H → ϕ&lt;sub&gt;0&lt;/sub&gt;'</span>: ϕ<span class="hljs-number">1</span>
+      <span class="hljs-string">'U&lt;sub&gt;ƒ&lt;/sub&gt;'</span>: oracle
+      <span class="hljs-string">'ϕ&lt;sub&gt;2&lt;/sub&gt; = Oracle → ϕ&lt;sub&gt;1&lt;/sub&gt;'</span>: ϕ<span class="hljs-number">2</span>
+      <span class="hljs-string">'H⊗I'</span>: HkI
+      <span class="hljs-string">'ϕ&lt;sub&gt;3&lt;/sub&gt; = H⊗I → ϕ&lt;sub&gt;2&lt;/sub&gt;'</span>: ϕ<span class="hljs-number">3</span>
+      <span class="hljs-string">'answer'</span>: answer ϕ<span class="hljs-number">4</span></pre></div>
+        
+      
+        
+        <h3 id="-section-id-dj-deutschjozsa-section-"><section id='dj'><strong>DeutschJozsa</strong>:</section></h3>
+<blockquote>
+<p>The <a href="http://en.wikipedia.org/wiki/Deutsch%E2%80%93Jozsa_algorithm">Deutsch-Jozsa Algorithm</a> is an extension to the Deutsch Algorithm.</p>
+<p>Instead of a function which maps {0, 1} onto {0, 1}, we have a function that map the set {0, 1}<sup>n</sup> onto the set {0, 1}. We want to determine whether this function is <strong>BALANCED</strong> (one-to-one) or <strong>NOT BALANCED</strong> (not one-to-one).</p>
+<p>Again, this is not a particularly useful problem to solve, but the Deutsch-Jozsa Algorithm is one of the first algorithms that is exponentially faster on a quantum computer than on a classical computer.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">DeutschJozsa</span>: <span class="hljs-function"><span class="hljs-params">(oracle, n)</span> -&gt;</span>
+    xn = ($K.Zero() <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>..n])
+    x = _.reduce(xn,
+      <span class="hljs-function"><span class="hljs-params">(p, n)</span> =&gt;</span> $K.Combine p, n,
+      $K.Zero())
+    y = $K.One()
+    HkN = $M.Kron($U.Hadamard() <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..n])
+    HkNkH = $M.Kron([HkN, $U.Hadamard()])
+    HkNkI = $M.Kron([HkN, $U.Identity()])
+    ϕ<span class="hljs-number">0</span> = $K.Combine(x, y).normalise()
+    ϕ<span class="hljs-number">1</span> = $K.ApplyGate(HkNkH, ϕ<span class="hljs-number">0</span>).normalise()
+    ϕ<span class="hljs-number">2</span> = $K.ApplyGate oracle, ϕ<span class="hljs-number">1</span>
+    ϕ<span class="hljs-number">3</span> = $K.ApplyGate(HkNkI, ϕ<span class="hljs-number">2</span>).normalise()
+    ϕ<span class="hljs-number">4</span> = <span class="hljs-keyword">new</span> $K(ϕ<span class="hljs-number">3.</span>col)
+    ϕ<span class="hljs-number">4.</span>ignore <span class="hljs-number">1</span>
+    
+    <span class="hljs-function"><span class="hljs-title">answer</span> = <span class="hljs-params">(ket)</span> -&gt;</span>
+      <span class="hljs-keyword">if</span> ket.probability(<span class="hljs-number">0</span>) <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> <span class="hljs-keyword">then</span> <span class="hljs-string">'Constant'</span>
+      <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> ket.probability(<span class="hljs-number">0</span>) <span class="hljs-keyword">is</span> <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> <span class="hljs-string">'Balanced'</span>
+      <span class="hljs-keyword">else</span> <span class="hljs-string">'Not Constant or Balanced'</span>
+    
+    results = 
+      <span class="hljs-string">'ϕ&lt;sub&gt;0&lt;/sub&gt;'</span>: ϕ<span class="hljs-number">0</span>
+      <span class="hljs-string">'H&lt;sup&gt;⊗N+1&lt;/sup&gt;'</span>: HkNkH
+      <span class="hljs-string">'ϕ&lt;sub&gt;1&lt;/sub&gt; = H&lt;sup&gt;⊗N+1&lt;/sup&gt; → ϕ&lt;sub&gt;0&lt;/sub&gt;'</span>: ϕ<span class="hljs-number">1</span>
+      <span class="hljs-string">'U&lt;sub&gt;ƒ&lt;/sub&gt;'</span>: oracle
+      <span class="hljs-string">'ϕ&lt;sub&gt;2&lt;/sub&gt; = Oracle → ϕ&lt;sub&gt;1&lt;/sub&gt;'</span>: ϕ<span class="hljs-number">2</span>
+      <span class="hljs-string">'H&lt;sup&gt;⊗N&lt;/sup&gt;⊗I'</span>: HkNkI
+      <span class="hljs-string">'ϕ&lt;sub&gt;3&lt;/sub&gt; = H&lt;sup&gt;⊗N&lt;/sup&gt;⊗I → ϕ&lt;sub&gt;2&lt;/sub&gt;'</span>: ϕ<span class="hljs-number">3</span>
+      <span class="hljs-string">'answer'</span>: answer ϕ<span class="hljs-number">4</span></pre></div>
+        
+      
+        
+        <h3 id="-section-id-g-grover-section-"><section id='g'><strong>Grover</strong>:</section></h3>
+<blockquote>
+<p><a href="http://en.wikipedia.org/wiki/Grover%27s_algorithm">Grover’s Algorithm</a> is a quantum algorithm for searching an unsorted database with N entries in O(N<sup>1/2</sup>) time. This is better than an equivalent classical algorithm, which would take at least linear time.</p>
+<p>As an example, if we has a list of all N bit strings, e.g. for 4 bits, ‘0000’, ‘0001’, ‘0010’, … , of which one string is the correct result, Grover’s Algorithm can select the correct answer from all the possibilities.</p>
+<p>Grover’s Algorithm is probabilistic, in that it gives the correct answer with high, but not certain, probability. This chance of getting the correct answer can be increased by repeating the algorithm.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">Grover</span>: <span class="hljs-function"><span class="hljs-params">(oracle)</span> -&gt;</span>
+    n = Math.log(oracle.size / <span class="hljs-number">2</span>) / Math.LN2
+    xn = ($K.Zero() <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">1.</span>..n])
+    x = _.reduce(xn,
+      <span class="hljs-function"><span class="hljs-params">(p, n)</span> =&gt;</span> $K.Combine p, n,
+      $K.Zero())
+    y = <span class="hljs-keyword">new</span> $K([<span class="hljs-keyword">new</span> $C(<span class="hljs-number">0</span>), <span class="hljs-keyword">new</span> $C(<span class="hljs-number">1</span>)])
+    HkN = $M.Kron($U.Hadamard() <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..n])
+    HkNkH = $M.Kron([HkN, $U.Hadamard()])
+    HkNkI = $M.Kron([HkN, $U.Identity()])
+    negI = $M.Identity(n).negate()
+    μ = $M.Ones(n).scale(<span class="hljs-number">2</span> / Math.pow(<span class="hljs-number">2</span>, n))
+    invMean = $M.Add(negI, μ)
+    invMeankI = $M.Kron([invMean, $U.Identity()])
+    ϕ<span class="hljs-number">0</span> = $K.Combine(x, y)
+    ϕ<span class="hljs-number">1</span> = $K.ApplyGate(HkNkH, ϕ<span class="hljs-number">0</span>)
+    origϕ<span class="hljs-number">1</span> = <span class="hljs-keyword">new</span> $K(ϕ<span class="hljs-number">1.</span>col)
+    ϕ<span class="hljs-number">2</span> = []
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..Math.max(Math.floor((Math.PI / <span class="hljs-number">4</span>) * Math.sqrt Math.pow(<span class="hljs-number">2</span>, n)), <span class="hljs-number">2</span>)]
+      ϕ<span class="hljs-number">2</span>a = $K.ApplyGate(oracle, ϕ<span class="hljs-number">1</span>)
+      ϕ<span class="hljs-number">2</span>b = $K.ApplyGate(invMeankI, ϕ<span class="hljs-number">2</span>a)
+      ϕ<span class="hljs-number">2</span>[i] = <span class="hljs-string">'ϕ2a'</span>: ϕ<span class="hljs-number">2</span>a, <span class="hljs-string">'ϕ2b'</span>: ϕ<span class="hljs-number">2</span>b
+      ϕ<span class="hljs-number">1</span> = ϕ<span class="hljs-number">2</span>b
+    ϕ<span class="hljs-number">3</span> = ϕ<span class="hljs-number">1</span>
+    ϕ<span class="hljs-number">4</span> = <span class="hljs-keyword">new</span> $K(ϕ<span class="hljs-number">3.</span>col)
+    ϕ<span class="hljs-number">4.</span>ignore <span class="hljs-number">1</span>
+    
+    <span class="hljs-function"><span class="hljs-title">answer</span> = <span class="hljs-params">(ket)</span> -&gt;</span>
+      samples = []
+      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..ket.size]
+        <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..ket.probability(i) * <span class="hljs-number">1000</span>]
+          samples.push i
+      str = samples[Math.floor Math.random() * samples.length].toString <span class="hljs-number">2</span>
+      <span class="hljs-keyword">while</span> str.length &lt; n
+        str = <span class="hljs-string">"0<span class="hljs-subst">#{str}</span>"</span>
+      <span class="hljs-string">"'<span class="hljs-subst">#{str}</span>'"</span>
+      
+    results = 
+      <span class="hljs-string">'ϕ&lt;sub&gt;0&lt;/sub&gt;'</span>: ϕ<span class="hljs-number">0</span>
+      <span class="hljs-string">'H&lt;sup&gt;⊗N+1&lt;/sup&gt;'</span>: HkNkH
+      <span class="hljs-string">'ϕ&lt;sub&gt;1&lt;/sub&gt;&lt;sup&gt;1&lt;/sup&gt; = H&lt;sup&gt;⊗N+1&lt;/sup&gt; → ϕ&lt;sub&gt;0&lt;/sub&gt;'</span>: origϕ<span class="hljs-number">1</span>
+      <span class="hljs-string">'U&lt;sub&gt;ƒ&lt;/sub&gt;'</span>: oracle
+      <span class="hljs-string">'(µ&lt;sup&gt;-1&lt;/sup&gt;)&lt;sup&gt;⊗I&lt;/sup&gt;'</span>: invMeankI
+      <span class="hljs-string">'answer'</span>: answer ϕ<span class="hljs-number">4</span>
+    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>..ϕ<span class="hljs-number">2.</span>length - <span class="hljs-number">1</span>]
+      <span class="hljs-keyword">for</span> own key, val <span class="hljs-keyword">of</span> ϕ<span class="hljs-number">2</span>[i]
+        <span class="hljs-keyword">if</span> key <span class="hljs-keyword">is</span> <span class="hljs-string">'ϕ2a'</span>
+          results[<span class="hljs-string">"ϕ&lt;sub&gt;2a&lt;/sub&gt;&lt;sup&gt;<span class="hljs-subst">#{i + <span class="hljs-number">1</span>}</span>&lt;/sup&gt; = Oracle → ϕ&lt;sub&gt;1&lt;/sub&gt;&lt;sup&gt;<span class="hljs-subst">#{i + <span class="hljs-number">1</span>}</span>&lt;/sup&gt;"</span>] = val
+        <span class="hljs-keyword">if</span> key <span class="hljs-keyword">is</span> <span class="hljs-string">'ϕ2b'</span>
+          results[<span class="hljs-string">"ϕ&lt;sub&gt;2b&lt;/sub&gt;&lt;sup&gt;<span class="hljs-subst">#{i + <span class="hljs-number">1</span>}</span>&lt;/sup&gt; = (µ&lt;sup&gt;-1&lt;/sup&gt;)&lt;sup&gt;⊗I&lt;/sup&gt; → ϕ&lt;sub&gt;2a&lt;/sub&gt;&lt;sup&gt;<span class="hljs-subst">#{i + <span class="hljs-number">1</span>}</span>&lt;/sup&gt;"</span>] = val
+          <span class="hljs-keyword">if</span> i &lt; ϕ<span class="hljs-number">2.</span>length - <span class="hljs-number">2</span>
+            results[<span class="hljs-string">"ϕ&lt;sub&gt;1&lt;/sub&gt;&lt;sup&gt;<span class="hljs-subst">#{i + <span class="hljs-number">2</span>}</span>&lt;/sup&gt; = ϕ&lt;sub&gt;2b&lt;/sub&gt;&lt;sup&gt;<span class="hljs-subst">#{i + <span class="hljs-number">1</span>}</span>&lt;/sup&gt;"</span>] = val
+          <span class="hljs-keyword">else</span>
+            results[<span class="hljs-string">"ϕ&lt;sub&gt;3&lt;/sub&gt; = ϕ&lt;sub&gt;2b&lt;/sub&gt;&lt;sup&gt;<span class="hljs-subst">#{i + <span class="hljs-number">1</span>}</span>&lt;/sup&gt;"</span>] = val
+    results</pre></div>
+        
+      
+        
+        <h3 id="-section-id-s-shor-section-"><section id='s'><strong>Shor</strong>:</section></h3>
+<blockquote>
+<p><a href="http://en.wikipedia.org/wiki/Shor%27s_algorithm&#39;">Shor’s Algorithm</a> is a quantum algorithm for performing integer factorisation in polynomial time. This is much better than an equivalent classical algorithm, which the most efficient of which runs in sub-exponential time.</p>
+<p>Given a number which is a product of two unknown primes, a quantum computer using Shor’s Algorithm can determine the prime factors in a reasonable time (compared to a classical computer).</p>
+<p>With a large enough quantum computer, this algorithm could be used to break public-key encryption, as these encryption methods rely on the fact that is is difficult to find the factors of large numbers.</p>
+</blockquote>
+
+        
+          <div class='highlight'><pre>  <span class="hljs-attribute">Shor</span>: <span class="hljs-function"><span class="hljs-params">(N)</span> -&gt;</span>
+    result = <span class="hljs-literal">null</span>
+    
+    <span class="hljs-function"><span class="hljs-title">isPrime</span> = <span class="hljs-params">(N)</span> -&gt;</span>
+      primes = (<span class="hljs-literal">true</span> <span class="hljs-keyword">for</span> n <span class="hljs-keyword">in</span> [<span class="hljs-number">0.</span>.N])
+      primes[<span class="hljs-number">0</span>] = <span class="hljs-literal">false</span>
+      primes[<span class="hljs-number">1</span>] = <span class="hljs-literal">false</span>
+      <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> [<span class="hljs-number">2.</span>.Math.sqrt(N)]
+        <span class="hljs-keyword">if</span> primes[i]
+          <span class="hljs-keyword">for</span> j <span class="hljs-keyword">in</span> [Math.pow(i, <span class="hljs-number">2</span>)..N] <span class="hljs-keyword">by</span> i
+            primes[j] = <span class="hljs-literal">false</span>
+      primes[N]
+      
+    <span class="hljs-keyword">if</span> isPrime N
+      <span class="hljs-keyword">return</span> [<span class="hljs-number">1</span>, N]
+    a = Math.floor(Math.random() * N) + <span class="hljs-number">2</span>
+    
+    <span class="hljs-function"><span class="hljs-title">gcd</span> = <span class="hljs-params">(a, b)</span> -&gt;</span> <span class="hljs-keyword">if</span> b <span class="hljs-keyword">is</span> <span class="hljs-number">0</span> <span class="hljs-keyword">then</span> a <span class="hljs-keyword">else</span> gcd(b, a % b)
+    
+    c = gcd(a, N)
+    <span class="hljs-keyword">if</span> c <span class="hljs-keyword">isnt</span> <span class="hljs-number">1</span>
+      result = [N / c, N / (N / c)]
+      
+    <span class="hljs-function"><span class="hljs-title">mod</span> = <span class="hljs-params">(a, b)</span> -&gt;</span> ((a % b) + b) % b
+    
+    <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> result?
+      aRmodNVals = [<span class="hljs-number">1</span>]
+      r = <span class="hljs-number">1</span>
+      <span class="hljs-keyword">while</span> aRmodN <span class="hljs-keyword">isnt</span> <span class="hljs-number">1</span>
+        aRmodN = mod Math.pow(a, r), N
+        r++
+        aRmodNVals = [aRmodN].concat aRmodNVals
+        <span class="hljs-keyword">if</span> _.isNaN aRmodN
+          <span class="hljs-keyword">break</span>
+      period = r - <span class="hljs-number">1</span>
+      <span class="hljs-keyword">if</span> mod(period, <span class="hljs-number">2</span>) <span class="hljs-keyword">is</span> <span class="hljs-number">1</span> <span class="hljs-keyword">or</span> Math.pow(a, (period / <span class="hljs-number">2</span>)) <span class="hljs-keyword">is</span> mod(-<span class="hljs-number">1</span>, N) <span class="hljs-keyword">or</span> _.isNaN(aRmodNVals[<span class="hljs-number">0</span>])
+        <span class="hljs-keyword">return</span> Quantum.Shor(N)
+      result = [gcd(Math.pow(a, (period / <span class="hljs-number">2</span>)) + <span class="hljs-number">1</span>, N), gcd(Math.pow(a, (period / <span class="hljs-number">2</span>)) - <span class="hljs-number">1</span>, N)]
+      <span class="hljs-keyword">if</span> result[<span class="hljs-number">0</span>] <span class="hljs-keyword">is</span> result[<span class="hljs-number">1</span>]
+        <span class="hljs-keyword">return</span> Quantum.Shor(N)
+      <span class="hljs-keyword">else</span> 
+        <span class="hljs-keyword">return</span> result
+    [f1, f2] = result
+    [f1, f2]</pre></div>
+        
+      
+        
+        <hr>
+<h2 id="exports-">Exports:</h2>
+
+        
+      
+        
+        <p>The <a href="#q"><strong><code>Quantum</code></strong></a> object is added to the global <code>root</code> object. </p>
+
+        
+          <div class='highlight'><pre>root = <span class="hljs-built_in">exports</span> ? <span class="hljs-keyword">this</span>
+root.Quantum = Quantum</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>
