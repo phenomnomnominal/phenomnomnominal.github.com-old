@@ -27,6 +27,9 @@ for (var p = 0; p < particleCount; p++) {
 var pointCloud = new THREE.PointCloud(particles, pMaterial);
 scene.add(pointCloud);
 
+controls = new THREE.OrbitControls(camera);
+controls.target.set( 0, 0, 0 )
+
 window.addEventListener('resize', resize);
 resize();
 
