@@ -14,7 +14,7 @@ $container.appendChild(renderer.domElement);
 var particleCount = skull.length / 3;
 var particles = new THREE.Geometry();
 var pMaterial = new THREE.PointCloudMaterial({
-    color: 0xCCFFCC,
+    color: 0xFFFFFF,
     size: 3
 });
 
@@ -26,9 +26,6 @@ for (var p = 0; p < particleCount; p++) {
 }
 var pointCloud = new THREE.PointCloud(particles, pMaterial);
 scene.add(pointCloud);
-
-controls = new THREE.OrbitControls(camera);
-controls.target.set( 0, 0, 0 )
 
 window.addEventListener('resize', resize);
 resize();
