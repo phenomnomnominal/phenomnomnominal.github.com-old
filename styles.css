@@ -112,8 +112,9 @@ header ul {
     padding: 0;
     width: 100%;
     display: inline-block;
-    height: 2.5rem;
+    height: 4.5rem;
     font-size: 0;
+    vertical-align: top;
 }
 
 header ul li {
@@ -130,11 +131,11 @@ header ul li span {
 header ul li div {
     height: 2.5rem;
     width: 2.5rem;
-    margin: 0 auto;
+    margin: 1rem auto;
 }
 
-header ul li div a {
-    display: block;
+header ul li a {
+    display: inline-block;
     width: 100%;
     height: 100%;
 }
@@ -197,7 +198,7 @@ h1 {
     header ul {
         position: absolute;
         top: 5rem;
-        right: 1rem;
+        right: 0rem;
         width: auto;
         text-align: right;
         text-transform: lowercase;
@@ -208,6 +209,7 @@ h1 {
         display: block;
         width: auto;
         height: auto;
+        margin: 1rem;
     }
     
     header ul li span {
@@ -222,6 +224,7 @@ h1 {
     
     header ul li div {
         display: inline-block;  
+        margin: 0;
     }
 }
 
