@@ -214,7 +214,6 @@ h1 {
     
     header ul li span {
         display: inline-block;
-        color: white;
         font-size: 1.5rem;
         line-height: 2.5rem;
         height: 2.5rem;
@@ -238,4 +237,16 @@ h1 {
 a {
     text-decoration: none;
     color: white;
+}
+
+a * {
+    color: rgba(150, 150, 150, 1);
+}
+
+a:hover * {
+    color: rgba(200, 200, 200, 1);
+}
+
+a:active * {
+    color: rgba(255, 255, 255, 1);    
 }

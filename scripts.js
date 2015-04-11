@@ -40,6 +40,7 @@ function render () {
     if (skullModel) {
       skullModel.scale.multiplyScalar((grow ? scale : 1 / scale))
       skullModel.rotation.y += 0.01;
+      skullModel.material.color.setHex(Math.floor(Math.random() * 16777215));
     }
 
     renderer.render(scene, camera);
