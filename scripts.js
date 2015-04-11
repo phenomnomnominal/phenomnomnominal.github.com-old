@@ -13,7 +13,10 @@ $container.appendChild(renderer.domElement);
 var skullModel;
 var loader = new THREE.JSONLoader();
 loader.load('skull.json', function ( geometry ) {
-    skullModel = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ wireframe: true }));
+    skullModel = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+        wireframe: true,
+        wireframeLinewidth: 2.5
+    }));
     skullModel.scale.multiplyScalar(125);
     scene.add(skullModel);
 });
