@@ -1,0 +1,22 @@
+.posts__content {
+    h1 {
+        max-width: 80rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    * {
+        max-width: 65rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+        
+    ol {
+        list-style: none;
+    
+        li {
+            font-family: $text-font;
+            margin-bottom: $large-spacing;
+        }
+    }
+}

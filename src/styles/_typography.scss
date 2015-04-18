@@ -1,0 +1,70 @@
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+h1, h2 {
+    font-family: $display-font;
+}
+
+h3, h4, h5, h6, p, em, strong, li {
+    font-family: $text-font;
+}
+
+h1 {
+    font-size: 5rem;
+    line-height: 5.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 2.5rem;
+    color: lighten($font-colour, 50%);
+}
+
+h2 {
+    font-size: 4rem;
+    line-height: 4.5rem;
+    letter-spacing: 1px;
+    margin-bottom: 2rem;
+}
+
+h3 {
+    font-size: 3rem;
+    line-height: 3.5rem;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+}
+
+h4 {
+    font-size: 2.3rem;
+    line-height: 3rem;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+}
+
+p, em, strong, li {
+    font-size: 2rem;
+    line-height: 3rem;
+    letter-spacing: 2px;
+}
+
+em, strong {
+    padding: 0 0.25rem;
+    letter-spacing: 3px;
+}
+
+em {
+    font-weight: 100;
+}
+
+strong {
+    font-weight: 900;
+}
+
+hr {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    
+}
+
+time {
+    font-size: 2rem;
+    line-height: 2rem;
+}

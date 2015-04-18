@@ -1,0 +1,28 @@
+.blog__content {
+    section h1 {
+        max-width: 80rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    hr {
+        max-width: 65rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    section * {
+        max-width: 65rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    pre, code {
+        font-size: 1.6rem;
+        line-height: 1.6rem;
+        overflow: hidden;
+    }
+}
+
+pre.line-numbers{
+    padding: 0.75rem 0rem 2rem 5.5rem;
+}

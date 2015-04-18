@@ -1,0 +1,16 @@
+a {
+    text-decoration: none;
+    color: lighten($font-colour, 50%);
+}
+
+a * {
+    color: darken($font-colour, 30%);
+}
+
+a:hover * {
+    color: darken($font-colour, 15%);
+}
+
+a:active * {
+    color: darken($font-colour, 10%);
+}

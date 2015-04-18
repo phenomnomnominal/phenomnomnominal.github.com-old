@@ -1,0 +1,109 @@
+.top-header {
+    position: absolute;
+    width: 100%;
+    min-width: 320px;
+    height: 9rem;
+    background: linear-gradient(to bottom, $main-colour 0%, $main-colour 50%, transparent 100%);
+    z-index: 1;
+    
+    .top-header__title {
+        position: absolute;
+        width: 100%;
+        top: 6rem;
+        font-size: 2.5rem;
+        line-height: 3rem;
+        text-align: center;
+        text-transform: uppercase;
+    }
+    
+    .top-header__links {
+        padding: 0;
+        font-size: 0;
+    }
+    
+    .top-header__link {
+        display: inline-block;
+        width: 25%;
+        
+        & a {
+            display: inline-block;
+            width: 100%;
+        }
+        
+        & span {
+            display: none;
+        }
+        
+        & div {
+            height: $large-spacing;
+            width: $large-spacing;
+            margin: $small-spacing auto;
+            background-size: cover;
+        }        
+    }
+    
+    .top-header__link--twitter div {
+        background-image: url('images/twitter.png');
+    }
+    
+    .top-header__link--github div {
+        background-image: url('images/github.png');
+    }
+    
+    .top-header__link--soundcloud div {
+        background-image: url('images/soundcloud.png');
+    }
+    
+    .top-header__link--stackoverflow div {
+        background-image: url('images/stackoverflow.png');
+    }
+    
+}
+
+@media all and (min-width: 35em) {
+    .top-header {
+        .top-header__title {
+            padding: 0 $small-spacing;
+            text-align: left;
+            position: static;
+            font-size: 5rem;
+            line-height: 6rem;
+        }
+        
+        .top-header__links-container {
+            float: right;
+            overflow: hidden;
+        }
+    
+        .top-header__links {
+            text-align: right;
+            text-transform: lowercase;
+            font-family: $text-font;
+        }
+    
+        .top-header__link {
+            display: block;
+            width: auto;
+            margin: 0 $small-spacing $small-spacing 0;
+            transition: transform $animation-timing;
+        
+            & span {
+                display: inline-block;
+                height: $large-spacing;
+                padding: 0 $small-spacing;
+                font-size: 2rem;
+                line-height: 4rem;
+                vertical-align: top;
+            }
+        
+            & div {
+                display: inline-block;  
+                margin: 0;
+            }
+        }
+    
+        .top-header__link--hidden {
+            transform: translateX(100%);
+        }
+    }
+}

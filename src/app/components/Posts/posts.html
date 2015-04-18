@@ -1,0 +1,12 @@
+<section class="posts__content">
+    <h1>Posts:</h1>
+    <ol>
+        <li ng-repeat="post in posts.posts | orderBy: '-post.date'">
+            <a ui-sref="phenomnomnominal.post({ id: post.url })">
+                <h2>{{ post.name }}</h2>
+            </a>
+            <time>{{ post.date | date }}</time>
+            <time ng-if="post.updated">(Last updated {{ post.updated | date }}</time>
+        </li>
+    </ol>
+</section>
