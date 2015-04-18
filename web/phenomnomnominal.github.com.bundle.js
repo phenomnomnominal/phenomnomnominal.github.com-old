@@ -83217,7 +83217,7 @@ function initResize($window) {
 }
 
 function resize($window) {
-    var size = parseFloat($window.getComputedStyle(document.body).width);
+    var size = Math.min(700, parseFloat($window.getComputedStyle(document.body).width));
     this.scene.setSize(size);
 }
 
