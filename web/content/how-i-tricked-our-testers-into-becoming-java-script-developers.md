@@ -18,7 +18,7 @@ We have recently started a new project that is giving us the chance to take what
 
 ### Cucumber & Gherkin:
 
-The first piece of the puzzle came in the form of [**Cucumber**](https://cukes.info/). **Cucumber** is a tool for converting human-readable test scenarios written in a small language called [**Gherkin**](https://github.com/cucumber/cucumber/wiki/Gherkin). A **Gherkin** *feature* looks something like this:
+The first piece of the puzzle came in the form of [**Cucumber**](https://cukes.info/). Cucumber is a tool for converting human-readable test scenarios written in a small language called [**Gherkin**](https://github.com/cucumber/cucumber/wiki/Gherkin). A Gherkin *feature* looks something like this:
 
     # doSomething.feature
     Feature: Do something
@@ -46,9 +46,9 @@ These stubs are then filled out to perform the action described in the step, and
 
 ### AngularJS & Protractor:
 
-This new project is being built using [**AngularJS**](https://angularjs.org/), and **Angular** already has a tool for writing automated UI tests - [**Protractor**](http://angular.github.io/protractor/#/)! Puzzle piece number 2! **Protractor** allows you to write **JavaScript** code that drives a browser, in a very similar way to **Robot Framework**. And it works with **Cucumber**! And because everything is based off [**Promises**](https://promisesaplus.com/), there are no more pesky `wait` steps, so the tests are automatically a heap more robust. #morewin. From day one, we jumped into **Protractor** headfirst, and everything was going great. We wrote robust tests over each part of the UI as we developed them, and they ran reliably.
+This new project is being built using [**AngularJS**](https://angularjs.org/), and Angular already has a tool for writing automated UI tests - [**Protractor**](http://angular.github.io/protractor/#/)! Puzzle piece number 2! Protractor allows you to write JavaScript code that drives a browser, in a very similar way to Robot Framework. And it works with Cucumber! And because everything is based off [**Promises**](https://promisesaplus.com/), there are no more pesky `wait` steps, so the tests are automatically a heap more robust. #morewin. From day one, we jumped into Protractor headfirst, and everything was going great. We wrote robust tests over each part of the UI as we developed them, and they ran reliably.
 
-There was a few problems - **developing new site funtionality with Angular was quick, but adding automated tests was slow**. This was especially problematic since we had sold **Angular** as a tool that would help us develop new functionality faster. And unlike **Robot Framework**, **Protractor** tests are written in JavaScript, not with a UI. So even though we sped up quite a bit as we got better at writing them, there was a lot of extra work for our developers to do, and not that much for our testers. As a result of this, UI tests weren't being written frequently, or they were just covering the happy path through the system. Our testers even went back to writing **Robot Framework** tests so that they could more easy test the rapidly changing codebase. Since the codebase was changing so quickly, it became clear that the naive way in which we were approaching writing our *step definitions* also hadn't fixed the maintainability problem. Small changes to the UI meant big refactors of the test code. So while some things had got better, others hadn't, and some new problems had appeared.
+There was a few problems - **developing new site funtionality with Angular was quick, but adding automated tests was slow**. This was especially problematic since we had sold Angular as a tool that would help us develop new functionality faster. And unlike Robot Framework, Protractor tests are written in JavaScript, not with a UI. So even though we sped up quite a bit as we got better at writing them, there was a lot of extra work for our developers to do, and not that much for our testers. As a result of this, UI tests weren't being written frequently, or they were just covering the happy path through the system. Our testers even went back to writing Robot Framework tests so that they could more easy test the rapidly changing codebase. Since the codebase was changing so quickly, it became clear that the naive way in which we were approaching writing our *step definitions* also hadn't fixed the maintainability problem. Small changes to the UI meant big refactors of the test code. So while some things had got better, others hadn't, and some new problems had appeared.
 
 #### Better:
 
@@ -66,21 +66,21 @@ There was a few problems - **developing new site funtionality with Angular was q
 
 ### What next?
 
-We'd made some improvements, but the workflow wasn't quite right, and the UI tests we had made weren't good enough. We needed to capture the ability of our testers to think of every way to break things. Could we teach them all **JavaScript**? Absolutely, but how long would it take? We considered just going back to **Robot Framework**, but **Protractor** really is the right tool for the job. What if we could make **Protractor** a bit more like **Robot Framework**? What if we could make a UI for **Protractor** so that anyone could make tests, whether they could write JavaScript or not? 
+We'd made some improvements, but the workflow wasn't quite right, and the UI tests we had made weren't good enough. We needed to capture the ability of our testers to think of every way to break things. Could we teach them all JavaScript? Absolutely, but how long would it take? We considered just going back to Robot Framework, but Protractor really is the right tool for the job. What if we could make Protractor a bit more like Robot Framework? What if we could make a UI for Protractor so that anyone could make tests, whether they could write JavaScript or not? 
 
 I decided to give it a go.
 
 ## tractor:
 
-Here we are, a few months later, and I've been working on a tool called [**tractor**](https://github.com/TradeMe/tractor), which is hopefully puzzle piece number three! I've still got a lot more to work on it, but our new project now has a suite of about 50 UI test scenarios that were created entirely by our testers using **tractor**. **tractor** is a [**node.js**](https://nodejs.org/) application and browser-based user-interface written in **AngularJS** that allows non-technical people to create and manipulate **JavaScript**, **JSON** and **Gherkin** files which are then consumed by **Protractor**. And as an **Angular** app, it was used to create automated UI tests for itself!
+Here we are, a few months later, and I've been working on a tool called [**tractor**](https://github.com/TradeMe/tractor), which is hopefully puzzle piece number three! I've still got a lot more to work on it, but our new project now has a suite of about 50 UI test scenarios that were created entirely by our testers using tractor. tractor is a [**node.js**](https://nodejs.org/) application and browser-based user-interface written in Angular that allows non-technical people to create and manipulate JavaScript, JSON and Gherkin files which are then consumed by Protractor. And as an Angular app, it was used to create automated UI tests for itself!
 
 ### How does it work?
 
-**tractor** uses a few core ideas and constraints that work together to create more maintainable UI tests.
+tractor uses a few core ideas and constraints that work together to create more maintainable UI tests.
 
 #### Components:
 
-A **tractor** *component* is my interpretation of a *Page Object* in **Selenium**. *Components* are essentially the key to having maintainable UI tests. A *Component* is a set of named elements (buttons, inputs, etc.) and actions on those elements, that describe the behaviour of a part of a web app. By keeping this behaviour high level, we can keep all the fragility of our tests in one place, which makes them much more maintainable. For example, where before the *step definitions* for logging in may have looked something like this:
+A tractor *component* is my interpretation of a *Page Object* as used in Selenium. *Components* are essentially the key to having maintainable UI tests. A *Component* is a set of named elements (buttons, inputs, etc.) and actions on those elements, that describe the behaviour of a part of a web app. By keeping this behaviour high level, we can keep all the fragility of our tests in one place, which makes them much more maintainable. For example, where before the *step definitions* for logging in may have looked something like this:
 
     this.When('I type in my username', function (done) {
         element(by.css('#UserName')).sendKeys('username');
@@ -119,25 +119,25 @@ with a *component* it would look more like this:
         UserLogin.login('username', 'secret');
     });
 
-Now, the elements are encapsulated by the `UserLogin` component, as well as the specifics of the `login` action. If the exact way that a user logs in should change in the future, the test only needs to be updated in one place. Our current workflow is that a developer uses **tractor** to create *components* as a part of the initial dev work on a feature, as they are in a better position to decide which element selectors will be the most robust.
+Now, the elements are encapsulated by the `UserLogin` component, as well as the specifics of the `login` action. If the exact way that a user logs in should change in the future, the test only needs to be updated in one place. Our current workflow is that a developer uses tractor to create *components* as a part of the initial dev work on a feature, as they are in a better position to decide which element selectors will be the most robust.
 
 #### Features and Step Definitions:
 
-Features are created using the same **Gherkin** syntax, but with some additional constraints. The *Given*, *When* and *Then* actions have very specific meanings within **tractor**.
+Features are created using the same Gherkin syntax, but with some additional constraints. The *Given*, *When* and *Then* actions have very specific meanings within tractor.
 
- * A *Given* step is in charge of setting up API calls, which can be mocked using the `$httpBackend` service from **AngularJS**.
+ * A *Given* step is in charge of setting up API calls, which can be mocked using the `$httpBackend` service from AngularJS.
  * A *When* step describes a task, which is made up of a set of interactions on some *components*
  * A *Then* step declares an expectation, which is a combination of getting the state of a *component* via an interaction and an expected result.
 
 #### Mock Data:
 
-**tractor** allows users to input mock data as **JSON** and assosciate that data with a given URL. It uses the `$httpBackend` service to intercept AJAX calls and replace the response with the mocked data.
+tractor allows users to input mock data as JSON and assosciate that data with a given URL. It uses the `$httpBackend` service to intercept AJAX calls and replace the response with the mocked data.
 While it expects mock data by default, it will also allow for a call to pass-through to a real server and get real data.
 
 #### Everything is just files:
 
-Because **tractor** directly operates on **JavaScript**, **JSON** and **Gherkin** files, everything can still work as it used to, files can still just be manipulated and merged as you'd expect them to be.
+Because tractor directly operates on JavaScript, JSON and Gherkin files, everything can still work as it used to, files can still just be manipulated and merged as you'd expect them to be.
 
 ### Try it out!
 
-**tractor** is available on [**Github**](https://github.com/TradeMe/tractor), and can be installed via **npm**, using `npm install -g tractor@alpha`. Please give it a go on your **Angular** app, and let me know how it works for you! We are still a wee way away from a proper release, but until then I will be using this blog to document anything interesting that comes out of the development process!
+tractor is available on [**Github**](https://github.com/TradeMe/tractor), and can be installed via **npm**, using `npm install -g tractor@alpha`. Please give it a go on your Angular app, and let me know how it works for you! We are still a wee way away from a proper release, but until then I will be using this blog to document anything interesting that comes out of the development process!
