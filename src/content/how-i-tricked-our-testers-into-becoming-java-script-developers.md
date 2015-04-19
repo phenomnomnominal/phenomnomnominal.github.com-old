@@ -8,7 +8,7 @@ The [website I work on](http://www.trademe.co.nz/) has a team of dedicated teste
 
  * It's pretty slow/hard to make tests and to run them
  * The tests don't work that reliably
- * The tests are cray-cray difficult to maintain
+ * The tests are really difficult to maintain
 
 That being said, we have a working set of tests that frequently find bugs for us! This is obviously what it is all about, and every time a bug is found, it totally validates all the effort that needs to be put in to getting an automated UI suite up and running. Despite this, whenever a test fails, we always blame the tests first and run them again a few times - **we still don't trust our tests.**
 
@@ -42,18 +42,18 @@ The [**CucumberJS**](https://github.com/cucumber/cucumber-js) implementation tur
         done.pending();
     });
 
-These stubs are then filled out to perform the action described in the step, and when run all together, should execute the whole test scenario and check that it works! Cool! This is great, because it uses easy to understand language, and **small chunks of interaction which can be reused.** Our testers started working on *features* to cover all our business rules, and we noticed straight away how well they tied in with existing acceptance criteria, and how easy they were for everyone to understand. #win.
+These stubs are then filled out to perform the action described in the step, and when run all together, should execute the whole test scenario and check that it works! This is great, because it uses easy to understand language, and **small chunks of interaction which can be reused.** Our testers started working on *features* to cover all our business rules, and we noticed straight away how well they tied in with existing acceptance criteria, and how easy they were for everyone to understand.
 
 ### AngularJS & Protractor:
 
-This new project is being built using [**AngularJS**](https://angularjs.org/), and Angular already has a tool for writing automated UI tests - [**Protractor**](http://angular.github.io/protractor/#/)! Puzzle piece number 2! Protractor allows you to write JavaScript code that drives a browser, in a very similar way to Robot Framework. And it works with Cucumber! And because everything is based off [**Promises**](https://promisesaplus.com/), there are no more pesky `wait` steps, so the tests are automatically a heap more robust. #morewin. From day one, we jumped into Protractor headfirst, and everything was going great. We wrote robust tests over each part of the UI as we developed them, and they ran reliably.
+This new project is being built using [**AngularJS**](https://angularjs.org/), and Angular already has a tool for writing automated UI tests - [**Protractor**](http://angular.github.io/protractor/#/)! Puzzle piece number 2! Protractor allows you to write JavaScript code that drives a browser, in a very similar way to Robot Framework - and it works with Cucumber! As well as this, because everything is based off [**Promises**](https://promisesaplus.com/), there are no more pesky `wait` steps, so the tests are automatically a heap more robust. From day one, we jumped into Protractor headfirst, and everything was going great. We wrote robust tests over each part of the UI as we developed them, and they ran reliably.
 
 There was a few problems - **developing new site funtionality with Angular was quick, but adding automated tests was slow**. This was especially problematic since we had sold Angular as a tool that would help us develop new functionality faster. And unlike Robot Framework, Protractor tests are written in JavaScript, not with a UI. So even though we sped up quite a bit as we got better at writing them, there was a lot of extra work for our developers to do, and not that much for our testers. As a result of this, UI tests weren't being written frequently, or they were just covering the happy path through the system. Our testers even went back to writing Robot Framework tests so that they could more easy test the rapidly changing codebase. Since the codebase was changing so quickly, it became clear that the naive way in which we were approaching writing our *step definitions* also hadn't fixed the maintainability problem. Small changes to the UI meant big refactors of the test code. So while some things had got better, others hadn't, and some new problems had appeared.
 
 #### Better:
 
  * Modular reuseable step definitions
- * Moar JavaScript (yay!)
+ * UI tests written in JavaScript
  * More reliable tests through robust interaction timing thanks to Promises
  
 #### Not better:

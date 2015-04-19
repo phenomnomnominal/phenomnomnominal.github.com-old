@@ -10,7 +10,6 @@ import Home from './Home.module';
 class HomeController {
     /* @ngInject */
     constructor (
-        $http,
         $window
     ) {
         var $parallaxRoot = document.querySelector('.parallax__root');

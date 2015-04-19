@@ -83014,7 +83014,7 @@ var _Home2 = _interopRequireWildcard(_Home);
 
 var HomeController =
 /* @ngInject */
-['$http', '$window', function HomeController($http, $window) {
+['$window', function HomeController($window) {
     _classCallCheck(this, HomeController);
 
     var $parallaxRoot = document.querySelector('.parallax__root');
