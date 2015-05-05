@@ -22,9 +22,9 @@ The first piece of the puzzle came in the form of [**Cucumber**](https://cukes.i
 
     # doSomething.feature
     Feature: Do something
+        In order to feel good about myself
         As a human
         I want to do something
-        So that I can say feel good about myself
         
         Scenario: Do a thing
            When I do something
@@ -33,12 +33,12 @@ The first piece of the puzzle came in the form of [**Cucumber**](https://cukes.i
 The [**CucumberJS**](https://github.com/cucumber/cucumber-js) implementation turns that *feature* into *step definitions* that look like this:
 
     # whenIDoSomething.js
-    this.When('I do something', function(done) {
+    this.When(/^I do something$/, function(done) {
         done.pending();
     });
     
     # thenIShouldFeelGoodAboutMyself.js
-    this.Then('I should feel good about myself', function(done) {
+    this.Then(/^I should feel good about myself$/, function(done) {
         done.pending();
     });
 
@@ -48,7 +48,7 @@ These stubs are then filled out to perform the action described in the step, and
 
 This new project is being built using [**AngularJS**](https://angularjs.org/), and Angular already has a tool for writing automated UI tests - [**Protractor**](http://angular.github.io/protractor/#/)! Puzzle piece number 2! Protractor allows you to write JavaScript code that drives a browser, in a very similar way to Robot Framework - and it works with Cucumber! As well as this, because everything is based off [**Promises**](https://promisesaplus.com/), there are no more pesky `wait` steps, so the tests are automatically a heap more robust. From day one, we jumped into Protractor headfirst, and everything was going great. We wrote robust tests over each part of the UI as we developed them, and they ran reliably.
 
-There was a few problems - **developing new site funtionality with Angular was quick, but adding automated tests was slow**. This was especially problematic since we had sold Angular as a tool that would help us develop new functionality faster. And unlike Robot Framework, Protractor tests are written in JavaScript, not with a UI. So even though we sped up quite a bit as we got better at writing them, there was a lot of extra work for our developers to do, and not that much for our testers. As a result of this, UI tests weren't being written frequently, or they were just covering the happy path through the system. Our testers even went back to writing Robot Framework tests so that they could more easy test the rapidly changing codebase. Since the codebase was changing so quickly, it became clear that the naive way in which we were approaching writing our *step definitions* also hadn't fixed the maintainability problem. Small changes to the UI meant big refactors of the test code. So while some things had got better, others hadn't, and some new problems had appeared.
+There was a few problems - **developing new site functionality with Angular was quick, but adding automated tests was slow**. This was especially problematic since we had sold Angular as a tool that would help us develop new functionality faster. And unlike Robot Framework, Protractor tests are written in JavaScript, not with a UI. So even though we sped up quite a bit as we got better at writing them, there was a lot of extra work for our developers to do, and not that much for our testers. As a result of this, UI tests weren't being written frequently, or they were just covering the happy path through the system. Our testers even went back to writing Robot Framework tests so that they could more easy test the rapidly changing codebase. Since the codebase was changing so quickly, it became clear that the naive way in which we were approaching writing our *step definitions* also hadn't fixed the maintainability problem. Small changes to the UI meant big refactors of the test code. So while some things had got better, others hadn't, and some new problems had appeared.
 
 #### Better:
 
@@ -82,17 +82,17 @@ tractor uses a few core ideas and constraints that work together to create more 
 
 A tractor *component* is my interpretation of a *Page Object* as used in Selenium. *Components* are essentially the key to having maintainable UI tests. A *Component* is a set of named elements (buttons, inputs, etc.) and actions on those elements, that describe the behaviour of a part of a web app. By keeping this behaviour high level, we can keep all the fragility of our tests in one place, which makes them much more maintainable. For example, where before the *step definitions* for logging in may have looked something like this:
 
-    this.When('I type in my username', function (done) {
+    this.When(/^I type in my username$/, function (done) {
         element(by.css('#UserName')).sendKeys('username');
         done();
     });
     
-    this.When('I type in my password', function (done) {
+    this.When(/^I type in my password$/, function (done) {
         element(by.css('#Password')).sendKeys('secret');
         done();
     });
     
-    this.When('I click the login button', function (done) {
+    this.When(/^I click the login button$/, function (done) {
         element(by.css('#LoginButton')).click();
         done();
     });
@@ -114,7 +114,7 @@ with a *component* it would look more like this:
     };
     
     // WhenILogIn.step.js
-    this.When('I log in', function (done) {
+    this.When(/^I log in$/, function (done) {
         var UserLogin = new UserLogin();
         UserLogin.login('username', 'secret');
     });
